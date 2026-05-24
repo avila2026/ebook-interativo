@@ -27,3 +27,4 @@ secrets.*
 # Materiais de terceiros (copyright) e arquivos de outros projetos
 referencias/*.pdf
 docs/*.zip
+.vercel
