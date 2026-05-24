@@ -1,0 +1,809 @@
+/* css/components.css */
+/* Estilos para os Recursos Interativos do Ebook */
+
+/* ==========================================
+   1. MAPA CORPORAL CLICÁVEL (BODY MAP)
+   ========================================== */
+.bodymap-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 16px;
+  margin: 2.5rem 0;
+  box-shadow: var(--shadow-lg);
+  align-items: center;
+}
+
+.bodymap-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+  padding: 1rem;
+  border-radius: 12px;
+  height: 380px;
+}
+
+/* Silhueta Humana em SVG ou Vetor */
+.body-svg {
+  height: 100%;
+  width: auto;
+  opacity: 0.85;
+}
+
+.body-svg path.body-outline {
+  fill: #1e293b;
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 1.5;
+  transition: var(--transition-normal);
+}
+
+/* Hotspots interativos no corpo */
+.map-hotspot {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  box-shadow: 0 0 15px var(--primary-glow-strong);
+  transition: var(--transition-normal);
+}
+
+.map-hotspot::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  animation: pulse-ring 1.8s infinite;
+}
+
+.map-hotspot:hover {
+  transform: scale(1.3);
+  background-color: var(--accent);
+  border-color: #fff;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+.map-hotspot.active {
+  background-color: var(--accent);
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.8);
+}
+
+/* Posições dos Hotspots */
+.hotspot-brain { top: 8%; left: 50%; transform: translateX(-50%); }
+.hotspot-stomach { top: 38%; left: 47%; transform: translateX(-50%); }
+.hotspot-pancreas { top: 43%; left: 53%; transform: translateX(-50%); }
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Info Panel do Mapa Corporal */
+.bodymap-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.bodymap-info h4 {
+  font-family: var(--font-title);
+  color: var(--primary-light);
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bodymap-info-body {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  min-height: 120px;
+}
+
+.bodymap-placeholder-text {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  font-style: italic;
+}
+
+/* ==========================================
+   2. CARDS DE EFEITOS ADVERSOS (FLIP CARDS)
+   ========================================== */
+.effects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.effect-card-3d {
+  perspective: 1000px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.effect-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.effect-card-3d:hover .effect-card-inner,
+.effect-card-3d.flipped .effect-card-inner {
+  transform: rotateY(180deg);
+}
+
+.effect-card-front, .effect-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+}
+
+.effect-card-front {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  color: #fff;
+}
+
+.effect-card-front h4 {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-light);
+}
+
+.effect-card-front .frequency-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 3px 10px;
+  border-radius: 20px;
+  color: var(--accent);
+}
+
+.effect-card-front .flip-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 1.5rem;
+}
+
+.effect-card-back {
+  background: var(--bg-tertiary);
+  color: var(--text-main);
+  transform: rotateY(180deg);
+  border-color: var(--primary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.effect-card-back h5 {
+  font-family: var(--font-title);
+  color: var(--primary-light);
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   3. COMPARADOR DE MEDICAMENTOS
+   ========================================== */
+.comparator-wrapper {
+  margin: 2.5rem 0;
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+.comparator-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+  background: var(--bg-secondary);
+  min-width: 700px;
+}
+
+.comparator-table th, .comparator-table td {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comparator-table th {
+  background: var(--bg-tertiary);
+  color: #fff;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.comparator-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.comparator-table tr:last-child td {
+  border-bottom: none;
+}
+
+.comparator-drug-name {
+  font-family: var(--font-title);
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.comparator-drug-active {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.badge-efficacy {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--primary-light);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-status {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================
+   4. INTERACTIVE QUIZ
+   ========================================== */
+.quiz-box {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin: 2.5rem 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.quiz-progress-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.quiz-score-badge {
+  background: var(--primary-dark);
+  color: var(--primary-light);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.quiz-question-text {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.quiz-options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-option-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.quiz-option-btn:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+  transform: translateX(4px);
+}
+
+.quiz-option-btn.selected {
+  border-color: var(--accent);
+  background: rgba(6, 182, 212, 0.05);
+}
+
+.quiz-option-btn.correct {
+  border-color: var(--primary) !important;
+  background-color: rgba(16, 185, 129, 0.08) !important;
+  color: var(--primary-light) !important;
+  font-weight: 600;
+}
+
+.quiz-option-btn.incorrect {
+  border-color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  color: #fca5a5 !important;
+}
+
+.quiz-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 44px;
+}
+
+.btn-quiz-next {
+  background: var(--primary);
+  color: var(--text-inverse);
+  border: none;
+  font-family: var(--font-title);
+  font-weight: 700;
+  padding: 0.75rem 1.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-quiz-next:hover {
+  background: var(--primary-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn-quiz-next:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.quiz-explanation-box {
+  background: rgba(16, 185, 129, 0.03);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #a7f3d0;
+  animation: fadeIn 0.3s ease;
+}
+
+.quiz-explanation-box strong {
+  color: #fff;
+}
+
+/* Resultados Finais do Quiz */
+.quiz-results-screen {
+  text-align: center;
+  padding: 1rem 0;
+  animation: fadeIn 0.4s ease;
+}
+
+.quiz-results-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-results-title {
+  font-family: var(--font-title);
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.quiz-results-score {
+  font-size: 1.2rem;
+  color: var(--primary-light);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-results-feedback {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-quiz-reset {
+  background: var(--bg-tertiary);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-title);
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.btn-quiz-reset:hover {
+  background: var(--primary);
+  color: var(--text-inverse);
+  border-color: var(--primary);
+}
+
+/* ==========================================
+   5. CHECKLIST DE CONTRAINDICAÇÕES / CONSULTA
+   ========================================== */
+.checklist-container {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.checklist-intro {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.checklist-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.checklist-item:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+}
+
+.checklist-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.checklist-item-text {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  user-select: none;
+}
+
+/* Resultado Dinâmico da Triagem */
+.checklist-result-box {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.checklist-result-box.safe {
+  display: block;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #a7f3d0;
+}
+
+.checklist-result-box.warning {
+  display: block;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+/* Checklist para Consulta Médica */
+.doctor-consultation-box {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.consult-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.consult-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  font-size: 0.9rem;
+}
+
+/* ==========================================
+   6. DIÁRIOS INTERATIVOS (BÔNUS)
+   ========================================== */
+.diary-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 16px;
+  margin: 2.5rem 0;
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 768px) {
+  .diary-container {
+    grid-template-columns: 1fr;
+  }
+  .bodymap-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.diary-form-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.diary-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.diary-form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.diary-input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.diary-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.diary-btn-submit {
+  background: var(--primary);
+  color: var(--text-inverse);
+  border: none;
+  font-family: var(--font-title);
+  font-weight: 700;
+  padding: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-size: 0.95rem;
+}
+
+.diary-btn-submit:hover {
+  background: var(--primary-light);
+  box-shadow: var(--shadow-primary);
+}
+
+.diary-logs-panel {
+  display: flex;
+  flex-direction: column;
+  height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--bg-primary);
+  padding: 1rem;
+}
+
+.diary-logs-heading {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-clear-logs {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-clear-logs:hover {
+  text-decoration: underline;
+}
+
+.diary-empty-state {
+  margin: auto;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.log-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.log-item-row:last-child {
+  border-bottom: none;
+}
+
+.log-item-date {
+  color: var(--text-muted);
+}
+
+.log-item-value {
+  font-weight: 600;
+  color: var(--primary-light);
+}
+
+.log-item-tag {
+  background: var(--bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+/* ==========================================
+   7. GLOSSARY POPUPS / HIGHLIGHTS
+   ========================================== */
+.glossary-term {
+  border-bottom: 1px dashed var(--primary);
+  color: var(--primary-light);
+  cursor: help;
+  position: relative;
+  font-weight: 500;
+}
+
+.glossary-term:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+/* Tooltip CSS — funciona em desktop e mobile (substitui title do browser) */
+.glossary-term[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-hover);
+  color: var(--text-main);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.45;
+  width: max-content;
+  max-width: 240px;
+  white-space: normal;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: var(--shadow-lg);
+  transition: opacity 0.15s ease;
+}
+
+.glossary-term[data-tooltip]::after {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--border-hover);
+  z-index: 1001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.glossary-term[data-tooltip]:hover::before,
+.glossary-term[data-tooltip]:hover::after,
+.glossary-term[data-tooltip]:focus::before,
+.glossary-term[data-tooltip]:focus::after {
+  opacity: 1;
+}

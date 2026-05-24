@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mounjaro sem Mitos — Ebook Web Interativo</title>
+  <meta name="description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2. Desmistifique o Mounjaro.">
+
+  <!-- Open Graph / Compartilhamento Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Mounjaro sem Mitos — Ebook Web Interativo">
+  <meta property="og:description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.">
+  <meta property="og:image" content="assets/images/mounjaro_box.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mounjaro sem Mitos — Ebook Web Interativo">
+  <meta name="twitter:description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.">
+
+  <!-- Segurança: Content Security Policy básica -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self';">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+  
+  <!-- Fontes Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Folhas de Estilo -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- BARRA LATERAL (SIDEBAR NAVEGAÇÃO) -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="brand-section">
+        <h1 class="brand-title">🧪 Mounjaro<span>sem Mitos</span></h1>
+        <p class="brand-subtitle">Ebook Web Interativo</p>
+      </div>
+
+      <!-- Barra de Progresso Global -->
+      <div class="progress-bar-container">
+        <div class="progress-indicator" id="globalProgress"></div>
+      </div>
+      <div class="progress-text">
+        <span>Progresso do Leitor</span>
+        <span id="progressPercentage">0%</span>
+      </div>
+
+      <!-- Sumário dos Capítulos -->
+      <nav class="chapter-nav">
+        <span class="nav-heading">Conteúdo</span>
+        <button class="chapter-btn active" data-chapter="introducao">
+          <span>Introdução</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-1">
+          <span>Cap. 1: O que é Mounjaro</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-2">
+          <span>Cap. 2: Como surgiu</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-3">
+          <span>Cap. 3: Como funciona</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-4">
+          <span>Cap. 4: Benefícios</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-5">
+          <span>Cap. 5: Riscos e Negativos</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-6">
+          <span>Cap. 6: Contraindicações</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-7">
+          <span>Cap. 7: Casos Reais</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-8">
+          <span>Cap. 8: Comparação Fármacos</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-9">
+          <span>Cap. 9: Estudos Científicos</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-10">
+          <span>Cap. 10: Uso Responsável</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-11">
+          <span>Cap. 11: Mitos e Verdades</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="capitulo-12">
+          <span>Cap. 12: O Futuro</span>
+          <span class="badge-completed">✓</span>
+        </button>
+        
+        <button type="button" class="chapter-btn" data-chapter="conclusao">
+          <span>Conclusão</span>
+          <span class="badge-completed">✓</span>
+        </button>
+
+        <span class="nav-heading nav-heading--lab">Laboratório Interativo</span>
+        <button type="button" class="chapter-btn chapter-btn--lab" data-chapter="recursos-interativos">
+          <span>🛠️ Ferramentas & Quizzes</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>Mounjaro sem Mitos &copy; 2026</p>
+        <p>Desenvolvido para fins informativos e educativos.</p>
+      </div>
+    </aside>
+
+    <!-- ÁREA PRINCIPAL DE LEITURA (MAIN) -->
+    <main class="content-area" id="mainContent">
+      
+      <!-- Cabeçalho Flutuante (Glassmorphic Header) -->
+      <header class="content-header">
+        <div class="current-chapter-info">
+          <h2 id="headerChapterTitle">Introdução</h2>
+          <p id="headerChapterSubtitle">A Nova Era do Tratamento Metabólico</p>
+        </div>
+        
+        <div class="utility-nav">
+          <button type="button" class="btn-utility" id="btnToggleSidebar">
+            <span>☰</span> Menu
+          </button>
+          <button type="button" class="btn-utility" id="btnToggleFontSize">
+            <span>Aa</span> Fonte
+          </button>
+        </div>
+      </header>
+
+      <!-- Conteúdo do Ebook -->
+      <div class="article-container">
+        <article id="ebookArticle" class="fade-in">
+          <!-- Conteúdo dinâmico injetado via JS -->
+        </article>
+
+        <!-- Navegação entre Capítulos inferior -->
+        <div class="navigation-bar">
+          <button class="btn-nav-chapter" id="btnPrevChapter">
+            <span class="nav-label">Capítulo Anterior</span>
+            <span class="nav-title" id="prevChapterName">-</span>
+          </button>
+          <button class="btn-nav-chapter next" id="btnNextChapter">
+            <span class="nav-label">Próximo Capítulo</span>
+            <span class="nav-title" id="nextChapterName">-</span>
+          </button>
+        </div>
+      </div>
+      
+    </main>
+
+  </div>
+
+  <!-- Banco de Dados e Lógica de Aplicação -->
+  <script src="js/data.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

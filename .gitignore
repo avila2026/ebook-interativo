@@ -1,0 +1,29 @@
+# Dependências e caches
+node_modules/
+.cache/
+dist/
+
+# Sistemas operacionais
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs e editores
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+
+# Arquivos temporários e logs
+*.log
+*.tmp
+*.temp
+
+# Dados sensíveis (nunca versionar)
+.env
+.env.local
+secrets.*
+
+# Materiais de terceiros (copyright) e arquivos de outros projetos
+referencias/*.pdf
+docs/*.zip
