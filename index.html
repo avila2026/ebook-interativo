@@ -2,9 +2,19 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Mounjaro sem Mitos — Ebook Web Interativo</title>
   <meta name="description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2. Desmistifique o Mounjaro.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mounjaro">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
   <!-- Open Graph / Compartilhamento Social -->
   <meta property="og:type" content="website">
@@ -16,7 +26,7 @@
   <meta name="twitter:description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.">
 
   <!-- Segurança: Content Security Policy básica -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self';">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
@@ -33,7 +43,10 @@
 <body>
 
   <div class="app-container">
-    
+
+    <!-- Backdrop para fechar a sidebar no mobile -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
     <!-- BARRA LATERAL (SIDEBAR NAVEGAÇÃO) -->
     <aside class="sidebar" id="appSidebar">
       <div class="brand-section">
@@ -146,10 +159,13 @@
         </div>
         
         <div class="utility-nav">
-          <button type="button" class="btn-utility" id="btnToggleSidebar">
+          <button type="button" class="btn-utility" id="btnToggleSidebar" aria-label="Abrir menu de navegação">
             <span>☰</span> Menu
           </button>
-          <button type="button" class="btn-utility" id="btnToggleFontSize">
+          <button type="button" class="btn-utility btn-install" id="btnInstall" hidden aria-label="Instalar aplicativo">
+            <span>⬇</span> Instalar
+          </button>
+          <button type="button" class="btn-utility" id="btnToggleFontSize" aria-label="Ajustar tamanho da fonte">
             <span>Aa</span> Fonte
           </button>
         </div>

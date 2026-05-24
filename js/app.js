@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
   const btnToggleFontSize = document.getElementById('btnToggleFontSize');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  const btnInstall = document.getElementById('btnInstall');
 
   // Escapa caracteres HTML para uso seguro em atributos e innerHTML
   function escapeHtml(str) {
@@ -46,8 +48,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function init() {
     setupEventListeners();
+    setupPWA();
     loadChapter(state.currentChapter);
     updateProgressUI();
+  }
+
+  // Registro do Service Worker e prompt de instalação (PWA)
+  function setupPWA() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch((err) => {
+          console.warn('Falha ao registrar o Service Worker:', err);
+        });
+      });
+    }
+
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (btnInstall) btnInstall.hidden = false;
+    });
+
+    if (btnInstall) {
+      btnInstall.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        btnInstall.hidden = true;
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      if (btnInstall) btnInstall.hidden = true;
+    });
+  }
+
+  // Abre/fecha a sidebar no mobile, sincronizando backdrop e trava de rolagem.
+  function setSidebarOpen(open) {
+    sidebar.classList.toggle('sidebar--open', open);
+    sidebarBackdrop.hidden = !open;
+    document.body.classList.toggle('no-scroll', open);
+    btnToggleSidebar.setAttribute('aria-expanded', String(open));
   }
 
   // Configura Ouvintes de Eventos Globais
@@ -57,10 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         const chapterId = btn.getAttribute('data-chapter');
         loadChapter(chapterId);
-        
+
         // No celular, fechar a sidebar após clicar
         if (window.innerWidth <= 1024) {
-          sidebar.classList.remove('sidebar--open');
+          setSidebarOpen(false);
         }
       });
     });
@@ -71,7 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Alternar Sidebar (Mobile)
     btnToggleSidebar.addEventListener('click', () => {
-      sidebar.classList.toggle('sidebar--open');
+      setSidebarOpen(!sidebar.classList.contains('sidebar--open'));
+    });
+
+    // Fechar a sidebar ao tocar no backdrop
+    sidebarBackdrop.addEventListener('click', () => setSidebarOpen(false));
+
+    // Fechar a sidebar com a tecla Esc
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('sidebar--open')) {
+        setSidebarOpen(false);
+      }
     });
 
     // Ajuste de Tamanho de Fonte
