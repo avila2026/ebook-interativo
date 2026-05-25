@@ -173,7 +173,7 @@ function renderPaywall(article) {
       <button type="button" class="btn-paywall-buy" id="btnPaywallBuy">
         ${stripe.enabled ? 'Comprar acesso' : 'Em breve'}
       </button>
-      ${currentUser ? '' : '<p class="paywall-note">Já comprou? <a href="#" id="paywallLogin">Entre na sua conta</a>.</p>'}
+      ${currentUser ? '' : '<p class="paywall-note">Já comprou? <a href="login.html?redirect=index.html" id="paywallLogin">Entre na sua conta</a>.</p>'}
     </div>`;
   article.appendChild(overlay);
 
@@ -181,8 +181,7 @@ function renderPaywall(article) {
   buyBtn.disabled = !stripe.enabled;
   buyBtn.addEventListener('click', startCheckout);
 
-  const loginLink = overlay.querySelector('#paywallLogin');
-  if (loginLink) loginLink.addEventListener('click', (e) => { e.preventDefault(); openAuthModal(); });
+  // #paywallLogin is an <a href="login.html"> — no JS handler needed.
 }
 
 // ---------------------------------------------------------------------------
@@ -258,7 +257,8 @@ function injectAuthButton() {
   btn.setAttribute('aria-label', 'Conta');
   btn.innerHTML = '<span>👤</span> Entrar';
   btn.addEventListener('click', () => {
-    if (currentUser) openAccountMenu(); else openAuthModal();
+    if (currentUser) openAccountMenu();
+    else window.location.href = 'login.html?redirect=index.html';
   });
   nav.appendChild(btn);
 }

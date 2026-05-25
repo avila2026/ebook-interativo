@@ -12,8 +12,10 @@
 
 window.APP_CONFIG = {
   supabase: {
-    url: '',        // ex.: https://xxxxxxxx.supabase.co
-    anonKey: ''     // chave "anon public" (segura para o navegador, protegida por RLS)
+    url: 'https://qrjhgcibcwclcjrgrlgp.supabase.co',
+    // Chave pública (anon / publishable) — segura no navegador, protegida por RLS.
+    // Aceita tanto o formato novo (sb_publishable_...) quanto o legado (eyJ...).
+    anonKey: 'sb_publishable_7uz5Sxp96YoGBRLXzqLFig_rbil0yeq'
   },
 
   stripe: {

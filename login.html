@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Entrar — Mounjaro sem Mitos</title>
+  <meta name="description" content="Acesse sua conta e sincronize seu progresso em qualquer dispositivo.">
+  <meta name="robots" content="noindex">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <meta name="color-scheme" content="dark">
+
+  <!-- CSP (mesmos domínios do index.html) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://esm.sh; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh;">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Variáveis (espelho do main.css) ── */
+    :root {
+      --bg-primary:   #0a0f14;
+      --bg-secondary: #12181f;
+      --bg-tertiary:  #1b242e;
+      --primary:      #10b981;
+      --primary-glow: rgba(16,185,129,.15);
+      --primary-glow-strong: rgba(16,185,129,.4);
+      --primary-light:#34d399;
+      --accent:       #06b6d4;
+      --accent-glow:  rgba(6,182,212,.15);
+      --text-main:    #f3f4f6;
+      --text-muted:   #9ca3af;
+      --border-color: rgba(255,255,255,.08);
+      --border-hover: rgba(255,255,255,.18);
+      --font-title:   'Outfit','Inter',system-ui,sans-serif;
+      --font-body:    'Inter',system-ui,sans-serif;
+      --glass-bg:     rgba(18,24,31,.85);
+      --shadow-lg:    0 10px 30px -10px rgba(0,0,0,.6);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:16px; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── Fundo animado ── */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(16,185,129,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16,185,129,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .bg-glow-1 {
+      position: fixed; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(16,185,129,.07) 0%, transparent 65%);
+      top: -200px; left: -200px; z-index: 0; pointer-events: none;
+    }
+    .bg-glow-2 {
+      position: fixed; width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,.06) 0%, transparent 65%);
+      bottom: -150px; right: -150px; z-index: 0; pointer-events: none;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .bg-glow-1 { animation: driftA 18s ease-in-out infinite alternate; }
+      .bg-glow-2 { animation: driftB 22s ease-in-out infinite alternate; }
+    }
+    @keyframes driftA {
+      to { transform: translate(80px, 60px); }
+    }
+    @keyframes driftB {
+      to { transform: translate(-60px, -40px); }
+    }
+
+    /* ── Conteúdo principal ── */
+    .page-wrapper {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 420px;
+      display: flex; flex-direction: column; gap: 1.75rem;
+    }
+
+    /* ── Marca ── */
+    .brand {
+      text-align: center;
+    }
+    .brand-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: .5rem;
+      filter: drop-shadow(0 0 12px rgba(16,185,129,.5));
+    }
+    .brand-name {
+      font-family: var(--font-title);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -.02em;
+    }
+    .brand-name span {
+      color: var(--primary);
+    }
+    .brand-tagline {
+      font-size: .8125rem;
+      color: var(--text-muted);
+      margin-top: .25rem;
+    }
+
+    /* ── Card de autenticação ── */
+    .auth-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        var(--shadow-lg),
+        0 0 0 1px rgba(16,185,129,.06),
+        inset 0 1px 0 rgba(255,255,255,.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+      opacity: .6;
+    }
+
+    /* ── Tabs login / signup ── */
+    .auth-tabs {
+      display: flex;
+      gap: .25rem;
+      background: var(--bg-primary);
+      border-radius: 10px;
+      padding: .25rem;
+      margin-bottom: 1.75rem;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: .5rem .75rem;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: .875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .tab-btn.active {
+      background: var(--bg-tertiary);
+      color: var(--text-main);
+      box-shadow: 0 1px 4px rgba(0,0,0,.3);
+    }
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+    }
+
+    /* ── Painel: recuperar senha ── */
+    .reset-header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.25rem;
+    }
+    .reset-back {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: .25rem;
+      border-radius: 6px;
+      transition: color .2s;
+    }
+    .reset-back:hover { color: var(--text-main); }
+    .reset-title {
+      font-family: var(--font-title);
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    /* ── Formulário ── */
+    .auth-section-title {
+      font-family: var(--font-title);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: .25rem;
+    }
+    .auth-section-sub {
+      font-size: .8125rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+    .field label {
+      display: block;
+      font-size: .8125rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: .4rem;
+      letter-spacing: .02em;
+    }
+    .field input {
+      width: 100%;
+      padding: .6875rem 1rem;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: .9375rem;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .field input::placeholder { color: #4b5563; }
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+    .field input:focus.accent-focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    /* Campo de senha com toggle de visibilidade */
+    .field-password {
+      position: relative;
+    }
+    .field-password input {
+      padding-right: 2.75rem;
+    }
+    .toggle-password {
+      position: absolute;
+      right: .75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      padding: .25rem;
+      transition: color .2s;
+    }
+    .toggle-password:hover { color: var(--text-main); }
+
+    /* Link "esqueceu a senha" */
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: .8125rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-top: -.5rem;
+      margin-bottom: .75rem;
+      transition: color .2s;
+    }
+    .forgot-link:hover { color: var(--primary); }
+
+    /* Botão primário */
+    .btn-submit {
+      width: 100%;
+      padding: .8125rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #059669);
+      color: #fff;
+      font-family: var(--font-title);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 0 20px var(--primary-glow-strong);
+      letter-spacing: .01em;
+      margin-top: .25rem;
+    }
+    .btn-submit:hover:not(:disabled) {
+      opacity: .9;
+      transform: translateY(-1px);
+      box-shadow: 0 0 28px var(--primary-glow-strong);
+    }
+    .btn-submit:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn-submit:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+    .btn-submit.loading::after {
+      content: '';
+      display: inline-block;
+      width: .9em; height: .9em;
+      border: 2px solid rgba(255,255,255,.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-left: .5rem;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Mensagem de erro / sucesso */
+    .auth-msg {
+      margin-top: .875rem;
+      padding: .6875rem 1rem;
+      border-radius: 8px;
+      font-size: .875rem;
+      line-height: 1.5;
+      display: none;
+    }
+    .auth-msg.show { display: block; }
+    .auth-msg.error {
+      background: rgba(248,113,113,.1);
+      border: 1px solid rgba(248,113,113,.25);
+      color: #f87171;
+    }
+    .auth-msg.success {
+      background: rgba(16,185,129,.1);
+      border: 1px solid rgba(16,185,129,.25);
+      color: var(--primary-light);
+    }
+
+    /* Divisor */
+    .divider {
+      display: flex; align-items: center; gap: .75rem;
+      margin: 1.25rem 0;
+      color: var(--text-muted);
+      font-size: .75rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border-color);
+    }
+
+    /* Rodapé do card */
+    .auth-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: .8125rem;
+      color: var(--text-muted);
+    }
+    .auth-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .auth-footer a:hover { text-decoration: underline; }
+
+    /* Link "voltar ao ebook" abaixo do card */
+    .back-to-ebook {
+      text-align: center;
+      font-size: .8125rem;
+    }
+    .back-to-ebook a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color .2s;
+      display: inline-flex; align-items: center; gap: .35rem;
+    }
+    .back-to-ebook a:hover { color: var(--text-main); }
+
+    /* Painéis (login / signup / reset) */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Toast de confirmação ── */
+    .toast {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: .75rem 1.25rem;
+      border-radius: 12px;
+      font-size: .875rem;
+      z-index: 999;
+      white-space: nowrap;
+      box-shadow: var(--shadow-lg);
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .auth-card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Decoração de fundo -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow-1" aria-hidden="true"></div>
+  <div class="bg-glow-2" aria-hidden="true"></div>
+
+  <div class="page-wrapper">
+
+    <!-- Marca -->
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">🧪</span>
+      <div class="brand-name">Mounjaro<span> sem Mitos</span></div>
+      <p class="brand-tagline">Ebook Web Interativo · Guia Completo da Tirzepatida</p>
+    </div>
+
+    <!-- Card de autenticação -->
+    <div class="auth-card">
+
+      <!-- Abas -->
+      <div class="auth-tabs" id="authTabs" role="tablist">
+        <button class="tab-btn active" role="tab" aria-selected="true"  data-panel="login"  id="tabLogin">Entrar</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" data-panel="signup" id="tabSignup">Criar conta</button>
+      </div>
+
+      <!-- Painel: Login -->
+      <div class="panel active" id="panelLogin" role="tabpanel" aria-labelledby="tabLogin">
+        <h1 class="auth-section-title">Bem-vindo de volta</h1>
+        <p class="auth-section-sub">Entre para sincronizar seu progresso e retomar de onde parou.</p>
+
+        <form id="formLogin" novalidate>
+          <div class="field">
+            <label for="loginEmail">E-mail</label>
+            <input type="email" id="loginEmail" autocomplete="email" placeholder="seu@email.com" required>
+          </div>
+          <div class="field">
+            <label for="loginPassword">Senha</label>
+            <div class="field-password">
+              <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" minlength="6" required>
+              <button type="button" class="toggle-password" aria-label="Mostrar/ocultar senha" data-target="loginPassword">👁</button>
+            </div>
+          </div>
+
+          <a href="#" class="forgot-link" id="forgotLink">Esqueceu a senha?</a>
+
+          <button type="submit" class="btn-submit" id="btnLogin">Entrar</button>
+          <div class="auth-msg" id="msgLogin"></div>
+        </form>
+      </div>
+
+      <!-- Painel: Cadastro -->
+      <div class="panel" id="panelSignup" role="tabpanel" aria-labelledby="tabSignup">
+        <h1 class="auth-section-title">Criar sua conta</h1>
+        <p class="auth-section-sub">Cadastre-se gratuitamente e acesse o ebook em qualquer dispositivo.</p>
+
+        <form id="formSignup" novalidate>
+          <div class="field">
+            <label for="signupEmail">E-mail</label>
+            <input type="email" id="signupEmail" autocomplete="email" placeholder="seu@email.com" required>
+          </div>
+          <div class="field">
+            <label for="signupPassword">Senha <span style="color:var(--text-muted);font-weight:400">(mín. 6 caracteres)</span></label>
+            <div class="field-password">
+              <input type="password" id="signupPassword" autocomplete="new-password" placeholder="••••••••" minlength="6" required>
+              <button type="button" class="toggle-password" aria-label="Mostrar/ocultar senha" data-target="signupPassword">👁</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="signupConfirm">Confirmar senha</label>
+            <div class="field-password">
+              <input type="password" id="signupConfirm" autocomplete="new-password" placeholder="••••••••" minlength="6" required>
+              <button type="button" class="toggle-password" aria-label="Mostrar/ocultar senha" data-target="signupConfirm">👁</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnSignup">Criar conta</button>
+          <div class="auth-msg" id="msgSignup"></div>
+        </form>
+      </div>
+
+      <!-- Painel: Recuperar senha -->
+      <div class="panel" id="panelReset" role="tabpanel">
+        <div class="reset-header">
+          <button type="button" class="reset-back" id="btnResetBack" aria-label="Voltar">←</button>
+          <span class="reset-title">Recuperar senha</span>
+        </div>
+        <p class="auth-section-sub">Informe seu e-mail e enviaremos um link para redefinir a senha.</p>
+
+        <form id="formReset" novalidate>
+          <div class="field">
+            <label for="resetEmail">E-mail cadastrado</label>
+            <input type="email" id="resetEmail" autocomplete="email" placeholder="seu@email.com" required>
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnReset">Enviar link de redefinição</button>
+          <div class="auth-msg" id="msgReset"></div>
+        </form>
+      </div>
+
+    </div><!-- /auth-card -->
+
+    <!-- Voltar ao ebook -->
+    <div class="back-to-ebook">
+      <a href="index.html">
+        <span aria-hidden="true">←</span> Voltar ao ebook sem entrar
+      </a>
+    </div>
+
+  </div><!-- /page-wrapper -->
+
+  <!-- Toast global -->
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <!-- Config + Auth Logic -->
+  <script src="js/config.js"></script>
+  <script type="module">
+    // ── Supabase setup ──────────────────────────────────────────────────────────
+    const CFG = window.APP_CONFIG || {};
+    const SB  = CFG.supabase || {};
+
+    let supabase = null;
+
+    async function initSupabase() {
+      if (!SB.enabled) return false;
+      try {
+        const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+        supabase = createClient(SB.url, SB.anonKey, {
+          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+        });
+        return true;
+      } catch (err) {
+        console.warn('[login] Falha ao carregar Supabase:', err);
+        return false;
+      }
+    }
+
+    // ── Redirecionamento pós-login ──────────────────────────────────────────────
+    function getRedirectTarget() {
+      const params = new URLSearchParams(window.location.search);
+      const dest = params.get('redirect');
+      // Só aceita redirecionamento para páginas do mesmo domínio.
+      if (dest && dest.startsWith('/')) return dest;
+      return 'index.html';
+    }
+
+    function redirectAfterLogin() {
+      window.location.href = getRedirectTarget();
+    }
+
+    // ── Utilitários de UI ───────────────────────────────────────────────────────
+    function showMsg(el, text, type /* 'error' | 'success' */) {
+      el.textContent = text;
+      el.className = `auth-msg show ${type}`;
+    }
+    function clearMsg(el) {
+      el.className = 'auth-msg';
+      el.textContent = '';
+    }
+
+    let toastTimer;
+    function showToast(text, duration = 3500) {
+      const el = document.getElementById('toast');
+      el.textContent = text;
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), duration);
+    }
+
+    function setLoading(btn, on) {
+      btn.disabled = on;
+      if (on) btn.classList.add('loading');
+      else btn.classList.remove('loading');
+    }
+
+    function traduzErro(msg) {
+      const m = (msg || '').toLowerCase();
+      if (m.includes('invalid login') || m.includes('invalid credentials')) return 'E-mail ou senha incorretos.';
+      if (m.includes('already registered') || m.includes('already exists') || m.includes('user already')) return 'Este e-mail já está cadastrado.';
+      if (m.includes('password')) return 'A senha deve ter pelo menos 6 caracteres.';
+      if (m.includes('email')) return 'Informe um e-mail válido.';
+      if (m.includes('rate limit')) return 'Muitas tentativas. Aguarde um momento e tente novamente.';
+      return msg || 'Ocorreu um erro inesperado. Tente novamente.';
+    }
+
+    // ── Painéis & Tabs ──────────────────────────────────────────────────────────
+    const panels = {
+      login:  document.getElementById('panelLogin'),
+      signup: document.getElementById('panelSignup'),
+      reset:  document.getElementById('panelReset'),
+    };
+    const tabs = document.getElementById('authTabs');
+
+    function showPanel(name) {
+      Object.entries(panels).forEach(([key, el]) => {
+        el.classList.toggle('active', key === name);
+      });
+      // Atualiza abas (reset não tem aba)
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        const active = btn.dataset.panel === name;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-selected', String(active));
+      });
+      // Foca no primeiro campo do painel ativo
+      const firstInput = panels[name]?.querySelector('input');
+      if (firstInput) setTimeout(() => firstInput.focus(), 60);
+    }
+
+    tabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('.tab-btn');
+      if (btn?.dataset.panel) showPanel(btn.dataset.panel);
+    });
+
+    document.getElementById('forgotLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      // Pré-preenche e-mail se já preenchido no login
+      const loginEmail = document.getElementById('loginEmail').value.trim();
+      if (loginEmail) document.getElementById('resetEmail').value = loginEmail;
+      showPanel('reset');
+    });
+
+    document.getElementById('btnResetBack').addEventListener('click', () => showPanel('login'));
+
+    // ── Toggle visibilidade de senha ────────────────────────────────────────────
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        if (!input) return;
+        const isText = input.type === 'text';
+        input.type = isText ? 'password' : 'text';
+        btn.textContent = isText ? '👁' : '🙈';
+        btn.setAttribute('aria-label', isText ? 'Mostrar senha' : 'Ocultar senha');
+      });
+    });
+
+    // ── Formulário de login ─────────────────────────────────────────────────────
+    const formLogin = document.getElementById('formLogin');
+    const msgLogin  = document.getElementById('msgLogin');
+    const btnLogin  = document.getElementById('btnLogin');
+
+    formLogin.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMsg(msgLogin);
+      if (!supabase) { showMsg(msgLogin, 'Integração não configurada.', 'error'); return; }
+
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      setLoading(btnLogin, true);
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      setLoading(btnLogin, false);
+
+      if (error) {
+        showMsg(msgLogin, traduzErro(error.message), 'error');
+        return;
+      }
+      showToast('Login realizado com sucesso! Redirecionando…');
+      setTimeout(redirectAfterLogin, 900);
+    });
+
+    // ── Formulário de cadastro ──────────────────────────────────────────────────
+    const formSignup  = document.getElementById('formSignup');
+    const msgSignup   = document.getElementById('msgSignup');
+    const btnSignup   = document.getElementById('btnSignup');
+
+    formSignup.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMsg(msgSignup);
+      if (!supabase) { showMsg(msgSignup, 'Integração não configurada.', 'error'); return; }
+
+      const email   = document.getElementById('signupEmail').value.trim();
+      const pass    = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
+
+      if (pass.length < 6) {
+        showMsg(msgSignup, 'A senha deve ter pelo menos 6 caracteres.', 'error'); return;
+      }
+      if (pass !== confirm) {
+        showMsg(msgSignup, 'As senhas não coincidem.', 'error'); return;
+      }
+
+      setLoading(btnSignup, true);
+      const { data, error } = await supabase.auth.signUp({ email, password: pass });
+      setLoading(btnSignup, false);
+
+      if (error) {
+        showMsg(msgSignup, traduzErro(error.message), 'error');
+        return;
+      }
+
+      if (!data.session) {
+        // Confirmação de e-mail pendente
+        showMsg(msgSignup,
+          '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro e depois volte para entrar.',
+          'success'
+        );
+        return;
+      }
+
+      // Sessão imediata (email confirm desligado no Supabase)
+      showToast('Conta criada com sucesso! Redirecionando…');
+      setTimeout(redirectAfterLogin, 900);
+    });
+
+    // ── Formulário de recuperação de senha ─────────────────────────────────────
+    const formReset = document.getElementById('formReset');
+    const msgReset  = document.getElementById('msgReset');
+    const btnReset  = document.getElementById('btnReset');
+
+    formReset.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMsg(msgReset);
+      if (!supabase) { showMsg(msgReset, 'Integração não configurada.', 'error'); return; }
+
+      const email = document.getElementById('resetEmail').value.trim();
+      const redirectTo = new URL(getRedirectTarget(), window.location.origin).href;
+
+      setLoading(btnReset, true);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+      setLoading(btnReset, false);
+
+      if (error) {
+        showMsg(msgReset, traduzErro(error.message), 'error');
+        return;
+      }
+
+      showMsg(msgReset,
+        '📬 Se esse e-mail estiver cadastrado, você receberá um link de redefinição em instantes.',
+        'success'
+      );
+    });
+
+    // ── Bootstrap ───────────────────────────────────────────────────────────────
+    async function init() {
+      const ok = await initSupabase();
+
+      if (!ok) {
+        // Supabase não configurado: mostra aviso mas mantém a página funcional.
+        const allBtns = document.querySelectorAll('.btn-submit');
+        allBtns.forEach(btn => {
+          btn.disabled = true;
+          btn.title = 'Integração com Supabase não configurada.';
+        });
+        showMsg(msgLogin, 'O login ainda não está ativo neste ambiente.', 'error');
+        return;
+      }
+
+      // Verifica se já existe sessão ativa → redireciona direto.
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        showToast('Você já está logado! Redirecionando…');
+        setTimeout(redirectAfterLogin, 700);
+      }
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
