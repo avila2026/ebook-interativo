@@ -431,19 +431,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 1. MAPA CORPORAL CLICÁVEL — Holograma 3D Animado
+  // 1. MAPA CORPORAL CLICÁVEL — Holograma 3D Interativo
   function renderBodyMap(container) {
-    // Hotspots em coordenadas do próprio SVG (viewBox 0 0 200 490) para
-    // alinhamento perfeito com o corpo em qualquer tamanho de tela.
-    const spots = [
-      { id: 'brain',    emoji: '🧠', cx: 100, cy: 46,  label: 'Cérebro' },
-      { id: 'pancreas', emoji: '🧪', cx: 112, cy: 156, label: 'Pâncreas' },
-      { id: 'stomach',  emoji: '🍕', cx: 94,  cy: 184, label: 'Estômago' }
+    // Cada sistema vive nas coordenadas do SVG (viewBox 0 0 200 490): o ponto
+    // clicável, o órgão que acende dentro do corpo e o conteúdo do painel.
+    const systems = [
+      {
+        id: 'brain', emoji: '🧠', label: 'Cérebro', cx: 100, cy: 46,
+        organ: { cx: 100, cy: 46, rx: 15, ry: 16 },
+        title: '🧠 Sistema Nervoso (Cérebro)',
+        body: `<p>A tirzepatida age no <strong>hipotálamo</strong>, o centro que regula fome e gasto energético.</p>
+          <ul>
+            <li><strong>Saciedade aumentada:</strong> sensação de plenitude com porções menores.</li>
+            <li><strong>Menos "cravings":</strong> reduz a fome por ansiedade ou tédio.</li>
+          </ul>`
+      },
+      {
+        id: 'heart', emoji: '🫀', label: 'Coração', cx: 90, cy: 120,
+        organ: { cx: 90, cy: 120, rx: 12, ry: 13 },
+        title: '🫀 Sistema Cardiovascular',
+        body: `<p>Ao reduzir peso e inflamação, alivia a sobrecarga sobre o coração e os vasos.</p>
+          <ul>
+            <li><strong>Pressão arterial:</strong> tendência de queda junto com a perda de peso.</li>
+            <li><strong>Risco cardiovascular:</strong> estudos apontam melhora de marcadores metabólicos.</li>
+          </ul>`
+      },
+      {
+        id: 'pancreas', emoji: '🧪', label: 'Pâncreas', cx: 116, cy: 150,
+        organ: { cx: 112, cy: 150, rx: 15, ry: 8 },
+        title: '🧪 Pâncreas e Insulina',
+        body: `<p>Estimula a secreção hormonal de forma <strong>glicose-dependente</strong> (só quando você come).</p>
+          <ul>
+            <li><strong>Insulina:</strong> GIP + GLP-1 induzem secreção no momento certo.</li>
+            <li><strong>Glucagon:</strong> reduz, diminuindo a produção hepática de glicose.</li>
+          </ul>`
+      },
+      {
+        id: 'stomach', emoji: '🍕', label: 'Estômago', cx: 84, cy: 174,
+        organ: { cx: 86, cy: 174, rx: 13, ry: 13 },
+        title: '🍕 Sistema Digestivo (Estômago)',
+        body: `<p>Por mimetizar o GLP-1, o medicamento retarda o esvaziamento gástrico.</p>
+          <ul>
+            <li><strong>Digestão lenta:</strong> a comida fica mais tempo no estômago.</li>
+            <li><strong>Sem picos glicêmicos:</strong> a glicose entra no sangue de forma dosada.</li>
+          </ul>`
+      },
+      {
+        id: 'glycemia', emoji: '🩸', label: 'Glicemia', cx: 100, cy: 214,
+        organ: { cx: 100, cy: 212, rx: 22, ry: 11 },
+        title: '🩸 Controle Glicêmico Sistêmico',
+        body: `<p>O efeito combinado mantém a <strong>glicose estável</strong> ao longo do dia.</p>
+          <ul>
+            <li><strong>HbA1c:</strong> redução consistente no diabetes tipo 2.</li>
+            <li><strong>Resistência à insulina:</strong> melhora com a perda de gordura visceral.</li>
+          </ul>`
+      }
     ];
 
-    const hotspotMarkup = spots.map(s => `
+    const organMarkup = systems.map(s => `
+      <ellipse class="organ-glow" data-organ="${s.id}"
+        cx="${s.organ.cx}" cy="${s.organ.cy}" rx="${s.organ.rx}" ry="${s.organ.ry}"></ellipse>`).join('');
+
+    const hotspotMarkup = systems.map(s => `
       <g class="holo-hotspot" data-spot="${s.id}" role="button" tabindex="0"
-         aria-label="Ver ação no ${s.label}">
+         aria-label="Ver ação no sistema: ${s.label}">
+        <title>${s.label}</title>
         <circle class="hs-ring"  cx="${s.cx}" cy="${s.cy}" r="13"></circle>
         <circle class="hs-dot"   cx="${s.cx}" cy="${s.cy}" r="11"></circle>
         <text class="hs-emoji" x="${s.cx}" y="${s.cy}" text-anchor="middle"
@@ -455,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="bodymap-visual" id="bodyMapStage">
           <div class="holo-grid"></div>
           <svg class="body-svg" viewBox="0 0 200 490" xmlns="http://www.w3.org/2000/svg"
-               role="img" aria-label="Modelo holográfico do corpo humano">
+               role="img" aria-label="Modelo holográfico interativo do corpo humano">
             <defs>
               <linearGradient id="holoFill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%"   stop-color="#22d3ee" stop-opacity="0.30"/>
@@ -466,6 +518,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <stop offset="0%"  stop-color="#67e8f9"/>
                 <stop offset="100%" stop-color="#34d399"/>
               </linearGradient>
+              <radialGradient id="organGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%"  stop-color="#a5f3fc" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#22d3ee" stop-opacity="0.1"/>
+              </radialGradient>
               <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%"   stop-color="#a5f3fc" stop-opacity="0"/>
                 <stop offset="50%"  stop-color="#67e8f9" stop-opacity="0.55"/>
@@ -504,6 +560,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <path d="M101,258 L126,262 C128,304 126,362 121,420 C120,444 118,460 113,462 C108,463 105,458 104,448 C102,402 101,332 101,258 Z"/>
                 <path d="M99,258 L74,262 C72,304 74,362 79,420 C80,444 82,460 87,462 C92,463 95,458 96,448 C98,402 99,332 99,258 Z"/>
               </g>
+              <!-- Órgãos que acendem ao serem selecionados -->
+              <g class="organ-layer" fill="url(#organGrad)">
+                ${organMarkup}
+              </g>
               <!-- Linhas de malha (sensação 3D / wireframe anatômico) -->
               <g class="figure-mesh" fill="none" stroke="#67e8f9" stroke-width="0.8" opacity="0.45">
                 <line x1="100" y1="92" x2="100" y2="256"/>
@@ -523,64 +583,99 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- Hotspots clicáveis -->
             ${hotspotMarkup}
           </svg>
+          <span class="holo-hint" id="holoHint">🖱️ Arraste para girar • toque nos pontos</span>
         </div>
 
-        <div class="bodymap-info" id="bodyMapInfoPanel">
-          <div class="bodymap-placeholder-text">
-            <p>Toque nos <strong>pontos luminosos</strong> sobre o holograma para ver, em tempo real, como o Mounjaro atua em cada órgão.</p>
+        <div class="bodymap-info">
+          <div class="explore-meter">
+            <span>Sistemas explorados</span>
+            <strong id="exploreCount">0/${systems.length}</strong>
+            <div class="explore-bar"><i id="exploreFill"></i></div>
+          </div>
+          <div id="bodyMapInfoPanel">
+            <div class="bodymap-placeholder-text">
+              <p>Toque nos <strong>pontos luminosos</strong> do holograma para ver como o Mounjaro atua em cada órgão. Arraste o corpo para girá-lo em 3D.</p>
+            </div>
           </div>
         </div>
       </div>
     `;
 
+    const stage = container.querySelector('#bodyMapStage');
+    const svg = container.querySelector('.body-svg');
+    const hint = container.querySelector('#holoHint');
     const hotspots = container.querySelectorAll('.holo-hotspot');
-    const infoPanel = document.getElementById('bodyMapInfoPanel');
+    const organs = container.querySelectorAll('.organ-glow');
+    const infoPanel = container.querySelector('#bodyMapInfoPanel');
+    const countEl = container.querySelector('#exploreCount');
+    const fillEl = container.querySelector('#exploreFill');
+    const explored = new Set();
 
-    function activate(spot) {
-      hotspots.forEach(s => s.classList.remove('active'));
-      spot.classList.add('active');
+    function activate(id) {
+      const sys = systems.find(s => s.id === id);
+      if (!sys) return;
 
-      const type = spot.getAttribute('data-spot');
-        let details = '';
+      hotspots.forEach(h => h.classList.toggle('active', h.dataset.spot === id));
+      organs.forEach(o => o.classList.toggle('on', o.dataset.organ === id));
 
-        if (type === 'brain') {
-          details = `
-            <h4>🧠 Ação no Sistema Nervoso (Cérebro)</h4>
-            <p>A tirzepatida ultrapassa a barreira do cérebro e age no <strong>hipotálamo</strong>, regulando o gasto energético e a fome.</p>
-            <ul>
-              <li><strong>Saciedade Aumentada:</strong> Estimula a sensação de plenitude com porções menores.</li>
-              <li><strong>Redução de 'Cravings':</strong> Diminui pensamentos obsessivos por comida, reduzindo a fome por ansiedade ou tédio.</li>
-            </ul>
-          `;
-        } else if (type === 'stomach') {
-          details = `
-            <h4>🍕 Ação no Sistema Digestivo (Estômago)</h4>
-            <p>Através do mimetismo do GLP-1, o medicamento atua retardando a motilidade física digestiva.</p>
-            <ul>
-              <li><strong>Esvaziamento Gástrico Lento:</strong> A comida permanece no estômago por mais tempo, prolongando o estômago cheio física e quimicamente.</li>
-              <li><strong>Evita picos glicêmicos:</strong> A digestão lenta faz com que a glicose entre na corrente sanguínea de forma dosada.</li>
-            </ul>
-          `;
-        } else if (type === 'pancreas') {
-          details = `
-            <h4>🧪 Ação no Pâncreas e Controle de Glicose</h4>
-            <p>Estimula a secreção hormonal ideal de forma glicose-dependente (apenas quando você se alimenta).</p>
-            <ul>
-              <li><strong>Secreção de Insulina:</strong> O GIP e GLP-1 induzem o pâncreas a secretar insulina ideal de forma rápida.</li>
-              <li><strong>Redução do Glucagon:</strong> Diminui a liberação de glucagon, reduzindo a fabricação hepática excessiva de glicose.</li>
-            </ul>
-          `;
+      // Painel com card animado.
+      infoPanel.innerHTML = `<div class="organ-card" role="status">
+        <h4>${sys.title}</h4>${sys.body}</div>`;
+
+      // Medidor de exploração.
+      if (!explored.has(id)) {
+        explored.add(id);
+        countEl.textContent = `${explored.size}/${systems.length}`;
+        fillEl.style.width = `${(explored.size / systems.length) * 100}%`;
+        if (explored.size === systems.length) {
+          countEl.textContent += ' ✓';
+          const done = document.createElement('p');
+          done.className = 'explore-done';
+          done.textContent = '🎉 Você explorou todos os sistemas!';
+          infoPanel.appendChild(done);
         }
-
-      infoPanel.innerHTML = details;
+      }
     }
 
     hotspots.forEach(spot => {
-      spot.addEventListener('click', () => activate(spot));
+      spot.addEventListener('click', () => activate(spot.dataset.spot));
       spot.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(spot); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(spot.dataset.spot); }
       });
     });
+
+    // Arrastar para girar o holograma em 3D (pointer events).
+    let dragging = false, moved = false, startX = 0, rot = 0, resumeTimer = null;
+    function onDown(e) {
+      dragging = true; moved = false; startX = e.clientX;
+      clearTimeout(resumeTimer);
+    }
+    function onMove(e) {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) < 4 && !moved) return;
+      moved = true;
+      svg.classList.add('manual');
+      if (hint) hint.classList.add('hidden');
+      rot = Math.max(-78, Math.min(78, dx * 0.55));
+      svg.style.transform = `rotateY(${rot}deg)`;
+    }
+    function onUp() {
+      if (!dragging) return;
+      dragging = false;
+      if (moved) {
+        // Volta a girar sozinho após alguns segundos parado.
+        resumeTimer = setTimeout(() => {
+          svg.style.transform = '';
+          svg.classList.remove('manual');
+        }, 4000);
+      }
+    }
+    stage.addEventListener('pointerdown', onDown);
+    stage.addEventListener('pointermove', onMove);
+    stage.addEventListener('pointerup', onUp);
+    stage.addEventListener('pointerleave', onUp);
+    stage.addEventListener('pointercancel', onUp);
   }
 
   // 2. COMPARADOR DE REMÉDIOS
