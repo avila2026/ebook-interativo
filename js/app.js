@@ -431,39 +431,116 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 1. MAPA CORPORAL CLICÁVEL
+  // 1. MAPA CORPORAL CLICÁVEL — Holograma 3D Animado
   function renderBodyMap(container) {
+    // Hotspots em coordenadas do próprio SVG (viewBox 0 0 200 490) para
+    // alinhamento perfeito com o corpo em qualquer tamanho de tela.
+    const spots = [
+      { id: 'brain',    emoji: '🧠', cx: 100, cy: 46,  label: 'Cérebro' },
+      { id: 'pancreas', emoji: '🧪', cx: 112, cy: 156, label: 'Pâncreas' },
+      { id: 'stomach',  emoji: '🍕', cx: 94,  cy: 184, label: 'Estômago' }
+    ];
+
+    const hotspotMarkup = spots.map(s => `
+      <g class="holo-hotspot" data-spot="${s.id}" role="button" tabindex="0"
+         aria-label="Ver ação no ${s.label}">
+        <circle class="hs-ring"  cx="${s.cx}" cy="${s.cy}" r="13"></circle>
+        <circle class="hs-dot"   cx="${s.cx}" cy="${s.cy}" r="11"></circle>
+        <text class="hs-emoji" x="${s.cx}" y="${s.cy}" text-anchor="middle"
+              dominant-baseline="central">${s.emoji}</text>
+      </g>`).join('');
+
     container.innerHTML = `
       <div class="bodymap-container fade-in">
-        <div class="bodymap-visual">
-          <!-- Silhueta Humana SVG Médica Minimalista -->
-          <svg class="body-svg" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
-            <path class="body-outline" d="M50,15 C54,15 57,18 57,23 C57,28 54,32 50,32 C46,32 43,28 43,23 C43,18 46,15 50,15 Z M50,33 C53,33 55,36 55,38 L55,42 C58,45 61,49 63,55 C64,59 64,65 63,73 C62,81 60,95 59,105 C59,108 58,110 57,112 L57,145 C58,155 58,170 57,190 C56,200 55,225 54,232 C54,235 52,238 50,238 C48,238 46,235 46,232 C45,225 44,200 43,190 C42,170 42,155 43,145 L43,112 C42,110 41,108 41,105 C40,95 38,81 37,73 C36,65 36,59 37,55 C39,49 42,45 45,42 L45,38 C45,36 47,33 50,33 Z" />
+        <div class="bodymap-visual" id="bodyMapStage">
+          <div class="holo-grid"></div>
+          <svg class="body-svg" viewBox="0 0 200 490" xmlns="http://www.w3.org/2000/svg"
+               role="img" aria-label="Modelo holográfico do corpo humano">
+            <defs>
+              <linearGradient id="holoFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#22d3ee" stop-opacity="0.30"/>
+                <stop offset="55%"  stop-color="#10b981" stop-opacity="0.16"/>
+                <stop offset="100%" stop-color="#0ea5b7" stop-opacity="0.06"/>
+              </linearGradient>
+              <linearGradient id="holoStroke" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"  stop-color="#67e8f9"/>
+                <stop offset="100%" stop-color="#34d399"/>
+              </linearGradient>
+              <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#a5f3fc" stop-opacity="0"/>
+                <stop offset="50%"  stop-color="#67e8f9" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#a5f3fc" stop-opacity="0"/>
+              </linearGradient>
+              <filter id="neonGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="3" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <clipPath id="bodyClip">
+                <ellipse cx="100" cy="46" rx="24" ry="28"/>
+                <path d="M88,68 L112,68 L110,86 L90,86 Z"/>
+                <path d="M100,86 C122,86 138,96 138,118 C137,150 132,176 128,200 C126,214 126,230 132,250 C120,258 108,260 100,260 C92,260 80,258 68,250 C74,230 74,214 72,200 C68,176 63,150 62,118 C62,96 78,86 100,86 Z"/>
+                <path d="M134,104 C146,108 152,130 152,160 C152,186 150,206 146,230 C145,238 138,238 136,230 C132,206 128,182 126,150 C125,128 126,110 134,104 Z"/>
+                <path d="M66,104 C54,108 48,130 48,160 C48,186 50,206 54,230 C55,238 62,238 64,230 C68,206 72,182 74,150 C75,128 74,110 66,104 Z"/>
+                <path d="M101,258 L126,262 C128,304 126,362 121,420 C120,444 118,460 113,462 C108,463 105,458 104,448 C102,402 101,332 101,258 Z"/>
+                <path d="M99,258 L74,262 C72,304 74,362 79,420 C80,444 82,460 87,462 C92,463 95,458 96,448 C98,402 99,332 99,258 Z"/>
+              </clipPath>
+            </defs>
+
+            <!-- Base de projeção holográfica -->
+            <g class="holo-base">
+              <ellipse class="base-ring base-ring-3" cx="100" cy="476" rx="78" ry="13"/>
+              <ellipse class="base-ring base-ring-2" cx="100" cy="476" rx="58" ry="9"/>
+              <ellipse class="base-ring base-ring-1" cx="100" cy="476" rx="36" ry="6"/>
+            </g>
+
+            <!-- Figura humana -->
+            <g class="body-figure" filter="url(#neonGlow)">
+              <g class="figure-fill" fill="url(#holoFill)" stroke="url(#holoStroke)" stroke-width="1.6" stroke-linejoin="round">
+                <ellipse cx="100" cy="46" rx="24" ry="28"/>
+                <path d="M88,68 L112,68 L110,86 L90,86 Z"/>
+                <path d="M100,86 C122,86 138,96 138,118 C137,150 132,176 128,200 C126,214 126,230 132,250 C120,258 108,260 100,260 C92,260 80,258 68,250 C74,230 74,214 72,200 C68,176 63,150 62,118 C62,96 78,86 100,86 Z"/>
+                <path d="M134,104 C146,108 152,130 152,160 C152,186 150,206 146,230 C145,238 138,238 136,230 C132,206 128,182 126,150 C125,128 126,110 134,104 Z"/>
+                <path d="M66,104 C54,108 48,130 48,160 C48,186 50,206 54,230 C55,238 62,238 64,230 C68,206 72,182 74,150 C75,128 74,110 66,104 Z"/>
+                <path d="M101,258 L126,262 C128,304 126,362 121,420 C120,444 118,460 113,462 C108,463 105,458 104,448 C102,402 101,332 101,258 Z"/>
+                <path d="M99,258 L74,262 C72,304 74,362 79,420 C80,444 82,460 87,462 C92,463 95,458 96,448 C98,402 99,332 99,258 Z"/>
+              </g>
+              <!-- Linhas de malha (sensação 3D / wireframe anatômico) -->
+              <g class="figure-mesh" fill="none" stroke="#67e8f9" stroke-width="0.8" opacity="0.45">
+                <line x1="100" y1="92" x2="100" y2="256"/>
+                <path d="M70,120 Q100,134 130,120"/>
+                <path d="M68,150 Q100,166 132,150"/>
+                <path d="M70,182 Q100,196 130,182"/>
+                <path d="M74,214 Q100,226 126,214"/>
+                <line x1="62" y1="112" x2="138" y2="112"/>
+              </g>
+            </g>
+
+            <!-- Linha de varredura (scanner holográfico), recortada ao corpo -->
+            <g clip-path="url(#bodyClip)">
+              <rect class="scan-bar" x="36" y="0" width="128" height="46" fill="url(#scanGrad)"/>
+            </g>
+
+            <!-- Hotspots clicáveis -->
+            ${hotspotMarkup}
           </svg>
-          
-          <!-- Hotspots -->
-          <div class="map-hotspot hotspot-brain" data-spot="brain">🧠</div>
-          <div class="map-hotspot hotspot-stomach" data-spot="stomach">🍕</div>
-          <div class="map-hotspot hotspot-pancreas" data-spot="pancreas">🧪</div>
         </div>
 
         <div class="bodymap-info" id="bodyMapInfoPanel">
           <div class="bodymap-placeholder-text">
-            <p>Clique nos círculos luminosos sobre o corpo para ver em tempo real como o Mounjaro atua a nível celular nos diferentes órgãos.</p>
+            <p>Toque nos <strong>pontos luminosos</strong> sobre o holograma para ver, em tempo real, como o Mounjaro atua em cada órgão.</p>
           </div>
         </div>
       </div>
     `;
 
-    const hotspots = container.querySelectorAll('.map-hotspot');
+    const hotspots = container.querySelectorAll('.holo-hotspot');
     const infoPanel = document.getElementById('bodyMapInfoPanel');
 
-    hotspots.forEach(spot => {
-      spot.addEventListener('click', () => {
-        hotspots.forEach(s => s.classList.remove('active'));
-        spot.classList.add('active');
+    function activate(spot) {
+      hotspots.forEach(s => s.classList.remove('active'));
+      spot.classList.add('active');
 
-        const type = spot.getAttribute('data-spot');
+      const type = spot.getAttribute('data-spot');
         let details = '';
 
         if (type === 'brain') {
@@ -495,7 +572,13 @@ document.addEventListener('DOMContentLoaded', () => {
           `;
         }
 
-        infoPanel.innerHTML = details;
+      infoPanel.innerHTML = details;
+    }
+
+    hotspots.forEach(spot => {
+      spot.addEventListener('click', () => activate(spot));
+      spot.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(spot); }
       });
     });
   }
