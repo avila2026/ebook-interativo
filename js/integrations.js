@@ -430,7 +430,7 @@ async function onAuthChange(user) {
   currentUser = user;
   updateAuthButton();
   if (user) {
-    await Promise.all([syncFromCloud(), refreshAccess(), ensureProfile()]);
+    await Promise.all([syncFromCloud(), refreshAccess()]);
   } else {
     hasAccess = false;
   }
