@@ -51,6 +51,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setupPWA();
     loadChapter(state.currentChapter);
     updateProgressUI();
+    exposeIntegrationHooks();
+  }
+
+  // Pontos de integração mínimos para a camada Supabase (js/integrations.js).
+  // Mantém o app desacoplado: se integrations.js não carregar, nada muda.
+  function exposeIntegrationHooks() {
+    window.__ebookApp = {
+      currentChapter: () => state.currentChapter,
+      reloadCurrent: () => loadChapter(state.currentChapter)
+    };
+    // Quando dados são sincronizados da nuvem, recarrega o estado de progresso.
+    document.addEventListener('ebook:datasynced', () => {
+      state.completedChapters = JSON.parse(localStorage.getItem('mounjaro_completed')) || [];
+      updateProgressUI();
+      if (state.currentChapter === 'recursos-interativos') loadChapter(state.currentChapter);
+    });
   }
 
   // Registro do Service Worker e prompt de instalação (PWA)
@@ -162,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (chapterId === 'recursos-interativos') {
       renderInteractiveLab();
       updateNavigationButtons();
+      document.dispatchEvent(new CustomEvent('ebook:chapterloaded', { detail: { chapterId } }));
       return;
     }
 
@@ -190,9 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Atualiza botões de navegação
     updateNavigationButtons();
-    
+
     // Salva estado de progresso
     updateProgressUI();
+
+    // Notifica integrações (ex.: paywall) sobre a troca de capítulo.
+    document.dispatchEvent(new CustomEvent('ebook:chapterloaded', { detail: { chapterId } }));
   }
 
   // Transforma placeholders de imagem em tags <img> reais do diretório
