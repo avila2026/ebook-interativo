@@ -125,14 +125,39 @@ document.addEventListener('DOMContentLoaded', () => {
       const sel = document.getElementById('narratorVoice');
       if (!sel) return;
       const voices = window.speechSynthesis.getVoices();
-      const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
+      if (!voices.length) return;
+
+      const isBR = v => /pt[-_]?br/i.test(v.lang) || /brasil|brazil/i.test(v.name);
+      const isPT = v => v.lang.toLowerCase().startsWith('pt');
+
+      // Português do Brasil primeiro, depois Portugal, depois o resto (fallback).
+      const ptBR = voices.filter(isBR);
+      const ptPT = voices.filter(v => isPT(v) && !isBR(v));
+      const ptVoices = [...ptBR, ...ptPT];
       const list = ptVoices.length ? ptVoices : voices.slice(0, 8);
-      if (!list.length) return;
+
+      const label = v => {
+        const flag = isBR(v) ? '🇧🇷' : isPT(v) ? '🇵🇹' : '🌐';
+        const name = v.name
+          .replace(/^(Microsoft|Google)\s+/i, '')
+          .replace(/\s*-\s*Portugu[eê]s.*$/i, '')
+          .replace(/\s*\([^)]*\)\s*$/, '')
+          .trim();
+        return `${flag} ${name || v.lang}`;
+      };
+
       sel.innerHTML = list.map(v =>
-        `<option value="${escapeHtml(v.name)}">${v.name.split(' ')[0]} (${v.lang})</option>`
+        `<option value="${escapeHtml(v.name)}">${escapeHtml(label(v))}</option>`
       ).join('');
       sel.hidden = list.length <= 1;
-      if (!this.voice) this.voice = list[0] || null;
+
+      // Mantém a escolha manual do usuário; senão usa a primeira voz pt-BR.
+      const current = this.voice && list.find(v => v.name === this.voice.name);
+      const preferred = current || ptBR[0] || ptPT[0] || list[0] || null;
+      if (preferred) {
+        this.voice = preferred;
+        sel.value = preferred.name;
+      }
     },
 
     prepare(chapterId) {
@@ -201,8 +226,8 @@ document.addEventListener('DOMContentLoaded', () => {
         seg.el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         const utt = new SpeechSynthesisUtterance(seg.text);
         utt.rate = this.rate;
+        utt.lang = this.voice ? this.voice.lang : 'pt-BR';
         if (this.voice) utt.voice = this.voice;
-        else utt.lang = 'pt-BR';
         utt.onend = () => {
           seg.el.classList.remove('narrator-reading');
           if (this.playing) speakOne(i + 1);
