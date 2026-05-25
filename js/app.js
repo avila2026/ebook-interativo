@@ -43,12 +43,213 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/'/g, '&#39;');
   }
 
+  // ==========================================
+  // NARRADOR DE CAPÍTULOS (Web Speech API)
+  // ==========================================
+  const narrator = {
+    segments: [],
+    currentIdx: 0,
+    playing: false,
+    rate: 1.0,
+    voice: null,
+    _bar: null,
+    _playBtn: null,
+    _stopBtn: null,
+    _progressFill: null,
+    _counter: null,
+    _label: null,
+
+    build() {
+      if (!('speechSynthesis' in window)) return;
+      if (document.getElementById('narratorBar')) {
+        this._bar = document.getElementById('narratorBar');
+        this._cacheEls();
+        return;
+      }
+      const bar = document.createElement('div');
+      bar.id = 'narratorBar';
+      bar.className = 'narrator-bar';
+      bar.style.display = 'none';
+      bar.innerHTML = `
+        <div class="narrator-info">
+          <span class="narrator-icon" aria-hidden="true">🎙️</span>
+          <span class="narrator-label" id="narratorLabel">Narração</span>
+        </div>
+        <div class="narrator-track">
+          <div class="narrator-progress-bg">
+            <div class="narrator-progress-fill" id="narratorProgressFill"></div>
+          </div>
+          <span class="narrator-counter" id="narratorCounter"></span>
+        </div>
+        <div class="narrator-controls">
+          <button class="narrator-btn narrator-btn--play" id="narratorPlayBtn" aria-label="Reproduzir narração">▶ Ouvir</button>
+          <button class="narrator-btn narrator-btn--stop" id="narratorStopBtn" aria-label="Parar" disabled>■</button>
+          <select class="narrator-select" id="narratorRate" aria-label="Velocidade">
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.25">1.25×</option>
+            <option value="1.5">1.5×</option>
+            <option value="2">2×</option>
+          </select>
+          <select class="narrator-select" id="narratorVoice" aria-label="Voz" hidden></select>
+        </div>`;
+      document.getElementById('mainContent').appendChild(bar);
+      this._bar = bar;
+      this._cacheEls();
+      this._setupEvents();
+      this._loadVoices();
+      window.speechSynthesis.onvoiceschanged = () => this._loadVoices();
+    },
+
+    _cacheEls() {
+      this._playBtn = document.getElementById('narratorPlayBtn');
+      this._stopBtn = document.getElementById('narratorStopBtn');
+      this._progressFill = document.getElementById('narratorProgressFill');
+      this._counter = document.getElementById('narratorCounter');
+      this._label = document.getElementById('narratorLabel');
+    },
+
+    _setupEvents() {
+      document.getElementById('narratorPlayBtn').addEventListener('click', () => this._togglePlay());
+      document.getElementById('narratorStopBtn').addEventListener('click', () => this.stop());
+      document.getElementById('narratorRate').addEventListener('change', e => {
+        this.rate = parseFloat(e.target.value);
+      });
+      document.getElementById('narratorVoice').addEventListener('change', e => {
+        const voices = window.speechSynthesis.getVoices();
+        this.voice = voices.find(v => v.name === e.target.value) || null;
+      });
+    },
+
+    _loadVoices() {
+      const sel = document.getElementById('narratorVoice');
+      if (!sel) return;
+      const voices = window.speechSynthesis.getVoices();
+      const ptVoices = voices.filter(v => v.lang.startsWith('pt'));
+      const list = ptVoices.length ? ptVoices : voices.slice(0, 8);
+      if (!list.length) return;
+      sel.innerHTML = list.map(v =>
+        `<option value="${escapeHtml(v.name)}">${v.name.split(' ')[0]} (${v.lang})</option>`
+      ).join('');
+      sel.hidden = list.length <= 1;
+      if (!this.voice) this.voice = list[0] || null;
+    },
+
+    prepare(chapterId) {
+      this.stop();
+      if (!this._bar || !('speechSynthesis' in window)) return;
+      const chapter = EBOOK_DATA.chapters.find(c => c.id === chapterId);
+      if (this._label) this._label.textContent = chapter ? chapter.title : 'Narração';
+      const article = document.getElementById('ebookArticle');
+      if (!article) { this.hide(); return; }
+      const nodes = article.querySelectorAll('h1, h2, h3, p, li');
+      this.segments = Array.from(nodes)
+        .map(el => ({ el, text: el.textContent.trim().replace(/\s+/g, ' ') }))
+        .filter(s => s.text.length > 8);
+      this.currentIdx = 0;
+      this._updateProgress();
+      this._bar.style.display = this.segments.length ? 'flex' : 'none';
+    },
+
+    hide() {
+      this.stop();
+      if (this._bar) this._bar.style.display = 'none';
+    },
+
+    _togglePlay() {
+      if (this.playing) this._pause(); else this._play();
+    },
+
+    _play() {
+      if (!this.segments.length || !window.speechSynthesis) return;
+      this.playing = true;
+      this._updateUI();
+      this._speakFrom(this.currentIdx);
+    },
+
+    _pause() {
+      this.playing = false;
+      window.speechSynthesis.cancel();
+      this._clearHighlights();
+      this._updateUI();
+    },
+
+    stop() {
+      this.playing = false;
+      this.currentIdx = 0;
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+      this._clearHighlights();
+      this._updateUI();
+      this._updateProgress();
+    },
+
+    _speakFrom(startIdx) {
+      const speakOne = (i) => {
+        if (!this.playing || i >= this.segments.length) {
+          this.playing = false;
+          this.currentIdx = 0;
+          this._clearHighlights();
+          this._updateUI();
+          this._updateProgress();
+          return;
+        }
+        this.currentIdx = i;
+        this._updateProgress();
+        this._clearHighlights();
+        const seg = this.segments[i];
+        seg.el.classList.add('narrator-reading');
+        seg.el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        const utt = new SpeechSynthesisUtterance(seg.text);
+        utt.rate = this.rate;
+        if (this.voice) utt.voice = this.voice;
+        else utt.lang = 'pt-BR';
+        utt.onend = () => {
+          seg.el.classList.remove('narrator-reading');
+          if (this.playing) speakOne(i + 1);
+        };
+        utt.onerror = (e) => {
+          if (e.error === 'interrupted' || e.error === 'canceled') return;
+          seg.el.classList.remove('narrator-reading');
+          if (this.playing) speakOne(i + 1);
+        };
+        window.speechSynthesis.speak(utt);
+      };
+      speakOne(startIdx);
+    },
+
+    _clearHighlights() {
+      document.querySelectorAll('.narrator-reading').forEach(el => el.classList.remove('narrator-reading'));
+    },
+
+    _updateUI() {
+      if (!this._playBtn) return;
+      this._playBtn.textContent = this.playing ? '⏸ Pausar' : '▶ Ouvir';
+      if (this._stopBtn) this._stopBtn.disabled = !this.playing && this.currentIdx === 0;
+    },
+
+    _updateProgress() {
+      const total = this.segments.length;
+      if (!total) {
+        if (this._progressFill) this._progressFill.style.width = '0%';
+        if (this._counter) this._counter.textContent = '';
+        return;
+      }
+      const pct = Math.round((this.currentIdx / total) * 100);
+      if (this._progressFill) this._progressFill.style.width = `${pct}%`;
+      if (this._counter) {
+        const shown = this.playing ? this.currentIdx + 1 : this.currentIdx;
+        this._counter.textContent = `${shown} / ${total}`;
+      }
+    }
+  };
+
   // Inicialização
   init();
 
   function init() {
     setupEventListeners();
     setupPWA();
+    narrator.build();
     loadChapter(state.currentChapter);
     updateProgressUI();
     exposeIntegrationHooks();
@@ -159,7 +360,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Carrega e renderiza o conteúdo de um capítulo
   function loadChapter(chapterId) {
     state.currentChapter = chapterId;
-    
+    narrator.stop();
+
     // Rola para o topo do contêiner de leitura
     mainContent.scrollTop = 0;
 
@@ -176,6 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Caso seja a seção de Ferramentas / Laboratório Interativo
     if (chapterId === 'recursos-interativos') {
+      narrator.hide();
       renderInteractiveLab();
       updateNavigationButtons();
       document.dispatchEvent(new CustomEvent('ebook:chapterloaded', { detail: { chapterId } }));
@@ -210,6 +413,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Salva estado de progresso
     updateProgressUI();
+
+    // Prepara o narrador para o capítulo recém-carregado.
+    narrator.prepare(chapterId);
 
     // Notifica integrações (ex.: paywall) sobre a troca de capítulo.
     document.dispatchEvent(new CustomEvent('ebook:chapterloaded', { detail: { chapterId } }));
