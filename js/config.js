@@ -12,7 +12,7 @@
 
 window.APP_CONFIG = {
   supabase: {
-    url: '',        // ex.: https://xxxxxxxx.supabase.co
+    url: 'https://qrjhgcibcwclcjrgrlgp.supabase.co',
     anonKey: ''     // chave "anon public" (segura para o navegador, protegida por RLS)
   },
 
