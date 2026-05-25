@@ -25,8 +25,10 @@
   <meta name="twitter:title" content="Mounjaro sem Mitos — Ebook Web Interativo">
   <meta name="twitter:description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.">
 
-  <!-- Segurança: Content Security Policy básica -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; manifest-src 'self'; worker-src 'self'; connect-src 'self';">
+  <!-- Segurança: Content Security Policy.
+       Domínios externos liberados: esm.sh (SDK Supabase), *.supabase.co (API/Auth/Realtime),
+       js.stripe.com / *.stripe.com (checkout). Tudo só é acionado quando js/config.js estiver preenchido. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; script-src 'self' https://esm.sh https://js.stripe.com; manifest-src 'self'; worker-src 'self'; frame-src https://js.stripe.com https://hooks.stripe.com https://*.stripe.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh https://api.stripe.com;">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
@@ -195,7 +197,10 @@
   </div>
 
   <!-- Banco de Dados e Lógica de Aplicação -->
+  <script src="js/config.js"></script>
   <script src="js/data.js" defer></script>
   <script src="js/app.js" defer></script>
+  <!-- Camada de integração (Supabase + Stripe). Dormante até js/config.js ser preenchido. -->
+  <script src="js/integrations.js" type="module"></script>
 </body>
 </html>
