@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     playing: false,
     rate: 1.0,
     voice: null,
+    currentAudio: null, // Guardará o áudio da OpenAI sendo reproduzido
     _bar: null,
     _playBtn: null,
     _stopBtn: null,
@@ -199,7 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     _pause() {
       this.playing = false;
-      window.speechSynthesis.cancel();
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+      } else if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
       this._clearHighlights();
       this._updateUI();
     },
@@ -207,6 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
     stop() {
       this.playing = false;
       this.currentIdx = 0;
+      if (this.currentAudio) {
+        this.currentAudio.pause();
+        this.currentAudio = null;
+      }
       if (window.speechSynthesis) window.speechSynthesis.cancel();
       this._clearHighlights();
       this._updateUI();
@@ -214,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     _speakFrom(startIdx) {
-      const speakOne = (i) => {
+      const speakOne = async (i) => {
         if (!this.playing || i >= this.segments.length) {
           this.playing = false;
           this.currentIdx = 0;
@@ -223,12 +232,64 @@ document.addEventListener('DOMContentLoaded', () => {
           this._updateProgress();
           return;
         }
+        
         this.currentIdx = i;
         this._updateProgress();
         this._clearHighlights();
+        
         const seg = this.segments[i];
         seg.el.classList.add('narrator-reading');
         seg.el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        const apiKey = window.APP_CONFIG?.openai?.apiKey;
+
+        // Se tiver a chave da API da OpenAI, usa o TTS hiper-realista.
+        if (apiKey) {
+          try {
+            const response = await fetch('https://api.openai.com/v1/audio/speech', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                model: 'tts-1',
+                input: seg.text,
+                voice: 'nova', // Voz escolhida (multilíngue, soa ótima em PT-BR)
+                speed: this.rate
+              })
+            });
+
+            if (!response.ok) throw new Error('Falha no OpenAI TTS');
+            
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            this.currentAudio = new Audio(url);
+            
+            this.currentAudio.onended = () => {
+              seg.el.classList.remove('narrator-reading');
+              URL.revokeObjectURL(url);
+              if (this.playing) speakOne(i + 1);
+            };
+
+            this.currentAudio.onerror = () => {
+              seg.el.classList.remove('narrator-reading');
+              if (this.playing) speakOne(i + 1);
+            };
+
+            await this.currentAudio.play();
+          } catch (e) {
+            console.error(e);
+            // Fallback para Web Speech API nativo
+            fallbackSpeech(seg, i);
+          }
+        } else {
+          // Fallback nativo
+          fallbackSpeech(seg, i);
+        }
+      };
+
+      const fallbackSpeech = (seg, i) => {
         const utt = new SpeechSynthesisUtterance(seg.text);
         utt.rate = this.rate;
         utt.lang = this.voice ? this.voice.lang : 'pt-BR';
@@ -244,6 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         window.speechSynthesis.speak(utt);
       };
+
       speakOne(startIdx);
     },
 
@@ -437,10 +499,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let html = `
       <h1>${chapter.title}</h1>
       <p class="article-subtitle">${chapter.subtitle}</p>
-      ${chapter.content}
     `;
 
+    if (chapter.video) {
+      html += renderVideoBlockHTML(chapter.video);
+    }
+
+    html += chapter.content;
+
     ebookArticle.innerHTML = html;
+    
+    if (chapter.video) {
+      bindVideoEvents();
+    }
     
     // Injeta imagem real baseada nos Placeholders
     resolveImagePlaceholders();
@@ -459,6 +530,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Notifica integrações (ex.: paywall) sobre a troca de capítulo.
     document.dispatchEvent(new CustomEvent('ebook:chapterloaded', { detail: { chapterId } }));
+  }
+
+  // ==========================================
+  // COMPONENTE DE VÍDEO DA PÁGINA
+  // ==========================================
+  function renderVideoBlockHTML(video) {
+    return `
+      <div class="video-block-container fade-in">
+        <div class="video-player-wrapper" data-video-url="${escapeHtml(video.url)}" data-video-type="${escapeHtml(video.type)}">
+          <div class="video-thumbnail" style="background-image: url('${escapeHtml(video.thumbnail)}')">
+            <div class="video-overlay"></div>
+            <button class="btn-play-video" aria-label="Reproduzir vídeo">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div class="video-duration">${escapeHtml(video.duration)}</div>
+          </div>
+          <div class="video-iframe-container" style="display: none;"></div>
+        </div>
+        <div class="video-metadata">
+          <h3 class="video-title">${escapeHtml(video.title)}</h3>
+          <p class="video-desc">${escapeHtml(video.description)}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindVideoEvents() {
+    const wrappers = ebookArticle.querySelectorAll('.video-player-wrapper');
+    wrappers.forEach(wrapper => {
+      const btnPlay = wrapper.querySelector('.btn-play-video');
+      const thumbnail = wrapper.querySelector('.video-thumbnail');
+      const iframeContainer = wrapper.querySelector('.video-iframe-container');
+      const url = wrapper.getAttribute('data-video-url');
+      const type = wrapper.getAttribute('data-video-type');
+
+      btnPlay.addEventListener('click', () => {
+        thumbnail.style.display = 'none';
+        iframeContainer.style.display = 'block';
+
+        if (type === 'youtube' || type === 'vimeo') {
+          const separator = url.includes('?') ? '&' : '?';
+          const autoplayUrl = `${url}${separator}autoplay=1`;
+          iframeContainer.innerHTML = `<iframe src="${autoplayUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+        } else if (type === 'mp4') {
+          iframeContainer.innerHTML = `<video src="${url}" controls autoplay controlsList="nodownload"></video>`;
+        }
+      });
+    });
   }
 
   // Transforma placeholders de imagem em tags <img> reais do diretório
@@ -903,6 +1022,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    hotspots.forEach(spot => {
       spot.addEventListener('click', () => activate(spot.dataset.spot));
       spot.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(spot.dataset.spot); }

@@ -34,7 +34,22 @@ window.APP_CONFIG = {
   // Apenas informativo/documental.
   allowedOrigins: {
     supabase: 'https://*.supabase.co',
-    stripe: 'https://js.stripe.com'
+    stripe: 'https://js.stripe.com',
+    openai: 'https://api.openai.com'
+  },
+
+  openai: {
+    get apiKey() {
+      // Prioriza localStorage para não comitar a chave secreta no Git
+      return localStorage.getItem('mounjaro_openai_apikey') || '';
+    },
+    set apiKey(val) {
+      if (val) {
+        localStorage.setItem('mounjaro_openai_apikey', val);
+      } else {
+        localStorage.removeItem('mounjaro_openai_apikey');
+      }
+    }
   }
 };
 
