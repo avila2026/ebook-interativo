@@ -1,26 +1,39 @@
 {
-  "name": "Mounjaro sem Mitos",
+  "name": "Mounjaro sem Mitos — Ebook Interativo",
   "short_name": "Mounjaro",
   "description": "O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.",
-  "start_url": "./",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
+  "orientation": "portrait-primary",
   "background_color": "#0a0f14",
   "theme_color": "#10b981",
-  "lang": "pt-BR",
-  "categories": ["health", "education"],
+  "categories": ["health", "education", "books"],
   "icons": [
     {
-      "src": "assets/images/mounjaro_box.jpg",
+      "src": "assets/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/images/mounjaro_box.jpg",
+      "src": "assets/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ]

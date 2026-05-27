@@ -17,91 +17,182 @@
   align-items: center;
 }
 
+/* Palco holográfico do corpo humano (modelo 3D animado) */
 .bodymap-visual {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+  overflow: hidden;
   padding: 1rem;
-  border-radius: 12px;
-  height: 380px;
+  border-radius: 16px;
+  height: 440px;
+  perspective: 900px;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 92%, rgba(34, 211, 238, 0.22) 0%, transparent 70%),
+    radial-gradient(circle at 50% 40%, rgba(16, 185, 129, 0.08) 0%, transparent 65%),
+    linear-gradient(180deg, #05131c 0%, #07090f 100%);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  cursor: grab;
+  touch-action: pan-y;
 }
+.bodymap-visual:active { cursor: grabbing; }
 
-/* Silhueta Humana em SVG ou Vetor */
-.body-svg {
-  height: 100%;
-  width: auto;
-  opacity: 0.85;
-}
-
-.body-svg path.body-outline {
-  fill: #1e293b;
-  stroke: rgba(255, 255, 255, 0.15);
-  stroke-width: 1.5;
-  transition: var(--transition-normal);
-}
-
-/* Configuração para o Novo SVG Anatômico */
-.anatomy-svg {
-  height: 100%;
-  width: auto;
-  opacity: 1;
-  max-height: 400px;
-}
-
-/* Órgãos / Hotspots no SVG */
-.svg-hotspot {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.organ-shape {
-  fill: rgba(16, 185, 129, 0.15); /* Cor base dos órgãos sutil */
-  stroke: var(--primary);
-  stroke-width: 2;
-  transition: all 0.3s ease;
-}
-
-.svg-pulse {
-  fill: none;
-  stroke: var(--primary);
-  stroke-width: 2;
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: svg-pulse-ring 1.8s infinite;
-}
-
-.organ-icon {
+/* Grade de fundo (piso do holograma) */
+.holo-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.10) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 80%, #000 0%, transparent 75%);
+          mask-image: radial-gradient(ellipse 70% 60% at 50% 80%, #000 0%, transparent 75%);
+  opacity: 0.5;
   pointer-events: none;
 }
 
-/* Interações */
-.svg-hotspot:hover .organ-shape {
-  fill: rgba(6, 182, 212, 0.4);
+/* Silhueta Humana SVG holográfica */
+.body-svg {
+  height: 100%;
+  width: auto;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
+  filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.35));
+  transform-style: preserve-3d;
+  animation: holoTurn 9s ease-in-out infinite;
+}
+
+/* Estado de rotação manual (arrastar): desliga o giro automático */
+.body-svg.manual {
+  animation: none;
+  transition: transform 0.08s linear;
+}
+
+/* Dica de interação */
+.holo-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-size: 0.72rem;
+  color: #67e8f9;
+  background: rgba(5, 19, 28, 0.6);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+.holo-hint.hidden { opacity: 0; }
+
+/* Flutuação 3D + leve respiração do corpo */
+.body-figure {
+  transform-origin: 100px 245px;
+  animation: holoFloat 5.5s ease-in-out infinite, holoFlicker 4s steps(60) infinite;
+}
+
+.figure-mesh { animation: meshPulse 4s ease-in-out infinite; }
+
+/* Órgãos que acendem ao selecionar um sistema */
+.organ-glow {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity 0.3s ease;
+}
+.organ-glow.on {
+  opacity: 0.95;
+  animation: organPulse 1.6s ease-in-out infinite;
+}
+@keyframes organPulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.9); }
+  50%      { opacity: 1;    transform: scale(1.15); }
+}
+
+/* Base de projeção (anéis luminosos no chão) */
+.base-ring {
+  fill: none;
+  stroke: #22d3ee;
+  stroke-width: 1.4;
+  transform-origin: 100px 476px;
+}
+.base-ring-1 { animation: ringPulse 3s ease-in-out infinite; }
+.base-ring-2 { animation: ringPulse 3s ease-in-out infinite 0.4s; opacity: 0.7; }
+.base-ring-3 { animation: ringPulse 3s ease-in-out infinite 0.8s; opacity: 0.45; }
+
+/* Linha de varredura do scanner */
+.scan-bar { animation: holoScan 3.6s cubic-bezier(.4,0,.6,1) infinite; }
+
+/* Hotspots interativos (dentro do SVG) */
+.holo-hotspot { cursor: pointer; outline: none; }
+.holo-hotspot .hs-ring {
+  fill: none;
   stroke: var(--accent);
-  filter: url(#glow-effect);
+  stroke-width: 1.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hsPulse 2s ease-out infinite;
+}
+.holo-hotspot .hs-dot {
+  fill: var(--primary);
+  stroke: #fff;
+  stroke-width: 2;
+  transition: var(--transition-normal);
+}
+.holo-hotspot .hs-emoji {
+  font-size: 12px;
+  pointer-events: none;
+  user-select: none;
+}
+.holo-hotspot:hover .hs-dot,
+.holo-hotspot:focus-visible .hs-dot { fill: var(--accent); }
+.holo-hotspot:focus-visible .hs-ring { stroke: #fff; }
+.holo-hotspot.active .hs-dot {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.9));
+}
+.holo-hotspot.active .hs-ring { stroke-width: 2.4; }
+
+@keyframes holoFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+@keyframes holoTurn {
+  0%, 100% { transform: rotateY(-7deg); }
+  50%      { transform: rotateY(7deg); }
+}
+@keyframes holoFlicker {
+  0%, 96%, 100% { opacity: 1; }
+  97%  { opacity: 0.82; }
+  98%  { opacity: 0.95; }
+  99%  { opacity: 0.85; }
+}
+@keyframes meshPulse {
+  0%, 100% { opacity: 0.30; }
+  50%      { opacity: 0.65; }
+}
+@keyframes holoScan {
+  0%   { transform: translateY(-20px); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(470px); opacity: 0; }
+}
+@keyframes ringPulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.25; }
+  50%      { transform: scale(1.08); opacity: 0.85; }
+}
+@keyframes hsPulse {
+  0%   { transform: scale(0.9); opacity: 0.9; }
+  100% { transform: scale(2.3); opacity: 0; }
 }
 
-.svg-hotspot.active .organ-shape {
-  fill: rgba(6, 182, 212, 0.6);
-  stroke: var(--accent);
-  stroke-width: 3;
-  filter: url(#glow-effect);
-}
-
-.svg-hotspot.active .svg-pulse, .svg-hotspot:hover .svg-pulse {
-  stroke: var(--accent);
-}
-
-@keyframes svg-pulse-ring {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-/* Escondendo a classe antiga se sobrou algo */
-.map-hotspot:not(.svg-hotspot) {
-  display: none;
+@media (prefers-reduced-motion: reduce) {
+  .body-svg, .body-figure, .figure-mesh, .base-ring,
+  .scan-bar, .holo-hotspot .hs-ring, .organ-glow.on { animation: none !important; }
 }
 
 /* Info Panel do Mapa Corporal */
@@ -110,6 +201,54 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
+  gap: 1rem;
+}
+
+/* Medidor de exploração (gamificação) */
+.explore-meter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(34, 211, 238, 0.06);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 12px;
+}
+.explore-meter span { font-size: 0.8rem; color: var(--text-muted); }
+.explore-meter strong { font-family: var(--font-title); color: var(--accent); font-size: 1rem; }
+.explore-bar {
+  grid-column: 1 / -1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.explore-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+}
+
+/* Card de órgão (resultado da seleção) */
+.organ-card { animation: cardIn 0.35s ease; }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+.organ-card ul { margin: 0.5rem 0 0; padding-left: 1.1rem; }
+.organ-card li { margin-bottom: 0.4rem; color: var(--text-muted); line-height: 1.55; }
+.explore-done {
+  margin-top: 1rem;
+  padding: 0.6rem 0.9rem;
+  text-align: center;
+  color: var(--primary-light);
+  background: var(--primary-glow);
+  border-radius: 10px;
+  font-weight: 600;
 }
 
 .bodymap-info h4 {
@@ -657,6 +796,9 @@
   .bodymap-container {
     grid-template-columns: 1fr;
   }
+  .bodymap-visual {
+    height: 380px;
+  }
 }
 
 .diary-form-panel {
@@ -1051,4 +1193,223 @@
 .needle-active .kwikpen-needle-base,
 .needle-active .kwikpen-needle-tip {
   display: block;
+}
+
+/* =====================================================================
+   INTEGRAÇÕES — Auth, Paywall, Captura de Leads (js/integrations.js)
+   ===================================================================== */
+
+/* --- Modal de autenticação --- */
+.auth-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.auth-modal[hidden] { display: none; }
+.auth-backdrop { position: absolute; inset: 0; background: rgba(5, 8, 12, 0.78); backdrop-filter: blur(4px); }
+.auth-dialog {
+  position: relative; width: min(92vw, 420px);
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: 18px; padding: 2rem 1.75rem; box-shadow: var(--shadow-lg);
+  animation: authPop 0.25s ease;
+}
+@keyframes authPop { from { transform: translateY(12px) scale(0.98); opacity: 0; } to { transform: none; opacity: 1; } }
+.auth-close {
+  position: absolute; top: 0.75rem; right: 0.9rem; background: none; border: none;
+  color: var(--text-muted); font-size: 1.6rem; line-height: 1; cursor: pointer;
+}
+.auth-close:hover { color: var(--text-main); }
+.auth-dialog h2 { font-family: var(--font-title); color: var(--text-main); margin: 0 0 0.25rem; }
+.auth-sub { color: var(--text-muted); font-size: 0.9rem; margin: 0 0 1.25rem; }
+.auth-dialog form label { display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.9rem; }
+.auth-dialog form input {
+  display: block; width: 100%; margin-top: 0.35rem; padding: 0.7rem 0.85rem;
+  background: var(--bg-tertiary); border: 1px solid var(--border-color);
+  border-radius: 10px; color: var(--text-main); font-size: 1rem;
+}
+.auth-dialog form input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+.auth-error { color: #f87171; font-size: 0.85rem; margin: 0 0 0.75rem; }
+.btn-auth-submit {
+  width: 100%; padding: 0.8rem; border: none; border-radius: 10px; cursor: pointer;
+  background: var(--primary); color: var(--text-inverse); font-weight: 600; font-size: 1rem;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-auth-submit:hover { background: var(--primary-light); }
+.btn-auth-submit:disabled { opacity: 0.6; cursor: progress; }
+.auth-switch { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin: 1rem 0 0; }
+.auth-switch a { color: var(--primary-light); text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
+
+/* --- Paywall sobre o capítulo --- */
+.paywall-overlay {
+  position: absolute; inset: 0; z-index: 50; display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 8vh;
+  background: linear-gradient(180deg, rgba(10,15,20,0.55) 0%, var(--bg-primary) 55%);
+  backdrop-filter: blur(6px);
+}
+.article-container { position: relative; }
+.paywall-card {
+  text-align: center; max-width: 440px; padding: 2.25rem 1.75rem;
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: 18px; box-shadow: var(--shadow-lg);
+}
+.paywall-icon { font-size: 2.5rem; }
+.paywall-card h2 { font-family: var(--font-title); color: var(--text-main); margin: 0.5rem 0; }
+.paywall-card p { color: var(--text-muted); line-height: 1.6; }
+.paywall-price { font-family: var(--font-title); font-size: 1.75rem; color: var(--primary-light); margin: 1rem 0; }
+.btn-paywall-buy {
+  width: 100%; padding: 0.85rem; border: none; border-radius: 10px; cursor: pointer;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--text-inverse); font-weight: 700; font-size: 1.05rem;
+}
+.btn-paywall-buy:disabled { opacity: 0.55; cursor: not-allowed; }
+.paywall-note { font-size: 0.85rem; margin-top: 1rem; }
+.paywall-note a { color: var(--primary-light); }
+
+/* --- Captura de lead (rodapé da sidebar) --- */
+.lead-capture {
+  background: var(--bg-tertiary); border: 1px solid var(--border-color);
+  border-radius: 12px; padding: 0.9rem; margin-bottom: 1rem;
+}
+.lead-title { font-size: 0.85rem; color: var(--text-main); margin: 0 0 0.6rem; font-weight: 600; }
+.lead-capture input {
+  width: 100%; padding: 0.55rem 0.7rem; margin-bottom: 0.5rem;
+  background: var(--bg-secondary); border: 1px solid var(--border-color);
+  border-radius: 8px; color: var(--text-main); font-size: 0.9rem;
+}
+.lead-capture input:focus { outline: none; border-color: var(--primary); }
+.lead-capture button {
+  width: 100%; padding: 0.55rem; border: none; border-radius: 8px; cursor: pointer;
+  background: var(--primary); color: var(--text-inverse); font-weight: 600; font-size: 0.88rem;
+}
+.lead-capture button:hover { background: var(--primary-light); }
+.lead-msg { font-size: 0.8rem; margin: 0.5rem 0 0; }
+
+/* ==========================================
+   NARRADOR DE CAPÍTULOS
+   ========================================== */
+.narrator-bar {
+  position: fixed;
+  bottom: 0;
+  left: 320px; /* sidebar width */
+  right: 0;
+  z-index: 100;
+  display: none; /* shown via JS */
+  align-items: center;
+  gap: 1rem;
+  padding: 0.625rem 1.5rem;
+  background: rgba(10, 15, 20, 0.97);
+  border-top: 1px solid rgba(16, 185, 129, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
+}
+@media (max-width: 1024px) {
+  .narrator-bar { left: 0; }
+}
+@media (max-width: 600px) {
+  .narrator-bar { flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem 1rem; }
+  .narrator-track { order: 3; flex-basis: 100%; }
+}
+
+/* Extra bottom padding on article so last content isn't hidden */
+.article-container { padding-bottom: 72px; }
+
+.narrator-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.narrator-icon { font-size: 1.1rem; line-height: 1; }
+.narrator-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.narrator-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+.narrator-progress-bg {
+  flex: 1;
+  height: 3px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.narrator-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.narrator-counter {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 3.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.narrator-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+.narrator-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.narrator-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.narrator-btn--play {
+  background: var(--primary-glow);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--primary-light);
+  font-weight: 600;
+}
+.narrator-btn--stop:disabled { opacity: 0.35; cursor: not-allowed; }
+.narrator-select {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  max-width: 90px;
+}
+
+/* Highlight on currently-read element */
+.narrator-reading {
+  background: rgba(16, 185, 129, 0.07) !important;
+  border-left: 3px solid var(--primary) !important;
+  padding-left: 0.6rem !important;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.08);
+  transition: background 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .narrator-progress-fill { transition: none; }
 }
