@@ -17,14 +17,6 @@ const EBOOK_DATA = {
       title: "Introdução",
       subtitle: "Sua Jornada para uma Vida Mais Leve",
       summary: "Descubra como a ciência está ajudando pessoas a recuperarem a saúde e a qualidade de vida.",
-      video: {
-        url: "https://www.youtube.com/embed/qJmB_Hn1oZ0",
-        type: "youtube",
-        title: "A Revolução do Emagrecimento",
-        description: "Um resumo rápido de como a ciência dos análogos de GLP-1/GIP está transformando vidas.",
-        thumbnail: "assets/images/mounjaro_box.jpg",
-        duration: "2:30"
-      },
       content: `
         <div class="visual-placeholder image-box" data-image="health_cover">
           <p class="image-caption">Mounjaro sem Mitos: Porque você merece uma vida com mais energia e saúde.</p>
@@ -58,14 +50,6 @@ const EBOOK_DATA = {
       title: "Capítulo 1 — O que é Mounjaro",
       subtitle: "Conhecendo o Remédio",
       summary: "Descubra de forma simples como funciona a substância e como ela é usada.",
-      video: {
-        url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        type: "youtube",
-        title: "Conhecendo a Tirzepatida",
-        description: "Veja como a caneta é aplicada e o que exatamente entra no seu corpo.",
-        thumbnail: "assets/images/mounjaro_hand.jpg",
-        duration: "4:15"
-      },
       content: `
         <p>Para entender o Mounjaro, vamos olhar para o que tem dentro dele. A substância principal é a <strong>tirzepatida</strong>, uma fórmula criada para imitar substâncias que nosso próprio corpo faz.</p>
  
