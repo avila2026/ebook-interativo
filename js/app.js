@@ -634,14 +634,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabs = ebookArticle.querySelectorAll('.tabs-nav button');
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        tabs.forEach(t => {
-          t.classList.remove('active-tab');
-          t.style.background = 'var(--bg-tertiary)';
-          t.style.color = 'var(--text-main)';
-        });
+        tabs.forEach(t => t.classList.remove('active-tab'));
         tab.classList.add('active-tab');
-        tab.style.background = 'var(--primary)';
-        tab.style.color = 'var(--text-inverse)';
         
         const tabName = tab.getAttribute('data-tab');
         loadTabContent(tabName);
@@ -1192,7 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="quiz-certificate fade-in">
           <h4>🏆 Certificado de Excelência Metabólica 🏆</h4>
           <p>Concedido ao leitor por demonstrar alto nível de conhecimento sobre o tratamento.</p>
-          <button class="btn-utility" style="margin-top: 1rem;" onclick="window.print()">🖨️ Imprimir Certificado</button>
+          <button class="btn-utility" id="btnPrintCertificate" style="margin-top: 1rem;">🖨️ Imprimir Certificado</button>
         </div>
       `;
     }
@@ -1212,11 +1206,18 @@ document.addEventListener('DOMContentLoaded', () => {
           <p style="color: var(--text-muted); max-width: 500px; margin: 1rem auto;">${message}</p>
           
           ${certificateHtml}
-
+ 
           <button class="btn-quiz-restart" id="btnQuizRestart" style="margin-top: 2rem;">Refazer Teste</button>
         </div>
       </div>
     `;
+
+    const btnPrint = document.getElementById('btnPrintCertificate');
+    if (btnPrint) {
+      btnPrint.addEventListener('click', () => {
+        window.print();
+      });
+    }
 
     document.getElementById('btnQuizRestart').addEventListener('click', () => {
       renderQuizComponent(container);
