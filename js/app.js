@@ -1,6 +1,10 @@
 // js/app.js
 // Controlador Geral do Ebook Web Interativo - Mounjaro sem Mitos
 
+// Aplica o tema salvo antes do DOM carregar completamente para evitar flash branco/escuro
+const savedTheme = localStorage.getItem('mounjaro_theme') || 'dark';
+if (savedTheme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+
 document.addEventListener('DOMContentLoaded', () => {
   // Estado Global da Aplicação
   const state = {
@@ -30,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
   const btnToggleFontSize = document.getElementById('btnToggleFontSize');
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
 
   // Escapa caracteres HTML para uso seguro em atributos e innerHTML
   function escapeHtml(str) {
@@ -83,6 +88,16 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.style.fontSize = sizes[state.fontSizeLevel];
       ebookArticle.style.fontSize = articlesSizes[state.fontSizeLevel];
     });
+
+    // Alternar Tema Escuro/Claro
+    if (btnThemeToggle) {
+      btnThemeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('mounjaro_theme', newTheme);
+      });
+    }
   }
 
   // Carrega e renderiza o conteúdo de um capítulo
@@ -166,6 +181,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const altText = captionEl ? captionEl.textContent.trim() : imgKey;
         const caption = box.innerHTML;
         box.innerHTML = `<img src="${imgPath}" alt="${altText}" loading="lazy">${caption}`;
+        const img = box.querySelector('img');
+        img.addEventListener('error', () => { img.style.display = 'none'; });
       }
     });
   }
@@ -294,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <button class="btn-utility" data-tab="tab-effects">💊 Efeitos Colaterais</button>
         <button class="btn-utility" data-tab="tab-screening">📋 Triagem Médica</button>
         <button class="btn-utility" data-tab="tab-quiz">✏️ Quiz</button>
+        <button class="btn-utility" data-tab="tab-calculator">🧮 Calculadora IMC</button>
         <button class="btn-utility" data-tab="tab-diaries">📓 Diários Locais</button>
         <button class="btn-utility" data-tab="tab-simulator">💉 Simulador KwikPen</button>
       </div>
@@ -347,6 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'tab-quiz':
         renderQuizComponent(container);
         break;
+      case 'tab-calculator':
+        renderCalculatorComponent(container);
+        break;
       case 'tab-diaries':
         renderDiariesComponent(container);
         break;
@@ -361,15 +382,56 @@ document.addEventListener('DOMContentLoaded', () => {
     container.innerHTML = `
       <div class="bodymap-container fade-in">
         <div class="bodymap-visual">
-          <!-- Silhueta Humana SVG Médica Minimalista -->
-          <svg class="body-svg" viewBox="0 0 100 240" xmlns="http://www.w3.org/2000/svg">
-            <path class="body-outline" d="M50,15 C54,15 57,18 57,23 C57,28 54,32 50,32 C46,32 43,28 43,23 C43,18 46,15 50,15 Z M50,33 C53,33 55,36 55,38 L55,42 C58,45 61,49 63,55 C64,59 64,65 63,73 C62,81 60,95 59,105 C59,108 58,110 57,112 L57,145 C58,155 58,170 57,190 C56,200 55,225 54,232 C54,235 52,238 50,238 C48,238 46,235 46,232 C45,225 44,200 43,190 C42,170 42,155 43,145 L43,112 C42,110 41,108 41,105 C40,95 38,81 37,73 C36,65 36,59 37,55 C39,49 42,45 45,42 L45,38 C45,36 47,33 50,33 Z" />
+          <!-- SVG Completo do Corpo Humano com Anatomia e Hotspots Embutidos -->
+          <svg class="body-svg anatomy-svg" viewBox="0 0 400 800" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="glow-effect" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="8" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            <!-- Silhueta Humana Base -->
+            <path class="body-outline" d="M200,40 C225,40 240,60 240,90 C240,115 225,135 210,140 C225,145 250,150 270,165 C295,185 305,220 310,270 C315,320 320,380 325,430 C326,440 310,445 300,430 C290,400 280,350 275,300 C270,350 265,400 260,450 L250,750 C248,770 230,775 220,760 L210,500 L190,500 L180,760 C170,775 152,770 150,750 L140,450 C135,400 130,350 125,300 C120,350 110,400 100,430 C90,445 74,440 75,430 C80,380 85,320 90,270 C95,220 105,185 130,165 C150,150 175,145 190,140 C175,135 160,115 160,90 C160,60 175,40 200,40 Z" />
+
+            <!-- Órgãos Interativos Embutidos (Hotspots) -->
+            
+            <!-- Cérebro -->
+            <g class="map-hotspot svg-hotspot" data-spot="brain">
+              <path class="organ-shape brain-shape" d="M175,90 C175,65 190,50 200,50 C210,50 225,65 225,90 C225,115 210,125 200,125 C190,125 175,115 175,90 Z" />
+              <circle class="svg-pulse" cx="200" cy="85" r="25" />
+              <text class="organ-icon" x="200" y="85" text-anchor="middle" dominant-baseline="middle" font-size="24">🧠</text>
+            </g>
+
+            <!-- Estômago -->
+            <g class="map-hotspot svg-hotspot" data-spot="stomach">
+              <path class="organ-shape stomach-shape" d="M210,240 C240,230 260,260 245,290 C235,310 200,320 180,290 C170,275 180,255 200,250 C205,248 208,242 210,240 Z" />
+              <circle class="svg-pulse" cx="215" cy="275" r="25" />
+              <text class="organ-icon" x="215" y="275" text-anchor="middle" dominant-baseline="middle" font-size="24">🍕</text>
+            </g>
+
+            <!-- Pâncreas -->
+            <g class="map-hotspot svg-hotspot" data-spot="pancreas">
+              <path class="organ-shape pancreas-shape" d="M185,295 C205,280 235,290 245,305 C250,315 240,325 210,315 C190,305 175,305 185,295 Z" />
+              <circle class="svg-pulse" cx="215" cy="305" r="22" />
+              <text class="organ-icon" x="215" y="305" text-anchor="middle" dominant-baseline="middle" font-size="22">🧪</text>
+            </g>
+
+            <!-- Fígado -->
+            <g class="map-hotspot svg-hotspot" data-spot="liver">
+              <path class="organ-shape liver-shape" d="M140,240 C170,220 200,230 210,245 C215,255 200,280 160,280 C140,280 130,260 140,240 Z" />
+              <circle class="svg-pulse" cx="170" cy="255" r="25" />
+              <text class="organ-icon" x="170" y="255" text-anchor="middle" dominant-baseline="middle" font-size="24">🥩</text>
+            </g>
+
+            <!-- Intestino -->
+            <g class="map-hotspot svg-hotspot" data-spot="intestine">
+              <path class="organ-shape intestine-shape" d="M160,310 C180,290 220,290 240,310 C250,330 240,360 200,360 C160,360 150,330 160,310 Z" />
+              <circle class="svg-pulse" cx="200" cy="335" r="28" />
+              <text class="organ-icon" x="200" y="335" text-anchor="middle" dominant-baseline="middle" font-size="24">🪱</text>
+            </g>
+
           </svg>
-          
-          <!-- Hotspots -->
-          <div class="map-hotspot hotspot-brain" data-spot="brain">🧠</div>
-          <div class="map-hotspot hotspot-stomach" data-spot="stomach">🍕</div>
-          <div class="map-hotspot hotspot-pancreas" data-spot="pancreas">🧪</div>
         </div>
 
         <div class="bodymap-info" id="bodyMapInfoPanel">
@@ -416,6 +478,24 @@ document.addEventListener('DOMContentLoaded', () => {
             <ul>
               <li><strong>Secreção de Insulina:</strong> O GIP e GLP-1 induzem o pâncreas a secretar insulina ideal de forma rápida.</li>
               <li><strong>Redução do Glucagon:</strong> Diminui a liberação de glucagon, reduzindo a fabricação hepática excessiva de glicose.</li>
+            </ul>
+          `;
+        } else if (type === 'liver') {
+          details = `
+            <h4>🥩 Ação no Fígado</h4>
+            <p>Atua indiretamente na redução da gordura hepática e no controle metabólico.</p>
+            <ul>
+              <li><strong>Menos Glicose:</strong> Reduz a produção desnecessária de açúcar pelo fígado.</li>
+              <li><strong>Queima de Gordura:</strong> Auxilia na reversão da esteatose hepática (gordura no fígado).</li>
+            </ul>
+          `;
+        } else if (type === 'intestine') {
+          details = `
+            <h4>🪱 Ação no Intestino</h4>
+            <p>O local original de onde os hormônios naturais (Incretinas) são liberados.</p>
+            <ul>
+              <li><strong>Mimetismo Perfeito:</strong> A tirzepatida simula a ação dos hormônios que o intestino liberaria após uma refeição volumosa.</li>
+              <li><strong>Microbiota:</strong> Pode influenciar indiretamente na saúde intestinal pela alteração da dieta do paciente.</li>
             </ul>
           `;
         }
@@ -583,11 +663,18 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
     `).join('');
 
+    const progressPct = ((state.quiz.currentQuestionIndex) / EBOOK_DATA.quiz.length) * 100;
+
     container.innerHTML = `
       <div class="quiz-box fade-in">
         <div class="quiz-header">
           <span class="quiz-progress-text">Pergunta ${state.quiz.currentQuestionIndex + 1} de ${EBOOK_DATA.quiz.length}</span>
-          <span class="quiz-score-badge">Pontos: ${state.quiz.score} / ${EBOOK_DATA.quiz.length}</span>
+          <span class="quiz-score-badge">Pontos: ${state.quiz.score}</span>
+        </div>
+        
+        <!-- Gamification Progress Bar -->
+        <div class="quiz-progress-bar-bg">
+          <div class="quiz-progress-bar-fill" style="width: ${progressPct}%"></div>
         </div>
 
         <div class="quiz-question-text">
@@ -654,6 +741,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let icon = '🎓';
     let title = 'Estudioso Metabólico';
     let message = 'Excelente leitura! Você compreendeu perfeitamente o funcionamento fisiológico e os cuidados essenciais com a tirzepatida.';
+    
+    let certificateHtml = '';
+    if (pct >= 80) {
+      certificateHtml = `
+        <div class="quiz-certificate fade-in">
+          <h4>🏆 Certificado de Excelência Metabólica 🏆</h4>
+          <p>Concedido ao leitor por demonstrar alto nível de conhecimento sobre o tratamento.</p>
+          <button class="btn-utility" style="margin-top: 1rem;" onclick="window.print()">🖨️ Imprimir Certificado</button>
+        </div>
+      `;
+    }
 
     if (pct < 60) {
       icon = '📚';
@@ -665,16 +763,115 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="quiz-box text-center fade-in">
         <div class="quiz-results-screen">
           <div class="quiz-results-icon">${icon}</div>
-          <h4 class="quiz-results-title">${title}</h4>
-          <p class="quiz-results-score">Você acertou ${state.quiz.score} de ${EBOOK_DATA.quiz.length} perguntas (${pct}%)</p>
-          <p class="quiz-results-feedback">${message}</p>
-          <button class="btn-quiz-reset" id="btnQuizRestart">Refazer Quiz</button>
+          <h3 style="color: var(--primary); margin-bottom: 0.5rem;">${pct}% de Acerto</h3>
+          <h4>${title}</h4>
+          <p style="color: var(--text-muted); max-width: 500px; margin: 1rem auto;">${message}</p>
+          
+          ${certificateHtml}
+
+          <button class="btn-quiz-restart" id="btnQuizRestart" style="margin-top: 2rem;">Refazer Teste</button>
         </div>
       </div>
     `;
 
     document.getElementById('btnQuizRestart').addEventListener('click', () => {
       renderQuizComponent(container);
+    });
+  }
+
+  // ==========================================
+  // 5.5 CALCULADORA IMC E TMB
+  // ==========================================
+  function renderCalculatorComponent(container) {
+    container.innerHTML = `
+      <div class="calculator-container fade-in">
+        <div class="diary-form-panel">
+          <h5 style="color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">📏 Seus Dados</h5>
+          <form id="calcForm" class="diary-form-panel">
+            <div class="diary-form-group">
+              <label for="calcWeight">Peso Atual (kg)</label>
+              <input type="number" step="0.1" id="calcWeight" class="diary-input" required placeholder="Ex: 85.5">
+            </div>
+            <div class="diary-form-group">
+              <label for="calcHeight">Altura (metros)</label>
+              <input type="number" step="0.01" id="calcHeight" class="diary-input" required placeholder="Ex: 1.75">
+            </div>
+            <div class="diary-form-group">
+              <label for="calcAge">Idade</label>
+              <input type="number" id="calcAge" class="diary-input" required placeholder="Ex: 35">
+            </div>
+            <div class="diary-form-group">
+              <label for="calcGender">Gênero Biológico (para TMB)</label>
+              <select id="calcGender" class="diary-input" style="background-color: var(--bg-primary);">
+                <option value="m">Masculino</option>
+                <option value="f">Feminino</option>
+              </select>
+            </div>
+            <button type="submit" class="diary-btn-submit" style="background: var(--accent);">Calcular Índices</button>
+          </form>
+        </div>
+
+        <div class="calculator-results-box" id="calcResults" style="display:none;">
+          <div class="calc-result-title">Seu Índice de Massa Corporal (IMC)</div>
+          <div class="calc-result-value" id="resBmiValue">00.0</div>
+          <div class="calc-result-category" id="resBmiCategory">Categoria</div>
+          
+          <div class="bmi-bar">
+            <div class="bmi-indicator" id="bmiIndicator" style="left: 0%;"></div>
+          </div>
+          
+          <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); width: 100%; padding-top: 1rem;">
+            <div class="calc-result-title">Taxa Metabólica Basal (TMB)</div>
+            <div class="calc-result-value" id="resBmrValue" style="font-size: 1.8rem; color: var(--primary-light);">0 kcal</div>
+            <p class="calc-result-info">Calorias diárias que seu corpo queima apenas para existir, sem contar exercícios.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const form = document.getElementById('calcForm');
+    const resBox = document.getElementById('calcResults');
+    
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const w = parseFloat(document.getElementById('calcWeight').value);
+      const h = parseFloat(document.getElementById('calcHeight').value);
+      const age = parseInt(document.getElementById('calcAge').value);
+      const gender = document.getElementById('calcGender').value;
+      
+      if(isNaN(w) || isNaN(h) || isNaN(age)) return;
+      
+      // IMC
+      const bmi = w / (h * h);
+      document.getElementById('resBmiValue').textContent = bmi.toFixed(1);
+      
+      let category = '';
+      let catClass = '';
+      let pos = 0; // 0 to 100%
+      
+      if (bmi < 18.5) { category = 'Abaixo do Peso'; catClass = 'category-warning'; pos = 10; }
+      else if (bmi < 25) { category = 'Peso Normal'; catClass = 'category-normal'; pos = 30; }
+      else if (bmi < 30) { category = 'Sobrepeso'; catClass = 'category-warning'; pos = 50; }
+      else if (bmi < 35) { category = 'Obesidade Grau I'; catClass = 'category-danger'; pos = 70; }
+      else { category = 'Obesidade Grau II / III'; catClass = 'category-danger'; pos = 90; }
+      
+      const catEl = document.getElementById('resBmiCategory');
+      catEl.textContent = category;
+      catEl.className = 'calc-result-category ' + catClass;
+      document.getElementById('bmiIndicator').style.left = pos + '%';
+      
+      // TMB (Mifflin-St Jeor)
+      let bmr = 0;
+      if (gender === 'm') {
+        bmr = (10 * w) + (6.25 * (h*100)) - (5 * age) + 5;
+      } else {
+        bmr = (10 * w) + (6.25 * (h*100)) - (5 * age) - 161;
+      }
+      document.getElementById('resBmrValue').textContent = Math.round(bmr) + ' kcal';
+      
+      resBox.style.display = 'flex';
+      resBox.classList.add('fade-in');
     });
   }
 
@@ -696,11 +893,16 @@ document.addEventListener('DOMContentLoaded', () => {
             <button type="submit" class="diary-btn-submit">Salvar Peso</button>
           </form>
 
-          <div class="diary-logs-panel" id="weightLogsContainer">
+          <div class="diary-logs-panel" id="weightLogsContainer" style="height: auto; min-height: 320px;">
             <div class="diary-logs-heading">
               <span>Registros Salvos</span>
               <button class="btn-clear-logs" id="btnClearWeightLogs">Limpar tudo</button>
             </div>
+            <!-- INICIO GRÁFICO DE PESO -->
+            <div style="width: 100%; height: 180px; margin-bottom: 1rem;">
+              <canvas id="weightChart"></canvas>
+            </div>
+            <!-- FIM GRÁFICO DE PESO -->
             <div class="diary-empty-state" id="weightEmptyText">Nenhum peso registrado ainda.</div>
             <div id="weightLogsList" style="display: flex; flex-direction: column;"></div>
           </div>
@@ -745,6 +947,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
       </div>
+
+      <div style="display: flex; justify-content: center; margin-top: 2rem;">
+        <button class="diary-btn-submit" id="btnExportReport" style="background: var(--primary); padding: 1rem 2rem; border-radius: 30px;">
+          🖨️ Exportar / Imprimir Relatório Médico
+        </button>
+      </div>
     `;
 
     setupDiariesLogic(container);
@@ -764,6 +972,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const symptomEmptyText = document.getElementById('symptomEmptyText');
     const btnClearSymptom = document.getElementById('btnClearSymptomLogs');
 
+    let weightChartInstance = null;
+
     // Funções auxiliares LocalStorage
     function getWeightLogs() {
       return JSON.parse(localStorage.getItem('mounjaro_weights')) || [];
@@ -778,6 +988,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (logs.length === 0) {
         weightEmptyText.style.display = 'block';
         weightLogsList.innerHTML = '';
+        updateChart([]);
         return;
       }
       weightEmptyText.style.display = 'none';
@@ -787,6 +998,57 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="log-item-value">${log.val} kg</span>
         </div>
       `).join('');
+      
+      updateChart(logs);
+    }
+
+    function updateChart(logs) {
+      const ctx = document.getElementById('weightChart');
+      if(!ctx) return;
+      
+      // Logs are in descending order (newest first). Let's reverse them for the chart (left to right = oldest to newest)
+      const sortedLogs = [...logs].reverse();
+      
+      const labels = sortedLogs.map(l => l.date.split(' - ')[0]);
+      const data = sortedLogs.map(l => l.val);
+
+      if (weightChartInstance) {
+        weightChartInstance.data.labels = labels;
+        weightChartInstance.data.datasets[0].data = data;
+        weightChartInstance.update();
+      } else {
+        // Checa se o Chart.js foi carregado no HTML
+        if (typeof Chart === 'undefined') return;
+        
+        weightChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Evolução de Peso (kg)',
+              data: data,
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.3,
+              pointBackgroundColor: '#06b6d4',
+              pointBorderColor: '#fff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { ticks: { color: '#9ca3af', font: {size: 10} }, grid: { display: false } },
+              y: { ticks: { color: '#9ca3af', font: {size: 10} }, grid: { color: 'rgba(255,255,255,0.05)' } }
+            }
+          }
+        });
+      }
     }
 
     function renderSymptomList() {
@@ -852,6 +1114,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    const btnExport = document.getElementById('btnExportReport');
+    if(btnExport) {
+      btnExport.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
     // Primeira carga das listas de diário
     renderWeightList();
     renderSymptomList();
@@ -872,6 +1141,8 @@ document.addEventListener('DOMContentLoaded', () => {
       doseSelected: false,
       siteSelected: '',
       injected: false,
+      needleRemoved: false,
+      penCapped: false,
       finished: false
     };
 
@@ -924,27 +1195,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Retorna a representação gráfica de cada etapa
     function getVisualRepresentation() {
+      const penVisual = `
+        <div class="pen-simulator-wrapper">
+          <div class="kwikpen-container ${simState.needleOn ? 'needle-active' : ''}">
+            <div class="kwikpen-needle-base"></div>
+            <div class="kwikpen-needle-tip"></div>
+            <div class="kwikpen-drop ${simState.primeReleased ? 'drop-falling' : ''}" style="display: ${simState.primedClicks ? 'block' : 'none'}">💧</div>
+            
+            <div class="kwikpen-body">
+              <div class="kwikpen-display">
+                ${simState.doseSelected ? '1' : (simState.primedClicks ? '╎' : '0')}
+              </div>
+            </div>
+            <div class="kwikpen-dial ${simState.isTurning ? 'dial-turning' : ''}"></div>
+          </div>
+        </div>
+      `;
+
       switch (simState.step) {
         case 1:
           return `
-            <span style="font-size: 3.5rem;">🧼</span>
+            ${penVisual}
             <div style="margin-top: 1rem; font-family: var(--font-title); font-weight: 600; color: #fff;">Área de Preparação</div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Mãos higienizadas: ${simState.washed ? '✅' : '❌'} | Caneta inspecionada: ${simState.inspected ? '✅' : '❌'}</div>
           `;
         case 2:
           return `
-            <span style="font-size: 3.5rem;">📌</span>
+            ${penVisual}
             <div style="margin-top: 1rem; font-family: var(--font-title); font-weight: 600; color: #fff;">Acoplamento da Agulha</div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Lacre limpo: ${simState.wiped ? '✅' : '❌'} | Agulha colocada: ${simState.needleOn ? '✅' : '❌'}</div>
           `;
         case 3:
           return `
-            <div class="pen-priming-view" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-              <div style="font-size: 2.5rem; animation: float-bubble 2s ease-in-out infinite;">💧</div>
+            ${penVisual}
+            <div class="pen-priming-view" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1rem;">
               <div style="font-family: var(--font-title); font-weight: 700; font-size: 1rem; color: #fff;">Purgar Caneta (Remover Ar)</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">
-                Janela de Dose: <span style="background: var(--bg-tertiary); font-family: monospace; padding: 2px 8px; border-radius: 4px; color: var(--accent); font-weight: 700;">${simState.primedClicks ? 'Prime [╎]' : '0'}</span>
-              </div>
               <div id="primingProgressBox" style="width: 150px; background: var(--bg-tertiary); height: 6px; border-radius: 3px; display: none; margin-top: 5px; overflow: hidden;">
                 <div id="primingProgressBar" style="width: 0%; height: 100%; background: var(--primary); transition: width 0.1s linear;"></div>
               </div>
@@ -952,22 +1237,17 @@ document.addEventListener('DOMContentLoaded', () => {
           `;
         case 4:
           return `
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-              <span style="font-size: 3.5rem;">⚙️</span>
-              <div style="font-family: var(--font-title); font-weight: 600; color: #fff;">Seleção de Dosagem</div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">
-                Visor de Dose: <span style="background: var(--bg-tertiary); font-family: monospace; font-size: 1.1rem; padding: 4px 12px; border-radius: 4px; color: ${simState.doseSelected ? 'var(--primary-light)' : 'var(--text-muted)'}; font-weight: 700; border: 1px solid var(--border-color);">${simState.doseSelected ? '1 [Dose Cheia]' : '0'}</span>
-              </div>
+            ${penVisual}
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+              <div style="font-family: var(--font-title); font-weight: 600; color: #fff;">Seleção de Dosagem Clínica</div>
             </div>
           `;
         case 5:
           return `
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%;">
-              <span id="injectionSimIcon" style="font-size: 3rem; transition: transform 0.5s ease;">💉</span>
+            ${penVisual}
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%; margin-top: 1rem;">
               <div style="font-family: var(--font-title); font-weight: 600; color: #fff;">Aplicação no Corpo</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">
-                Local: <span style="color: var(--accent); font-weight:700;">${simState.siteSelected || 'Não escolhido'}</span>
-              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Local: <span style="color: var(--accent); font-weight:700;">${simState.siteSelected || 'Não escolhido'}</span></div>
               <div id="injectionProgressBox" style="width: 150px; background: var(--bg-tertiary); height: 6px; border-radius: 3px; display: none; margin-top: 5px; overflow: hidden;">
                 <div id="injectionProgressBar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.1s linear;"></div>
               </div>
@@ -975,7 +1255,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `;
         case 6:
           return `
-            <span style="font-size: 3.5rem;">🗑️</span>
+            ${penVisual}
             <div style="margin-top: 1rem; font-family: var(--font-title); font-weight: 600; color: #fff;">Descarte Clínico Seguro</div>
             <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Agulha retirada: ${simState.needleRemoved ? '✅' : '❌'} | Tampa recolocada: ${simState.penCapped ? '✅' : '❌'}</div>
           `;
@@ -1079,13 +1359,18 @@ document.addEventListener('DOMContentLoaded', () => {
           const btnPrimePush = document.getElementById('btnPrimePush');
 
           btnPrimeTurn.addEventListener('click', () => {
-            simState.primedClicks = true;
-            btnPrimeTurn.style.background = 'var(--primary-glow)';
-            btnPrimeTurn.style.borderColor = 'var(--primary)';
-            btnPrimePush.removeAttribute('disabled');
-            // Força re-renderizar para atualizar o visor da caneta
+            simState.isTurning = true;
             const visual = container.querySelector('.sim-visual-panel');
             visual.innerHTML = getVisualRepresentation();
+            
+            setTimeout(() => {
+              simState.isTurning = false;
+              simState.primedClicks = true;
+              btnPrimeTurn.style.background = 'var(--primary-glow)';
+              btnPrimeTurn.style.borderColor = 'var(--primary)';
+              btnPrimePush.removeAttribute('disabled');
+              visual.innerHTML = getVisualRepresentation();
+            }, 500);
           });
 
           btnPrimePush.addEventListener('mousedown', startPrimingProgress);
@@ -1153,15 +1438,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const btnSelectDose = document.getElementById('btnSelectDose');
           btnSelectDose.addEventListener('click', () => {
-            simState.doseSelected = true;
-            btnSelectDose.style.background = 'var(--primary-glow)';
-            btnSelectDose.style.borderColor = 'var(--primary)';
-            btnSelectDose.setAttribute('disabled', 'true');
-            btnNext.removeAttribute('disabled');
-            
-            // Re-renderiza o painel visual
+            simState.isTurning = true;
             const visual = container.querySelector('.sim-visual-panel');
             visual.innerHTML = getVisualRepresentation();
+            
+            setTimeout(() => {
+              simState.isTurning = false;
+              simState.doseSelected = true;
+              btnSelectDose.style.background = 'var(--primary-glow)';
+              btnSelectDose.style.borderColor = 'var(--primary)';
+              btnSelectDose.setAttribute('disabled', 'true');
+              btnNext.removeAttribute('disabled');
+              visual.innerHTML = getVisualRepresentation();
+            }, 500);
           });
           break;
 

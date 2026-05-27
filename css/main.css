@@ -37,6 +37,34 @@
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* TEMA CLARO (LIGHT MODE) */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;         /* Fundo principal claro */
+  --bg-secondary: #ffffff;       /* Superfícies secundárias brancas */
+  --bg-tertiary: #f1f5f9;        /* Elementos de card e destaque */
+  
+  --primary: #059669;            /* Verde Esmeralda um pouco mais escuro para contraste */
+  --primary-glow: rgba(5, 150, 105, 0.15);
+  --primary-glow-strong: rgba(5, 150, 105, 0.4);
+  --primary-light: #10b981;      
+  --primary-dark: #047857;       
+  
+  --accent: #0284c7;             /* Azul mais fechado para leitura */
+  --accent-glow: rgba(2, 132, 199, 0.15);
+  
+  --text-main: #0f172a;          /* Texto principal escuro */
+  --text-muted: #475569;         /* Subtítulos mais visíveis */
+  --text-inverse: #ffffff;       /* Texto claro para botões escuros */
+  
+  --border-color: rgba(15, 23, 42, 0.1);
+  --border-hover: rgba(15, 23, 42, 0.2);
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  --shadow-primary: 0 0 20px rgba(5, 150, 105, 0.2);
+}
+
 /* Reset e Configurações Globais */
 * {
   margin: 0;
@@ -741,3 +769,100 @@ aside.sidebar::-webkit-scrollbar-thumb:hover, main.content-area::-webkit-scrollb
   background: var(--primary);
 }
 
+/* ==========================================
+   IMPRESSÃO / EXPORTAÇÃO PDF (@MEDIA PRINT)
+   ========================================== */
+@media print {
+  body {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+  
+  /* Esconder UI que não deve ser impressa */
+  aside.sidebar, 
+  header.content-header, 
+  .tabs-nav, 
+  .navigation-bar,
+  .diary-form-panel form,
+  .btn-clear-logs,
+  .diary-btn-submit,
+  #btnExportReport,
+  button {
+    display: none !important;
+  }
+
+  /* Ajustar o container principal para ocupar toda a página */
+  .app-container {
+    display: block !important;
+  }
+  
+  main.content-area {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  .article-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Forçar cores de elementos importantes para impressão */
+  .diary-container {
+    background-color: #fff !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    color: #000 !important;
+  }
+  
+  .diary-logs-panel {
+    background-color: #fff !important;
+    border: 1px solid #ddd !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  
+  .diary-logs-heading,
+  h1, h2, h3, h4, h5, p, span, div {
+    color: #000 !important;
+  }
+
+  .log-item-tag {
+    border: 1px solid #666;
+  }
+  
+  .checklist-result-box {
+    border: 2px solid #000 !important;
+    background-color: #f9f9f9 !important;
+  }
+}
+
+/* Botão Theme Toggle Flutuante */
+.theme-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition-normal);
+}
+
+.theme-toggle:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: var(--shadow-primary);
+}

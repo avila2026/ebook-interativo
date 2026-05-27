@@ -1,0 +1,27 @@
+{
+  "name": "Mounjaro sem Mitos",
+  "short_name": "Mounjaro",
+  "description": "O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0f14",
+  "theme_color": "#10b981",
+  "lang": "pt-BR",
+  "categories": ["health", "education"],
+  "icons": [
+    {
+      "src": "assets/images/mounjaro_box.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/images/mounjaro_box.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}
