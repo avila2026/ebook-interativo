@@ -579,6 +579,7 @@ function injectLeadForm() {
     if (wrap.querySelector('#leadCompany').value) {
       msg.hidden = false;
       msg.textContent = 'Inscrição confirmada! 🎉';
+      msg.style.color = 'var(--accent, #10b981)';
       form.reset();
       return;
     }
