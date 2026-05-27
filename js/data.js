@@ -68,6 +68,18 @@ const EBOOK_DATA = {
       },
       content: `
         <p>Para entender o Mounjaro, vamos olhar para o que tem dentro dele. A substância principal é a <strong>tirzepatida</strong>, uma fórmula criada para imitar substâncias que nosso próprio corpo faz.</p>
+ 
+        <div class="scientific-card">
+          <span class="scientific-badge">Ficha Científica Molecular</span>
+          <h4>🧪 Identidade Química da Tirzepatida</h4>
+          <p>Dados oficiais catalogados no banco de dados internacional de biotecnologia <strong>PubChem</strong> (CID 166567236):</p>
+          <ul style="margin-top: 0.5rem; font-size: 0.95rem;">
+            <li><strong>Fórmula Molecular:</strong> <code>C₂₂₅H₃₄₈N₄₈O₆₈</code> (peptídeo sintético de cadeia longa)</li>
+            <li><strong>Massa Molecular Exata:</strong> ~4.813 g/mol (uma macromolécula altamente complexa)</li>
+            <li><strong>Estrutura Peptídica:</strong> Composta por 39 aminoácidos geneticamente modificados, acoplados a uma cadeia de diácido graxo (C20 lipídeo).</li>
+            <li><strong>Mecanismo de Longa Duração:</strong> Esta cadeia lipídica permite que a molécula se ligue temporariamente à albumina no sangue, impedindo a eliminação renal rápida e garantindo uma ação prolongada (meia-vida de ~5 dias), o que viabiliza a aplicação única semanal.</li>
+          </ul>
+        </div>
 
         <h3>Como Ele Age?</h3>
         <p>A tirzepatida faz parte de uma nova família de remédios. O grande diferencial dela é que ela dura muito tempo no corpo, por isso só precisa ser aplicada <strong>uma vez por semana</strong>.</p>
@@ -276,6 +288,17 @@ const EBOOK_DATA = {
         <h3>Uma vs. Duas Mensagens</h3>
         <p>O <strong>Ozempic</strong> manda <strong>uma</strong> mensagem para o corpo (imita o hormônio GLP-1) para avisar que está sem fome. O <strong>Mounjaro</strong> manda <strong>duas</strong> mensagens ao mesmo tempo (imita o GLP-1 e o GIP). É como se ele falasse mais alto para o cérebro e para o estômago.</p>
 
+        <div class="scientific-card">
+          <span class="scientific-badge">Mecanismo de Ação Celular</span>
+          <h4>🧬 A Sinergia dos Receptores GIPR e GLP1R</h4>
+          <p>Enquanto a Semaglutida (Ozempic) atua exclusivamente no receptor do hormônio <strong>GLP-1</strong>, a Tirzepatida (Mounjaro) é um <strong>coagonista duplo</strong> projetado por engenharia genética para ativar simultaneamente os receptores de dois hormônios incretínicos cruciais:</p>
+          <ul style="margin-top: 0.5rem; font-size: 0.95rem;">
+            <li><strong>GLP-1R (Receptor do GLP-1):</strong> Desacelera o esvaziamento do estômago, melhora a produção de insulina dependente de glicose no pâncreas e atua no hipotálamo atenuando a fome.</li>
+            <li><strong>GIPR (Receptor do GIP):</strong> O grande diferencial metabólico. O receptor de GIP está presente no tecido adiposo (gordura) e em centros de náusea do cérebro. A ativação sinérgica do GIPR melhora a sensibilidade à insulina nas células de gordura, ajuda a proteger a massa magra e atenua os reflexos de náusea severa gerados pela ativação isolada do GLP-1.</li>
+            <li><strong>O Efeito Clínico:</strong> Esta via dupla não apenas bloqueia o apetite de forma mais abrangente, como também otimiza o metabolismo de gorduras sistemicamente, gerando resultados substancialmente superiores na perda de peso.</li>
+          </ul>
+        </div>
+
         <div class="visual-placeholder image-box" data-image="happy_future">
           <p class="image-caption">Uma nova geração de tratamentos trazendo mais esperança e resultados reais.</p>
         </div>
@@ -309,9 +332,27 @@ const EBOOK_DATA = {
           <li><strong>Resultado:</strong> As pessoas perderam, em média, <strong>20% do próprio peso (cerca de 24 quilos)</strong> depois de pouco mais de um ano. E os resultados se mantiveram enquanto usavam o remédio e cuidavam da saúde.</li>
         </ul>
 
+        <div class="scientific-card">
+          <span class="scientific-badge">Dados dos Ensaios Clínicos</span>
+          <h4>📊 Evidências Científicas Reais (Eli Lilly)</h4>
+          <p>O desenvolvimento da Tirzepatida envolveu dois massivos programas internacionais de ensaios clínicos de Fase 3 (totalmente revisados e publicados em grandes periódicos médicos como o <em>The New England Journal of Medicine</em>):</p>
+          <h5 style="margin-top: 0.75rem;">🏆 O Programa SURMOUNT (Tratamento de Obesidade)</h5>
+          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico **SURMOUNT-1** avaliou 2.539 adultos com obesidade ou sobrepeso (sem diabetes) durante 72 semanas:</p>
+          <ul style="font-size: 0.9rem; margin-bottom: 1rem;">
+            <li><strong>Perda de Peso Ponderal Média:</strong> Redução impressionante de **20,9% (cerca de 24 kg)** na dose máxima de 15 mg semanais.</li>
+            <li><strong>Taxa de Resposta:</strong> Incríveis **91% dos participantes** perderam 5% ou mais de seu peso corporal total, um patamar clínico sem precedentes históricos para tratamento farmacológico.</li>
+          </ul>
+          <h5>🏆 O Programa SURPASS (Controle do Diabetes Tipo 2)</h5>
+          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico **SURPASS-2** comparou diretamente a Tirzepatida (15 mg) contra a Semaglutida 1 mg (Ozempic) em 1.879 pacientes:</p>
+          <ul style="font-size: 0.9rem;">
+            <li><strong>Redução da Hemoglobina Glicada (HbA1c):</strong> Queda de **2,30%** com a Tirzepatida 15 mg comparado a 1,86% com a Semaglutida.</li>
+            <li><strong>Perda de Peso Superior:</strong> Perda ponderal média de **11,2 kg** na Tirzepatida contra 5,7 kg na Semaglutida, comprovando superioridade estatística e clínica direta nas duas métricas.</li>
+          </ul>
+        </div>
+
         <div class="card-info">
           <h4>📊 Fique Atento</h4>
-          <p>Nos testes, as pessoas tinham nutricionista e faziam exercícios toda semana. Na vida real, o remédio só funciona tão bem assim se você também se esforçar e cuidar da alimentação.</p>
+          <p>Nos testes, as pessoas tinham acompanhamento de nutricionistas e faziam exercícios físicos regulares. Na vida real, o medicamento só alcança todo o seu potencial se você também se esforçar e mantiver um estilo de vida ativo e dieta balanceada.</p>
         </div>
       `
     },
@@ -550,7 +591,13 @@ const EBOOK_DATA = {
     "Glicada (HbA1c)": "Um exame de sangue que mostra a nota média do seu açúcar no sangue nos últimos três meses.",
     "Bariátrica": "Cirurgia para diminuir o tamanho do estômago.",
     "Sarcopenia": "Perder muita carne e músculos, ficando fraco porque emagreceu da forma errada.",
-    "Gastroparesia": "Quando a comida fica empacada no estômago, porque ele trabalha devagar demais."
+    "Gastroparesia": "Quando a comida fica empacada no estômago, porque ele trabalha devagar demais.",
+    "GIPR": "Receptor celular do hormônio GIP. Atua otimizando a queima de gordura e atenuando as náuseas.",
+    "GLP1R": "Receptor celular do hormônio GLP-1. Regula a sensação de saciedade e reduz a fome.",
+    "SURMOUNT-1": "Ensaio clínico global da Eli Lilly que avaliou o emagrecimento saudável em adultos com sobrepeso/obesidade.",
+    "SURPASS-2": "Ensaio clínico global da Eli Lilly que comprovou a superioridade da Tirzepatida contra a Semaglutida no diabetes tipo 2.",
+    "HbA1c": "Exame de hemoglobina glicada, que mede o açúcar médio do sangue nos últimos 3 meses.",
+    "coagonista": "Substância médica projetada para ativar simultaneamente dois receptores celulares (como o GIP e GLP-1)."
   },
 
   // Efeitos colaterais com dicas fáceis

@@ -181,7 +181,12 @@ function renderPaywall(article) {
   buyBtn.disabled = !stripe.enabled;
   buyBtn.addEventListener('click', startCheckout);
 
-  // #paywallLogin is an <a href="login.html"> — no JS handler needed.
+  const loginLink = overlay.querySelector('#paywallLogin');
+  loginLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    offlineForced = false;
+    gatewayUI.show();
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -245,8 +250,274 @@ async function loadProgress(contentId) {
 }
 
 // ---------------------------------------------------------------------------
-// UI de autenticação (modal + botão no cabeçalho + form de lead)
+// UI de autenticação (Botão no cabeçalho + Form de lead + Gateway Integrado)
 // ---------------------------------------------------------------------------
+
+let offlineForced = false;
+
+// ── Controladores do Gateway Integrado ──────────────────────────────────────
+const gatewayUI = {
+  gw: null,
+  splash: null,
+  card: null,
+  offlineFooter: null,
+  toastTimer: null,
+
+  init() {
+    this.gw = document.getElementById('appAuthGateway');
+    if (!this.gw) return;
+
+    this.splash = document.getElementById('gatewaySplash');
+    this.card = document.getElementById('gatewayCard');
+    this.offlineFooter = document.getElementById('gatewayOfflineFooter');
+
+    // Exibe o rodapé offline após 3 segundos no splash caso queira ignorar
+    setTimeout(() => {
+      if (this.gw && !this.gw.classList.contains('fade-out') && this.card.classList.contains('hidden')) {
+        if (this.offlineFooter) this.offlineFooter.removeAttribute('hidden');
+      }
+    }, 2800);
+
+    // Setup abas
+    const tabs = document.getElementById('gatewayTabs');
+    tabs?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.gateway-tab-btn');
+      if (btn?.dataset.panel) this.showPanel(btn.dataset.panel);
+    });
+
+    // Links de navegação interna
+    document.getElementById('gatewayForgotLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const loginEmail = document.getElementById('gatewayLoginEmail')?.value.trim();
+      if (loginEmail && document.getElementById('gatewayResetEmail')) {
+        document.getElementById('gatewayResetEmail').value = loginEmail;
+      }
+      this.showPanel('reset');
+    });
+
+    document.getElementById('gatewayForgotLink')?.addEventListener('touch', (e) => {
+      e.preventDefault();
+      const loginEmail = document.getElementById('gatewayLoginEmail')?.value.trim();
+      if (loginEmail && document.getElementById('gatewayResetEmail')) {
+        document.getElementById('gatewayResetEmail').value = loginEmail;
+      }
+      this.showPanel('reset');
+    });
+
+    document.getElementById('gatewayBtnResetBack')?.addEventListener('click', () => {
+      this.showPanel('login');
+    });
+
+    // Entrada offline forçada
+    document.getElementById('gatewayOfflineLink')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      offlineForced = true;
+      this.hide();
+      this.showToast('Entrou em modo offline. O progresso será salvo localmente.');
+    });
+
+    // Password toggles
+    document.querySelectorAll('.gateway-toggle-pass').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        if (!input) return;
+        const isText = input.type === 'text';
+        input.type = isText ? 'password' : 'text';
+        btn.textContent = isText ? '👁' : '🙈';
+        btn.setAttribute('aria-label', isText ? 'Mostrar senha' : 'Ocultar senha');
+      });
+    });
+
+    // Form Submits
+    this.setupFormLogin();
+    this.setupFormSignup();
+    this.setupFormReset();
+  },
+
+  showPanel(name) {
+    const panels = {
+      login: document.getElementById('gatewayPanelLogin'),
+      signup: document.getElementById('gatewayPanelSignup'),
+      reset: document.getElementById('gatewayPanelReset')
+    };
+
+    Object.entries(panels).forEach(([key, el]) => {
+      if (el) el.classList.toggle('active', key === name);
+    });
+
+    // Atualiza botões das abas
+    document.querySelectorAll('.gateway-tab-btn').forEach(btn => {
+      const active = btn.dataset.panel === name;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', String(active));
+    });
+
+    // Foca no primeiro input
+    const firstInput = panels[name]?.querySelector('input');
+    if (firstInput) setTimeout(() => firstInput.focus(), 80);
+  },
+
+  showToast(text, duration = 3500) {
+    const el = document.getElementById('gatewayToast');
+    if (!el) return;
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(this.toastTimer);
+    this.toastTimer = setTimeout(() => el.classList.remove('show'), duration);
+  },
+
+  setLoading(btn, on) {
+    if (!btn) return;
+    btn.disabled = on;
+    if (on) btn.classList.add('loading');
+    else btn.classList.remove('loading');
+  },
+
+  showMsg(el, text, type) {
+    if (!el) return;
+    el.textContent = text;
+    el.className = `gateway-msg show ${type}`;
+  },
+
+  clearMsg(el) {
+    if (!el) return;
+    el.className = 'gateway-msg';
+    el.textContent = '';
+  },
+
+  setupFormLogin() {
+    const form = document.getElementById('gatewayFormLogin');
+    const msg = document.getElementById('gatewayMsgLogin');
+    const btn = document.getElementById('gatewayBtnLogin');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      this.clearMsg(msg);
+      if (!supabase) { this.showMsg(msg, 'Erro: Supabase não inicializado.', 'error'); return; }
+
+      const email = document.getElementById('gatewayLoginEmail').value.trim();
+      const password = document.getElementById('gatewayLoginPassword').value;
+
+      if (!email || !password) {
+        this.showMsg(msg, 'Preencha todos os campos.', 'error');
+        return;
+      }
+
+      this.setLoading(btn, true);
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      this.setLoading(btn, false);
+
+      if (error) {
+        this.showMsg(msg, traduzErro(error.message), 'error');
+        return;
+      }
+      this.showToast('Login realizado com sucesso!');
+    });
+  },
+
+  setupFormSignup() {
+    const form = document.getElementById('gatewayFormSignup');
+    const msg = document.getElementById('gatewayMsgSignup');
+    const btn = document.getElementById('gatewayBtnSignup');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      this.clearMsg(msg);
+      if (!supabase) { this.showMsg(msg, 'Erro: Supabase não inicializado.', 'error'); return; }
+
+      const email = document.getElementById('gatewaySignupEmail').value.trim();
+      const pass = document.getElementById('gatewaySignupPassword').value;
+      const confirm = document.getElementById('gatewaySignupConfirm').value;
+
+      if (!email || !pass || !confirm) {
+        this.showMsg(msg, 'Preencha todos os campos.', 'error');
+        return;
+      }
+      if (pass.length < 6) {
+        this.showMsg(msg, 'A senha deve ter pelo menos 6 caracteres.', 'error');
+        return;
+      }
+      if (pass !== confirm) {
+        this.showMsg(msg, 'As senhas não coincidem.', 'error');
+        return;
+      }
+
+      this.setLoading(btn, true);
+      const { data, error } = await supabase.auth.signUp({ email, password: pass });
+      this.setLoading(btn, false);
+
+      if (error) {
+        this.showMsg(msg, traduzErro(error.message), 'error');
+        return;
+      }
+
+      if (!data.session) {
+        this.showMsg(msg, '✅ Conta criada! Verifique seu e-mail para confirmar o cadastro.', 'success');
+      } else {
+        this.showToast('Conta criada e logada com sucesso!');
+      }
+    });
+  },
+
+  setupFormReset() {
+    const form = document.getElementById('gatewayFormReset');
+    const msg = document.getElementById('gatewayMsgReset');
+    const btn = document.getElementById('gatewayBtnReset');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      this.clearMsg(msg);
+      if (!supabase) { this.showMsg(msg, 'Erro: Supabase não inicializado.', 'error'); return; }
+
+      const email = document.getElementById('gatewayResetEmail').value.trim();
+      if (!email) {
+        this.showMsg(msg, 'Digite seu e-mail.', 'error');
+        return;
+      }
+
+      this.setLoading(btn, true);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + window.location.pathname
+      });
+      this.setLoading(btn, false);
+
+      if (error) {
+        this.showMsg(msg, traduzErro(error.message), 'error');
+        return;
+      }
+      this.showMsg(msg, '📬 Se o e-mail estiver cadastrado, enviamos um link de redefinição.', 'success');
+    });
+  },
+
+  showLoginCard() {
+    if (this.splash) this.splash.classList.add('hidden');
+    if (this.card) this.card.classList.remove('hidden');
+    if (this.offlineFooter) this.offlineFooter.removeAttribute('hidden');
+    this.showPanel('login');
+  },
+
+  hide() {
+    if (this.gw) {
+      this.gw.classList.add('fade-out');
+      setTimeout(() => {
+        if (this.gw.classList.contains('fade-out')) {
+          this.gw.style.display = 'none';
+        }
+      }, 550);
+    }
+  },
+
+  show() {
+    if (this.gw) {
+      this.gw.style.display = 'flex';
+      // Força um reflow para a animação disparar
+      this.gw.offsetHeight;
+      this.gw.classList.remove('fade-out');
+      this.showLoginCard();
+    }
+  }
+};
+
 function injectAuthButton() {
   const nav = document.querySelector('.utility-nav');
   if (!nav || document.getElementById('btnAuth')) return;
@@ -257,8 +528,12 @@ function injectAuthButton() {
   btn.setAttribute('aria-label', 'Conta');
   btn.innerHTML = '<span>👤</span> Entrar';
   btn.addEventListener('click', () => {
-    if (currentUser) openAccountMenu();
-    else window.location.href = 'login.html?redirect=index.html';
+    if (currentUser) {
+      openAccountMenu();
+    } else {
+      offlineForced = false;
+      gatewayUI.show();
+    }
   });
   nav.appendChild(btn);
 }
@@ -276,100 +551,6 @@ function updateAuthButton() {
 
 function openAccountMenu() {
   if (confirm('Deseja sair da sua conta?')) signOut();
-}
-
-function buildModalShell() {
-  let modal = document.getElementById('authModal');
-  if (modal) return modal;
-  modal = document.createElement('div');
-  modal.id = 'authModal';
-  modal.className = 'auth-modal';
-  modal.hidden = true;
-  modal.innerHTML = `
-    <div class="auth-backdrop" data-close="1"></div>
-    <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-      <button type="button" class="auth-close" data-close="1" aria-label="Fechar">×</button>
-      <h2 id="authTitle">Entrar</h2>
-      <p class="auth-sub">Acesse seu progresso em qualquer dispositivo.</p>
-      <form id="authForm" novalidate>
-        <label>E-mail
-          <input type="email" id="authEmail" autocomplete="email" required>
-        </label>
-        <label>Senha
-          <input type="password" id="authPassword" autocomplete="current-password" minlength="6" required>
-        </label>
-        <p class="auth-error" id="authError" hidden></p>
-        <button type="submit" class="btn-auth-submit" id="authSubmit">Entrar</button>
-      </form>
-      <p class="auth-switch">
-        <span id="authSwitchText">Ainda não tem conta?</span>
-        <a href="#" id="authSwitchLink">Cadastre-se</a>
-      </p>
-    </div>`;
-  document.body.appendChild(modal);
-
-  modal.addEventListener('click', (e) => {
-    if (e.target.dataset.close) closeAuthModal();
-  });
-
-  let mode = 'login';
-  const form = modal.querySelector('#authForm');
-  const title = modal.querySelector('#authTitle');
-  const submit = modal.querySelector('#authSubmit');
-  const switchText = modal.querySelector('#authSwitchText');
-  const switchLink = modal.querySelector('#authSwitchLink');
-  const errorEl = modal.querySelector('#authError');
-
-  function setMode(next) {
-    mode = next;
-    const login = mode === 'login';
-    title.textContent = login ? 'Entrar' : 'Criar conta';
-    submit.textContent = login ? 'Entrar' : 'Cadastrar';
-    switchText.textContent = login ? 'Ainda não tem conta?' : 'Já tem conta?';
-    switchLink.textContent = login ? 'Cadastre-se' : 'Entrar';
-    errorEl.hidden = true;
-  }
-  switchLink.addEventListener('click', (e) => { e.preventDefault(); setMode(mode === 'login' ? 'signup' : 'login'); });
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errorEl.hidden = true;
-    submit.disabled = true;
-    const email = modal.querySelector('#authEmail').value.trim();
-    const password = modal.querySelector('#authPassword').value;
-    const res = mode === 'login'
-      ? await signIn(email, password)
-      : await signUp(email, password);
-    submit.disabled = false;
-    if (!res.ok) {
-      errorEl.textContent = res.error || 'Algo deu errado. Tente novamente.';
-      errorEl.hidden = false;
-      return;
-    }
-    if (mode === 'signup' && res.needsConfirmation) {
-      errorEl.style.color = 'var(--accent, #10b981)';
-      errorEl.textContent = 'Conta criada! Confirme pelo e-mail enviado para continuar.';
-      errorEl.hidden = false;
-      return;
-    }
-    closeAuthModal();
-  });
-
-  modal._setMode = setMode;
-  return modal;
-}
-
-function openAuthModal() {
-  const modal = buildModalShell();
-  modal._setMode('login');
-  modal.hidden = false;
-  document.body.classList.add('no-scroll');
-  setTimeout(() => modal.querySelector('#authEmail')?.focus(), 50);
-}
-function closeAuthModal() {
-  const modal = document.getElementById('authModal');
-  if (modal) modal.hidden = true;
-  document.body.classList.remove('no-scroll');
 }
 
 // Form de captura de lead injetado no rodapé da sidebar.
@@ -414,15 +595,18 @@ async function signIn(email, password) {
   return { ok: true };
 }
 async function signOut() {
-  await supabase.auth.signOut();
+  if (supabase) {
+    await supabase.auth.signOut();
+  }
 }
 
 function traduzErro(msg) {
   const m = (msg || '').toLowerCase();
-  if (m.includes('invalid login')) return 'E-mail ou senha incorretos.';
-  if (m.includes('already registered') || m.includes('already exists')) return 'Este e-mail já está cadastrado.';
+  if (m.includes('invalid login') || m.includes('invalid credentials')) return 'E-mail ou senha incorretos.';
+  if (m.includes('already registered') || m.includes('already exists') || m.includes('user already')) return 'Este e-mail já está cadastrado.';
   if (m.includes('password')) return 'A senha deve ter pelo menos 6 caracteres.';
   if (m.includes('email')) return 'Informe um e-mail válido.';
+  if (m.includes('rate limit')) return 'Muitas tentativas. Aguarde um momento e tente novamente.';
   return msg;
 }
 
@@ -431,8 +615,13 @@ async function onAuthChange(user) {
   updateAuthButton();
   if (user) {
     await Promise.all([syncFromCloud(), refreshAccess()]);
+    gatewayUI.hide();
+    offlineForced = false;
   } else {
     hasAccess = false;
+    if (SB.enabled && !offlineForced) {
+      gatewayUI.show();
+    }
   }
   // Reavalia o paywall do capítulo atual.
   enforcePaywall(window.__ebookApp?.currentChapter?.());
@@ -453,14 +642,21 @@ async function bootstrap() {
   if (bootstrapped) return;
   bootstrapped = true;
 
+  // Inicializa a UI do gateway
+  gatewayUI.init();
+
   if (!SB.enabled) {
     // Modo dormante: integrações desligadas. Site segue 100% funcional.
     console.info('[integrations] Supabase não configurado — modo offline/localStorage.');
+    gatewayUI.hide();
     return;
   }
 
   const ok = await initSupabase();
-  if (!ok) return;
+  if (!ok) {
+    gatewayUI.hide();
+    return;
+  }
 
   patchLocalStorageSync();
   injectAuthButton();
@@ -468,7 +664,14 @@ async function bootstrap() {
 
   // Estado de sessão atual + ouvinte de mudanças.
   const { data: { session } } = await supabase.auth.getSession();
-  await onAuthChange(session?.user || null);
+  
+  if (session?.user) {
+    await onAuthChange(session.user);
+  } else {
+    await onAuthChange(null);
+    gatewayUI.showLoginCard();
+  }
+
   supabase.auth.onAuthStateChange((_event, session) => {
     onAuthChange(session?.user || null);
   });
@@ -485,13 +688,16 @@ if (document.readyState === 'loading') {
   bootstrap();
 }
 
-// API pública para uso opcional (ex.: vídeos dentro de capítulos).
+// API pública para uso opcional
 window.Integrations = {
   get user() { return currentUser; },
   get hasAccess() { return hasAccess; },
-  openAuthModal,
   signOut,
   captureLead,
   trackVideo,
-  startCheckout
+  startCheckout,
+  showGateway: () => {
+    offlineForced = false;
+    gatewayUI.show();
+  }
 };

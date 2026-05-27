@@ -42,8 +42,133 @@
   <!-- Folhas de Estilo -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/auth-gateway.css">
 </head>
 <body>
+
+  <!-- Gateway de Autenticação Integrado (App Gateway) -->
+  <div class="app-auth-gateway" id="appAuthGateway">
+    <div class="gateway-bg-grid" aria-hidden="true"></div>
+    <div class="gateway-glow-1" aria-hidden="true"></div>
+    <div class="gateway-glow-2" aria-hidden="true"></div>
+
+    <div class="gateway-wrapper">
+      <!-- Painel 1: Splash Screen / Carregador Inicial -->
+      <div class="gateway-splash" id="gatewaySplash">
+        <span class="splash-icon" aria-hidden="true">🧪</span>
+        <h1 class="splash-title">Mounjaro<span>sem Mitos</span></h1>
+        <p class="splash-tagline">Ebook Web Interativo · Guia da Tirzepatida</p>
+        <div class="splash-loader-track">
+          <div class="splash-loader-fill"></div>
+        </div>
+      </div>
+
+      <!-- Painel 2: Card de Autenticação (Fica invisível enquanto carrega no Splash) -->
+      <div class="gateway-card hidden" id="gatewayCard">
+        <!-- Abas -->
+        <div class="gateway-tabs" id="gatewayTabs" role="tablist">
+          <button type="button" class="gateway-tab-btn active" role="tab" aria-selected="true" data-panel="login" id="gatewayTabLogin">Entrar</button>
+          <button type="button" class="gateway-tab-btn" role="tab" aria-selected="false" data-panel="signup" id="gatewayTabSignup">Criar conta</button>
+        </div>
+
+        <!-- Painel Interno: Login -->
+        <div class="gateway-panel active" id="gatewayPanelLogin" role="tabpanel" aria-labelledby="gatewayTabLogin">
+          <div class="gateway-header">
+            <h2 class="gateway-title">Bem-vindo de volta</h2>
+            <p class="gateway-subtitle">Entre para sincronizar seu progresso de leitura e diários.</p>
+          </div>
+
+          <form id="gatewayFormLogin" class="gateway-form" novalidate>
+            <div class="gateway-field">
+              <label for="gatewayLoginEmail">E-mail</label>
+              <div class="gateway-input-wrapper">
+                <input type="email" id="gatewayLoginEmail" autocomplete="email" placeholder="seu@email.com" required>
+              </div>
+            </div>
+            <div class="gateway-field">
+              <label for="gatewayLoginPassword">Senha</label>
+              <div class="gateway-input-wrapper">
+                <input type="password" id="gatewayLoginPassword" autocomplete="current-password" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="gateway-toggle-pass" aria-label="Mostrar/ocultar senha" data-target="gatewayLoginPassword">👁</button>
+              </div>
+            </div>
+
+            <a href="#" class="gateway-forgot" id="gatewayForgotLink">Esqueceu a senha?</a>
+
+            <button type="submit" class="gateway-btn-submit" id="gatewayBtnLogin">Entrar</button>
+            <div class="gateway-msg" id="gatewayMsgLogin"></div>
+          </form>
+        </div>
+
+        <!-- Painel Interno: Cadastro -->
+        <div class="gateway-panel" id="gatewayPanelSignup" role="tabpanel" aria-labelledby="gatewayTabSignup">
+          <div class="gateway-header">
+            <h2 class="gateway-title">Criar sua conta</h2>
+            <p class="gateway-subtitle">Cadastre-se gratuitamente para acessar o e-book interativo.</p>
+          </div>
+
+          <form id="gatewayFormSignup" class="gateway-form" novalidate>
+            <div class="gateway-field">
+              <label for="gatewaySignupEmail">E-mail</label>
+              <div class="gateway-input-wrapper">
+                <input type="email" id="gatewaySignupEmail" autocomplete="email" placeholder="seu@email.com" required>
+              </div>
+            </div>
+            <div class="gateway-field">
+              <label for="gatewaySignupPassword">Senha <span>(mín. 6 caracteres)</span></label>
+              <div class="gateway-input-wrapper">
+                <input type="password" id="gatewaySignupPassword" autocomplete="new-password" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="gateway-toggle-pass" aria-label="Mostrar/ocultar senha" data-target="gatewaySignupPassword">👁</button>
+              </div>
+            </div>
+            <div class="gateway-field">
+              <label for="gatewaySignupConfirm">Confirmar senha</label>
+              <div class="gateway-input-wrapper">
+                <input type="password" id="gatewaySignupConfirm" autocomplete="new-password" placeholder="••••••••" minlength="6" required>
+                <button type="button" class="gateway-toggle-pass" aria-label="Mostrar/ocultar senha" data-target="gatewaySignupConfirm">👁</button>
+              </div>
+            </div>
+
+            <button type="submit" class="gateway-btn-submit" id="gatewayBtnSignup">Criar conta</button>
+            <div class="gateway-msg" id="gatewayMsgSignup"></div>
+          </form>
+        </div>
+
+        <!-- Painel Interno: Recuperar Senha -->
+        <div class="gateway-panel" id="gatewayPanelReset" role="tabpanel">
+          <div class="gateway-back-header">
+            <button type="button" class="gateway-back-btn" id="gatewayBtnResetBack" aria-label="Voltar">←</button>
+            <h2 class="gateway-title">Recuperar senha</h2>
+          </div>
+          <p class="gateway-subtitle gateway-subtitle-margin">Informe seu e-mail cadastrado e enviaremos um link de redefinição.</p>
+
+          <form id="gatewayFormReset" class="gateway-form" novalidate>
+            <div class="gateway-field">
+              <label for="gatewayResetEmail">E-mail cadastrado</label>
+              <div class="gateway-input-wrapper">
+                <input type="email" id="gatewayResetEmail" autocomplete="email" placeholder="seu@email.com" required>
+              </div>
+            </div>
+
+            <button type="submit" class="gateway-btn-submit" id="gatewayBtnReset">Enviar link de redefinição</button>
+            <div class="gateway-msg" id="gatewayMsgReset"></div>
+          </form>
+        </div>
+
+      </div><!-- /gateway-card -->
+
+      <!-- Rodapé Offline / Ignorar Login -->
+      <div class="gateway-offline-footer" id="gatewayOfflineFooter" hidden>
+        <a href="#" class="gateway-offline-link" id="gatewayOfflineLink">
+          Entrar offline sem sincronização <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+    </div><!-- /gateway-wrapper -->
+  </div><!-- /app-auth-gateway -->
+
+  <!-- Toast global para o gateway -->
+  <div class="gateway-toast" id="gatewayToast" aria-live="polite"></div>
 
   <div class="app-container">
 
@@ -69,7 +194,7 @@
       <!-- Sumário dos Capítulos -->
       <nav class="chapter-nav">
         <span class="nav-heading">Conteúdo</span>
-        <button class="chapter-btn active" data-chapter="introducao">
+        <button type="button" class="chapter-btn active" data-chapter="introducao">
           <span>Introdução</span>
           <span class="badge-completed">✓</span>
         </button>
@@ -141,7 +266,7 @@
 
         <span class="nav-heading nav-heading--lab">Laboratório Interativo</span>
         <button type="button" class="chapter-btn chapter-btn--lab" data-chapter="recursos-interativos">
-          <span>🛠️ Ferramentas & Quizzes</span>
+          <span>🛠️ Ferramentas &amp; Quizzes</span>
         </button>
       </nav>
 
@@ -182,11 +307,11 @@
 
         <!-- Navegação entre Capítulos inferior -->
         <div class="navigation-bar">
-          <button class="btn-nav-chapter" id="btnPrevChapter">
+          <button type="button" class="btn-nav-chapter" id="btnPrevChapter">
             <span class="nav-label">Capítulo Anterior</span>
             <span class="nav-title" id="prevChapterName">-</span>
           </button>
-          <button class="btn-nav-chapter next" id="btnNextChapter">
+          <button type="button" class="btn-nav-chapter next" id="btnNextChapter">
             <span class="nav-label">Próximo Capítulo</span>
             <span class="nav-title" id="nextChapterName">-</span>
           </button>
@@ -196,7 +321,7 @@
     </main>
 
     <!-- Botão de Alternar Tema (Light/Dark Mode) -->
-    <button class="theme-toggle" id="btnThemeToggle" title="Alternar Tema">
+    <button type="button" class="theme-toggle" id="btnThemeToggle" title="Alternar Tema">
       <span class="icon-theme">🌓</span>
     </button>
   </div>

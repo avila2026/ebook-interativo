@@ -350,6 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Pontos de integração mínimos para a camada Supabase (js/integrations.js).
   // Mantém o app desacoplado: se integrations.js não carregar, nada muda.
   function exposeIntegrationHooks() {
+    window.loadChapter = loadChapter;
     window.__ebookApp = {
       currentChapter: () => state.currentChapter,
       reloadCurrent: () => loadChapter(state.currentChapter)
