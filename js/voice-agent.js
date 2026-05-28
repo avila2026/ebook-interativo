@@ -23,7 +23,7 @@ class VoiceAgent {
       modal.innerHTML = `
         <div class="api-key-modal-content">
           <h3>Configurar API Key da OpenAI</h3>
-          <p>Para conversar com o Ebook e usar o Narrador com voz hiper-realista, insira sua chave de API da OpenAI (sk-...). Ela será salva localmente no seu navegador e nunca será exposta ou enviada para o GitHub.</p>
+          <p>Para conversar com o Ebook e usar o Narrador com voz hiper-realista, insira sua chave de API da OpenAI (sk-...). Ela fica salva <strong>apenas neste navegador</strong> (localStorage) e é enviada somente à OpenAI para gerar a voz — não passa pelo nosso servidor nem pelo GitHub. Como fica no navegador, ela é visível para quem tiver acesso a este dispositivo: <strong>evite usar em computadores compartilhados</strong> e remova-a ao terminar.</p>
           <input type="password" id="modalApiKeyInput" placeholder="sk-proj-..." class="api-key-input" />
           <div class="api-key-modal-actions">
             <button id="btnCancelApiKey" class="btn-cancel">Cancelar</button>

@@ -475,6 +475,26 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('mounjaro_theme', newTheme);
       });
     }
+
+    // Privacidade: apaga deste navegador os dados pessoais salvos localmente
+    // (progresso, diário de peso/sintomas e chave da OpenAI). Útil em dispositivos
+    // compartilhados. Não remove dados já sincronizados na conta do usuário.
+    const btnClearData = document.getElementById('btnClearData');
+    if (btnClearData) {
+      btnClearData.addEventListener('click', () => {
+        const msg = 'Isto vai apagar deste navegador: progresso de leitura, diário de '
+          + 'peso/sintomas e a chave da OpenAI. Dados já salvos na sua conta não são '
+          + 'afetados.\n\nDeseja continuar?';
+        if (!confirm(msg)) return;
+        if (window.Integrations?.clearLocalData) {
+          window.Integrations.clearLocalData();
+        } else {
+          ['mounjaro_completed', 'mounjaro_weights', 'mounjaro_symptoms', 'mounjaro_openai_apikey']
+            .forEach(k => { try { localStorage.removeItem(k); } catch {} });
+        }
+        location.reload();
+      });
+    }
   }
 
   // Carrega e renderiza o conteúdo de um capítulo
