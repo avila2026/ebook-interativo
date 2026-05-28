@@ -537,21 +537,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // COMPONENTE DE VÍDEO DA PÁGINA
   // ==========================================
   function renderVideoBlockHTML(video) {
+    // type é opcional: infere mp4 quando a URL termina em .mp4.
+    const type = video.type || (/\.mp4(\?|$)/i.test(video.url || '') ? 'mp4' : '');
+
+    const hasThumb = Boolean(video.thumbnail);
+    const thumbClass = hasThumb ? 'video-thumbnail' : 'video-thumbnail video-thumbnail--default';
+    const thumbStyle = hasThumb ? ` style="background-image: url('${escapeHtml(video.thumbnail)}')"` : '';
+    const durationHTML = video.duration ? `<div class="video-duration">${escapeHtml(video.duration)}</div>` : '';
+    const descHTML = video.description ? `<p class="video-desc">${escapeHtml(video.description)}</p>` : '';
+
     return `
       <div class="video-block-container fade-in">
-        <div class="video-player-wrapper" data-video-url="${escapeHtml(video.url)}" data-video-type="${escapeHtml(video.type)}">
-          <div class="video-thumbnail" style="background-image: url('${escapeHtml(video.thumbnail)}')">
+        <div class="video-player-wrapper" data-video-url="${escapeHtml(video.url)}" data-video-type="${escapeHtml(type)}">
+          <div class="${thumbClass}"${thumbStyle}>
             <div class="video-overlay"></div>
             <button class="btn-play-video" aria-label="Reproduzir vídeo">
               <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M8 5v14l11-7z"/></svg>
             </button>
-            <div class="video-duration">${escapeHtml(video.duration)}</div>
+            ${durationHTML}
           </div>
           <div class="video-iframe-container" style="display: none;"></div>
         </div>
         <div class="video-metadata">
           <h3 class="video-title">${escapeHtml(video.title)}</h3>
-          <p class="video-desc">${escapeHtml(video.description)}</p>
+          ${descHTML}
         </div>
       </div>
     `;
@@ -574,7 +583,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const separator = url.includes('?') ? '&' : '?';
           const autoplayUrl = `${url}${separator}autoplay=1`;
           iframeContainer.innerHTML = `<iframe src="${autoplayUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        } else if (type === 'mp4') {
+        } else {
+          // MP4 self-hosted (default quando o type não for de embed).
           iframeContainer.innerHTML = `<video src="${url}" controls autoplay controlsList="nodownload"></video>`;
         }
       });

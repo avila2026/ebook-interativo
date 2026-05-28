@@ -17,6 +17,18 @@ const EBOOK_DATA = {
       title: "Introdução",
       subtitle: "Sua Jornada para uma Vida Mais Leve",
       summary: "Descubra como a ciência está ajudando pessoas a recuperarem a saúde e a qualidade de vida.",
+      // Para ativar um vídeo neste capítulo, descomente o bloco abaixo e ajuste a URL.
+      // Apenas `url` e `title` são obrigatórios; thumbnail/description/duration são opcionais.
+      // video: {
+      //   type: "mp4",
+      //   url: "assets/videos/seu-video.mp4", // coloque o arquivo .mp4 em assets/videos/
+      //   title: "Título do vídeo",
+      //   description: "Descrição opcional.",            // opcional
+      //   thumbnail: "assets/images/mounjaro_box.jpg",   // opcional (capa/poster)
+      //   duration: "3:20"                               // opcional
+      // },
+      // Obs.: para suporte offline total deste vídeo, adicione o caminho ao APP_SHELL
+      // em service-worker.js e suba o CACHE_VERSION.
       content: `
         <div class="visual-placeholder image-box" data-image="health_cover">
           <p class="image-caption">Mounjaro sem Mitos: Porque você merece uma vida com mais energia e saúde.</p>
