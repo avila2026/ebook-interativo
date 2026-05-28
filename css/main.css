@@ -3,22 +3,22 @@
 
 :root {
   /* Paleta de Cores HSL Premium */
-  --bg-primary: #0a0f14;         /* HSL(210, 33%, 6%) - Fundo principal escuro e luxuoso */
+  --bg-primary: #050816;         /* HSL(210, 33%, 6%) - Fundo principal escuro e luxuoso */
   --bg-secondary: #12181f;       /* HSL(210, 27%, 10%) - Superfícies secundárias */
   --bg-tertiary: #1b242e;        /* HSL(210, 25%, 15%) - Elementos de card e destaque */
   
-  --primary: #10b981;            /* HSL(162, 84%, 39%) - Verde Esmeralda Clínico */
-  --primary-glow: rgba(16, 185, 129, 0.15);
-  --primary-glow-strong: rgba(16, 185, 129, 0.4);
-  --primary-light: #34d399;      /* HSL(162, 63%, 52%) - Destaques secundários */
-  --primary-dark: #065f46;       /* HSL(162, 88%, 20%) - Tons profundos */
+  --primary: #00E676;            /* HSL(162, 84%, 39%) - Verde Esmeralda Clínico */
+  --primary-glow: rgba(0, 230, 118, 0.15);
+  --primary-glow-strong: rgba(0, 230, 118, 0.4);
+  --primary-light: #69f0ae;      /* HSL(162, 63%, 52%) - Destaques secundários */
+  --primary-dark: #00a152;       /* HSL(162, 88%, 20%) - Tons profundos */
   
-  --accent: #06b6d4;             /* HSL(188, 86%, 37%) - Ciano/Azul Médico */
-  --accent-glow: rgba(6, 182, 212, 0.15);
+  --accent: #00C8FF;             /* HSL(188, 86%, 37%) - Ciano/Azul Médico */
+  --accent-glow: rgba(0, 200, 255, 0.15);
   
   --text-main: #f3f4f6;          /* HSL(220, 14%, 96%) - Texto de leitura claro */
   --text-muted: #9ca3af;         /* HSL(220, 9%, 64%) - Subtítulos e textos auxiliares */
-  --text-inverse: #0a0f14;       /* Texto escuro para contrastes */
+  --text-inverse: #050816;       /* Texto escuro para contrastes */
   
   --border-color: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.18);
@@ -31,7 +31,7 @@
   --glass-bg: rgba(18, 24, 31, 0.75);
   --glass-border: rgba(255, 255, 255, 0.06);
   --shadow-lg: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  --shadow-primary: 0 0 20px rgba(16, 185, 129, 0.2);
+  --shadow-primary: 0 0 20px rgba(0, 230, 118, 0.2);
   
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -46,8 +46,8 @@
   --primary: #059669;            /* Verde Esmeralda um pouco mais escuro para contraste */
   --primary-glow: rgba(5, 150, 105, 0.15);
   --primary-glow-strong: rgba(5, 150, 105, 0.4);
-  --primary-light: #10b981;      
-  --primary-dark: #047857;       
+  --primary-light: #059669;
+  --primary-dark: #047857;
   
   --accent: #0284c7;             /* Azul mais fechado para leitura */
   --accent-glow: rgba(2, 132, 199, 0.15);
@@ -202,7 +202,7 @@ aside.sidebar {
 }
 
 .chapter-btn--lab {
-  border: 1px dashed rgba(16, 185, 129, 0.4);
+  border: 1px dashed rgba(0, 230, 118, 0.4);
 }
 
 .chapter-btn {
@@ -231,7 +231,7 @@ aside.sidebar {
   background: var(--primary-glow);
   color: var(--primary-light);
   font-weight: 600;
-  border-color: rgba(16, 185, 129, 0.2);
+  border-color: rgba(0, 230, 118, 0.2);
   box-shadow: var(--shadow-primary);
 }
 
@@ -443,8 +443,8 @@ article strong {
 }
 
 .card-info {
-  background: rgba(6, 182, 212, 0.05);
-  border: 1px solid rgba(6, 182, 212, 0.15);
+  background: rgba(0, 200, 255, 0.05);
+  border: 1px solid rgba(0, 200, 255, 0.15);
   border-radius: 12px;
   padding: 1.5rem;
   margin: 2rem 0;
@@ -458,21 +458,21 @@ article strong {
 }
 
 .scientific-card {
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.04), rgba(16, 185, 129, 0.04));
-  border: 1px solid rgba(6, 182, 212, 0.15);
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.04), rgba(0, 230, 118, 0.04));
+  border: 1px solid rgba(0, 200, 255, 0.15);
   border-left: 4px solid var(--accent);
   border-radius: 4px 12px 12px 4px;
   padding: 1.5rem;
   margin: 2rem 0;
-  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.3), 0 0 10px rgba(6, 182, 212, 0.05);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 200, 255, 0.05);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
 .scientific-card:hover {
-  border-color: rgba(16, 185, 129, 0.3);
-  box-shadow: 0 8px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.1);
+  border-color: rgba(0, 230, 118, 0.3);
+  box-shadow: 0 8px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 230, 118, 0.1);
   transform: translateY(-2px);
 }
 
@@ -506,11 +506,11 @@ article strong {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  background: rgba(6, 182, 212, 0.15);
+  background: rgba(0, 200, 255, 0.15);
   color: var(--accent);
   padding: 2px 8px;
   border-radius: 20px;
-  border: 1px solid rgba(6, 182, 212, 0.25);
+  border: 1px solid rgba(0, 200, 255, 0.25);
   margin-bottom: 0.5rem;
 }
 
@@ -658,7 +658,7 @@ article strong {
 .btn-nav-chapter.next {
   align-items: flex-end;
   text-align: right;
-  border-color: rgba(16, 185, 129, 0.15);
+  border-color: rgba(0, 230, 118, 0.15);
 }
 
 .btn-nav-chapter.next:hover {
@@ -898,7 +898,7 @@ header.content-header {
 }
 
 .truth {
-  background: rgba(16, 185, 129, 0.03);
+  background: rgba(0, 230, 118, 0.03);
   color: #a7f3d0;
 }
 
@@ -913,7 +913,7 @@ header.content-header {
 /* Animação para a gotícula de purga (Simulador) */
 @keyframes float-bubble {
   0% { transform: translateY(0) scale(1); opacity: 0.9; filter: drop-shadow(0 0 4px var(--primary-glow)); }
-  50% { transform: translateY(-8px) scale(1.1); opacity: 1; filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.6)); }
+  50% { transform: translateY(-8px) scale(1.1); opacity: 1; filter: drop-shadow(0 0 12px rgba(0, 230, 118, 0.6)); }
   100% { transform: translateY(0) scale(1); opacity: 0.9; filter: drop-shadow(0 0 4px var(--primary-glow)); }
 }
 
@@ -944,8 +944,8 @@ header.content-header {
 }
 
 .card-highlight:hover, .case-study:hover, .quiz-box:hover, .checklist-container:hover, .diary-container:hover {
-  border-color: rgba(16, 185, 129, 0.25);
-  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.05);
+  border-color: rgba(0, 230, 118, 0.25);
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 230, 118, 0.05);
 }
 
 /* Custom Scrollbar para Sidebar e Main */
