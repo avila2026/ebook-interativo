@@ -9,14 +9,14 @@
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#10b981">
+  <meta name="theme-color" content="#00E676">
   <meta name="color-scheme" content="dark">
 
   <!-- CSP (mesmos domínios do index.html) -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://esm.sh; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh;">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='64' font-size='50' text-anchor='middle'>🛡️💉</text></svg>">
 
   <!-- Fontes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,15 +26,15 @@
   <style>
     /* ── Variáveis (espelho do main.css) ── */
     :root {
-      --bg-primary:   #0a0f14;
+      --bg-primary:   #050816;
       --bg-secondary: #12181f;
       --bg-tertiary:  #1b242e;
-      --primary:      #10b981;
-      --primary-glow: rgba(16,185,129,.15);
-      --primary-glow-strong: rgba(16,185,129,.4);
-      --primary-light:#34d399;
-      --accent:       #06b6d4;
-      --accent-glow:  rgba(6,182,212,.15);
+      --primary:      #00E676;
+      --primary-glow: rgba(0, 230, 118,.15);
+      --primary-glow-strong: rgba(0, 230, 118,.4);
+      --primary-light:#69f0ae;
+      --accent:       #00C8FF;
+      --accent-glow:  rgba(0, 200, 255,.15);
       --text-main:    #f3f4f6;
       --text-muted:   #9ca3af;
       --border-color: rgba(255,255,255,.08);
@@ -67,18 +67,18 @@
     .bg-grid {
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image:
-        linear-gradient(rgba(16,185,129,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16,185,129,.03) 1px, transparent 1px);
+        linear-gradient(rgba(0, 230, 118,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 230, 118,.03) 1px, transparent 1px);
       background-size: 40px 40px;
     }
     .bg-glow-1 {
       position: fixed; width: 600px; height: 600px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(16,185,129,.07) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(0, 230, 118,.07) 0%, transparent 65%);
       top: -200px; left: -200px; z-index: 0; pointer-events: none;
     }
     .bg-glow-2 {
       position: fixed; width: 500px; height: 500px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(6,182,212,.06) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(0, 200, 255,.06) 0%, transparent 65%);
       bottom: -150px; right: -150px; z-index: 0; pointer-events: none;
     }
     @media (prefers-reduced-motion: no-preference) {
@@ -107,7 +107,7 @@
       font-size: 2.5rem;
       display: block;
       margin-bottom: .5rem;
-      filter: drop-shadow(0 0 12px rgba(16,185,129,.5));
+      filter: drop-shadow(0 0 12px rgba(0, 230, 118,.5));
     }
     .brand-name {
       font-family: var(--font-title);
@@ -135,7 +135,7 @@
       -webkit-backdrop-filter: blur(20px);
       box-shadow:
         var(--shadow-lg),
-        0 0 0 1px rgba(16,185,129,.06),
+        0 0 0 1px rgba(0, 230, 118,.06),
         inset 0 1px 0 rgba(255,255,255,.04);
       position: relative;
       overflow: hidden;
@@ -346,8 +346,8 @@
       color: #f87171;
     }
     .auth-msg.success {
-      background: rgba(16,185,129,.1);
-      border: 1px solid rgba(16,185,129,.25);
+      background: rgba(0, 230, 118,.1);
+      border: 1px solid rgba(0, 230, 118,.25);
       color: var(--primary-light);
     }
 
@@ -429,7 +429,7 @@
 
     <!-- Marca -->
     <div class="brand">
-      <span class="brand-icon" aria-hidden="true">🧪</span>
+      <span class="brand-icon" aria-hidden="true">🛡️💉</span>
       <div class="brand-name">Mounjaro<span> sem Mitos</span></div>
       <p class="brand-tagline">Ebook Web Interativo · Guia Completo da Tirzepatida</p>
     </div>

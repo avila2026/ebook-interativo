@@ -1,15 +1,15 @@
 {
   "name": "Mounjaro sem Mitos — Ebook Interativo",
   "short_name": "Mounjaro",
-  "description": "O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.",
+  "description": "O primeiro guia interativo brasileiro para usar Tirzepatida (Mounjaro) com mais segurança, menos medo e melhores resultados.",
   "lang": "pt-BR",
   "dir": "ltr",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0a0f14",
-  "theme_color": "#10b981",
+  "background_color": "#050816",
+  "theme_color": "#00E676",
   "categories": ["health", "education", "books"],
   "icons": [
     {
