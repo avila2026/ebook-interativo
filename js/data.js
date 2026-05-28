@@ -188,6 +188,50 @@ const EBOOK_DATA = {
       `
     },
     {
+      id: "indicacoes",
+      type: "content",
+      title: "Para Quais Casos é Indicado",
+      subtitle: "Indicações Aprovadas e Em Estudo",
+      summary: "As condições em que o uso da tirzepatida já é aprovado e aquelas que ainda estão sendo pesquisadas.",
+      content: `
+        <p class="lead">A tirzepatida começou como um tratamento para o diabetes, mas hoje é usada — e estudada — em várias condições ligadas ao metabolismo. É importante separar o que já foi <strong>aprovado pelas agências de saúde</strong> do que ainda está <strong>em pesquisa</strong>.</p>
+
+        <h3>✅ Indicações já aprovadas</h3>
+        <div class="benefit-grid">
+          <div class="benefit-card">
+            <h5>🩸 Diabetes Tipo 2</h5>
+            <p>A indicação original. Ajuda a controlar a glicemia em adultos com diabetes tipo 2, junto com dieta e atividade física.</p>
+          </div>
+          <div class="benefit-card">
+            <h5>⚖️ Obesidade / Controle de Peso</h5>
+            <p>Aprovada para o controle crônico de peso em adultos com IMC ≥ 30, ou ≥ 27 com uma comorbidade (como hipertensão, dislipidemia ou apneia).</p>
+          </div>
+          <div class="benefit-card">
+            <h5>💤 Apneia Obstrutiva do Sono</h5>
+            <p>Em adultos com obesidade e apneia moderada a grave. Tornou-se o <strong>primeiro medicamento aprovado</strong> para essa finalidade (FDA em 2024, ANVISA em 2025), com base no estudo SURMOUNT-OSA.</p>
+          </div>
+        </div>
+
+        <div class="card-highlight">
+          <h4>🔬 Em estudo (ainda não aprovado para esses fins)</h4>
+          <p>Resultados promissores aparecem em pesquisas, mas <strong>ainda não são indicações da bula</strong> e dependem de mais estudos. Não devem ser usados como motivo para começar o tratamento por conta própria:</p>
+          <ul style="margin-top: 0.5rem;">
+            <li><strong>Insuficiência cardíaca (tipo HFpEF) com obesidade:</strong> o estudo SUMMIT mostrou redução do risco de piora e de internação por insuficiência cardíaca.</li>
+            <li><strong>Doença hepática gordurosa (MASH):</strong> o estudo de fase 2 SYNERGY-NASH mostrou melhora da inflamação do fígado sem piora da fibrose.</li>
+            <li><strong>Saúde renal e cardiometabólica:</strong> análises apontam possíveis benefícios para os rins e o sistema cardiovascular, ainda sob investigação.</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>📰 Novidades (2024–2025):</strong> além da nova aprovação para apneia do sono, a ANVISA atualizou as regras no Brasil. Atenção a uma informação que circula de forma errada nas redes: <strong>o medicamento continua exigindo prescrição</strong>. O que mudou foi que, em casos de apneia associada à obesidade, cirurgiões-dentistas habilitados também podem prescrevê-lo — e as farmácias passaram a reter a segunda via da receita. Ou seja, <strong>não é venda livre</strong>.
+        </div>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ O que isso significa para você:</strong> ter uma dessas condições não quer dizer, automaticamente, que o medicamento é indicado para o seu caso. Quem define a indicação, a dose e os exames necessários é sempre o profissional de saúde, com base na bula vigente e na sua avaliação individual.
+        </div>
+      `
+    },
+    {
       id: "capitulo-5",
       type: "content",
       title: "Capítulo 5 — Efeitos ruins e riscos",
@@ -650,11 +694,14 @@ const EBOOK_DATA = {
           <li><strong>FDA — Prescribing Information (Mounjaro / Zepbound)</strong> — informações regulatórias dos EUA.</li>
           <li><strong>Programa de estudos SURPASS</strong> — ensaios clínicos de tirzepatida no diabetes tipo 2 (publicados no <em>The New England Journal of Medicine</em> e <em>The Lancet</em>).</li>
           <li><strong>Programa de estudos SURMOUNT</strong> — ensaios clínicos de tirzepatida no controle de peso (publicados no <em>The New England Journal of Medicine</em>).</li>
+          <li><strong>SURMOUNT-OSA</strong> — ensaio de tirzepatida na apneia obstrutiva do sono em adultos com obesidade (<em>The New England Journal of Medicine</em>, 2024).</li>
+          <li><strong>SUMMIT</strong> — ensaio de tirzepatida na insuficiência cardíaca com fração de ejeção preservada (HFpEF) e obesidade (<em>The New England Journal of Medicine</em>, 2024).</li>
+          <li><strong>SYNERGY-NASH</strong> — ensaio de fase 2 de tirzepatida na esteato-hepatite (MASH) com fibrose (<em>The New England Journal of Medicine</em>, 2024).</li>
           <li><strong>PubChem (CID 166567236)</strong> — dados de identidade química da tirzepatida.</li>
         </ul>
 
         <div class="alert alert-warning">
-          <strong>⚠️ Aviso médico-legal:</strong> os percentuais de perda de peso citados referem-se a médias observadas em ensaios clínicos, sob acompanhamento profissional, e <strong>não representam promessa de resultado individual</strong>. Mounjaro® é marca registrada da Eli Lilly. O uso é exclusivamente sob prescrição.
+          <strong>⚠️ Aviso médico-legal:</strong> os percentuais de perda de peso citados referem-se a médias observadas em ensaios clínicos, sob acompanhamento profissional, e <strong>não representam promessa de resultado individual</strong>. Resultados de estudos em andamento (como em insuficiência cardíaca e doença hepática) <strong>não equivalem a indicações aprovadas</strong> na bula. Mounjaro® é marca registrada da Eli Lilly. O uso é exclusivamente sob prescrição.
         </div>
 
         <div class="alert alert-info">
