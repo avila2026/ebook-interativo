@@ -210,9 +210,15 @@ function startCheckout() {
 // Captura de leads
 // ---------------------------------------------------------------------------
 async function captureLead(email, name, source = 'newsletter') {
-  if (!supabase) return { ok: false, error: 'Supabase não configurado' };
+  if (!supabase) return { ok: false, error: 'Não foi possível inscrever agora. Tente em breve.' };
   const { error } = await supabase.from('leads').insert({ email, name: name || null, source });
-  if (error) return { ok: false, error: error.message };
+  if (error) {
+    const msg = error.message || '';
+    const friendly = msg.includes('schema') || msg.includes('table') || msg.includes('relation')
+      ? 'Serviço temporariamente indisponível. Tente em breve.'
+      : traduzErro(msg);
+    return { ok: false, error: friendly };
+  }
   return { ok: true };
 }
 
