@@ -807,14 +807,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 1. MAPA CORPORAL CLICÁVEL — Holograma 3D Interativo
+  // 1. MAPA CORPORAL CLICÁVEL — Modelo anatômico interativo
   function renderBodyMap(container) {
-    // Cada sistema vive nas coordenadas do SVG (viewBox 0 0 200 490): o ponto
-    // clicável, o órgão que acende dentro do corpo e o conteúdo do painel.
+    // Cada sistema tem um hotspot posicionado por porcentagem (left/top) sobre a
+    // imagem anatômica. Ajuste x/y se trocar a imagem de fundo.
     const systems = [
       {
-        id: 'brain', emoji: '🧠', label: 'Cérebro', cx: 100, cy: 46,
-        organ: { cx: 100, cy: 46, rx: 15, ry: 16 },
+        id: 'brain', emoji: '🧠', label: 'Cérebro', x: 50, y: 7,
         title: '🧠 Sistema Nervoso (Cérebro)',
         body: `<p>A tirzepatida age no <strong>hipotálamo</strong>, o centro que regula fome e gasto energético.</p>
           <ul>
@@ -823,8 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'heart', emoji: '🫀', label: 'Coração', cx: 90, cy: 120,
-        organ: { cx: 90, cy: 120, rx: 12, ry: 13 },
+        id: 'heart', emoji: '🫀', label: 'Coração', x: 51, y: 32,
         title: '🫀 Sistema Cardiovascular',
         body: `<p>Ao reduzir peso e inflamação, alivia a sobrecarga sobre o coração e os vasos.</p>
           <ul>
@@ -833,28 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'pancreas', emoji: '🧪', label: 'Pâncreas', cx: 116, cy: 150,
-        organ: { cx: 112, cy: 150, rx: 15, ry: 8 },
-        title: '🧪 Pâncreas e Insulina',
-        body: `<p>Estimula a secreção hormonal de forma <strong>glicose-dependente</strong> (só quando você come).</p>
-          <ul>
-            <li><strong>Insulina:</strong> GIP + GLP-1 induzem secreção no momento certo.</li>
-            <li><strong>Glucagon:</strong> reduz, diminuindo a produção hepática de glicose.</li>
-          </ul>`
-      },
-      {
-        id: 'stomach', emoji: '🍕', label: 'Estômago', cx: 84, cy: 174,
-        organ: { cx: 86, cy: 174, rx: 13, ry: 13 },
-        title: '🍕 Sistema Digestivo (Estômago)',
-        body: `<p>Por mimetizar o GLP-1, o medicamento retarda o esvaziamento gástrico.</p>
-          <ul>
-            <li><strong>Digestão lenta:</strong> a comida fica mais tempo no estômago.</li>
-            <li><strong>Sem picos glicêmicos:</strong> a glicose entra no sangue de forma dosada.</li>
-          </ul>`
-      },
-      {
-        id: 'liver', emoji: '🥩', label: 'Fígado', cx: 114, cy: 174,
-        organ: { cx: 110, cy: 174, rx: 15, ry: 9 },
+        id: 'liver', emoji: '🥩', label: 'Fígado', x: 42, y: 43,
         title: '🥩 Ação no Fígado',
         body: `<p>Atua indiretamente na redução da gordura hepática e no controle metabólico.</p>
           <ul>
@@ -863,8 +840,25 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'intestine', emoji: '🪱', label: 'Intestino', cx: 100, cy: 204,
-        organ: { cx: 100, cy: 204, rx: 18, ry: 15 },
+        id: 'stomach', emoji: '🍕', label: 'Estômago', x: 57, y: 45,
+        title: '🍕 Sistema Digestivo (Estômago)',
+        body: `<p>Por mimetizar o GLP-1, o medicamento retarda o esvaziamento gástrico.</p>
+          <ul>
+            <li><strong>Digestão lenta:</strong> a comida fica mais tempo no estômago.</li>
+            <li><strong>Sem picos glicêmicos:</strong> a glicose entra no sangue de forma dosada.</li>
+          </ul>`
+      },
+      {
+        id: 'pancreas', emoji: '🧪', label: 'Pâncreas', x: 52, y: 49,
+        title: '🧪 Pâncreas e Insulina',
+        body: `<p>Estimula a secreção hormonal de forma <strong>glicose-dependente</strong> (só quando você come).</p>
+          <ul>
+            <li><strong>Insulina:</strong> GIP + GLP-1 induzem secreção no momento certo.</li>
+            <li><strong>Glucagon:</strong> reduz, diminuindo a produção hepática de glicose.</li>
+          </ul>`
+      },
+      {
+        id: 'intestine', emoji: '🪱', label: 'Intestino', x: 49, y: 59,
         title: '🪱 Ação no Intestino',
         body: `<p>O local original de onde os hormônios naturais (Incretinas) são liberados.</p>
           <ul>
@@ -873,8 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'glycemia', emoji: '🩸', label: 'Glicemia', cx: 100, cy: 242,
-        organ: { cx: 100, cy: 242, rx: 22, ry: 11 },
+        id: 'glycemia', emoji: '🩸', label: 'Glicemia', x: 50, y: 67,
         title: '🩸 Controle Glicêmico Sistêmico',
         body: `<p>O efeito combinado mantém a <strong>glicose estável</strong> ao longo do dia.</p>
           <ul>
@@ -884,102 +877,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ];
 
-    const organMarkup = systems.map(s => `
-      <ellipse class="organ-glow" data-organ="${s.id}"
-        cx="${s.organ.cx}" cy="${s.organ.cy}" rx="${s.organ.rx}" ry="${s.organ.ry}"></ellipse>`).join('');
-
     const hotspotMarkup = systems.map(s => `
-      <g class="holo-hotspot" data-spot="${s.id}" role="button" tabindex="0"
-         aria-label="Ver ação no sistema: ${s.label}">
-        <title>${s.label}</title>
-        <circle class="hs-ring"  cx="${s.cx}" cy="${s.cy}" r="13"></circle>
-        <circle class="hs-dot"   cx="${s.cx}" cy="${s.cy}" r="11"></circle>
-        <text class="hs-emoji" x="${s.cx}" y="${s.cy}" text-anchor="middle"
-              dominant-baseline="central">${s.emoji}</text>
-      </g>`).join('');
+      <button class="organ-hotspot" type="button" data-spot="${s.id}"
+              style="left:${s.x}%; top:${s.y}%;"
+              aria-label="Ver ação no sistema: ${escapeHtml(s.label)}">
+        <span class="hs-pulse"></span>
+        <span class="hs-core">${s.emoji}</span>
+        <span class="hs-tag">${escapeHtml(s.label)}</span>
+      </button>`).join('');
 
     container.innerHTML = `
       <div class="bodymap-container fade-in">
         <div class="bodymap-visual" id="bodyMapStage">
           <div class="holo-grid"></div>
-          <svg class="body-svg" viewBox="0 0 200 490" xmlns="http://www.w3.org/2000/svg"
-               role="img" aria-label="Modelo holográfico interativo do corpo humano">
-            <defs>
-              <linearGradient id="holoFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stop-color="#22d3ee" stop-opacity="0.30"/>
-                <stop offset="55%"  stop-color="#10b981" stop-opacity="0.16"/>
-                <stop offset="100%" stop-color="#0ea5b7" stop-opacity="0.06"/>
-              </linearGradient>
-              <linearGradient id="holoStroke" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%"  stop-color="#67e8f9"/>
-                <stop offset="100%" stop-color="#34d399"/>
-              </linearGradient>
-              <radialGradient id="organGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%"  stop-color="#a5f3fc" stop-opacity="0.95"/>
-                <stop offset="100%" stop-color="#22d3ee" stop-opacity="0.1"/>
-              </radialGradient>
-              <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stop-color="#a5f3fc" stop-opacity="0"/>
-                <stop offset="50%"  stop-color="#67e8f9" stop-opacity="0.55"/>
-                <stop offset="100%" stop-color="#a5f3fc" stop-opacity="0"/>
-              </linearGradient>
-              <filter id="neonGlow" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3" result="b"/>
-                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-              <clipPath id="bodyClip">
-                <ellipse cx="100" cy="46" rx="24" ry="28"/>
-                <path d="M88,68 L112,68 L110,86 L90,86 Z"/>
-                <path d="M100,86 C122,86 138,96 138,118 C137,150 132,176 128,200 C126,214 126,230 132,250 C120,258 108,260 100,260 C92,260 80,258 68,250 C74,230 74,214 72,200 C68,176 63,150 62,118 C62,96 78,86 100,86 Z"/>
-                <path d="M134,104 C146,108 152,130 152,160 C152,186 150,206 146,230 C145,238 138,238 136,230 C132,206 128,182 126,150 C125,128 126,110 134,104 Z"/>
-                <path d="M66,104 C54,108 48,130 48,160 C48,186 50,206 54,230 C55,238 62,238 64,230 C68,206 72,182 74,150 C75,128 74,110 66,104 Z"/>
-                <path d="M101,258 L126,262 C128,304 126,362 121,420 C120,444 118,460 113,462 C108,463 105,458 104,448 C102,402 101,332 101,258 Z"/>
-                <path d="M99,258 L74,262 C72,304 74,362 79,420 C80,444 82,460 87,462 C92,463 95,458 96,448 C98,402 99,332 99,258 Z"/>
-              </clipPath>
-            </defs>
-
-            <!-- Base de projeção holográfica -->
-            <g class="holo-base">
-              <ellipse class="base-ring base-ring-3" cx="100" cy="476" rx="78" ry="13"/>
-              <ellipse class="base-ring base-ring-2" cx="100" cy="476" rx="58" ry="9"/>
-              <ellipse class="base-ring base-ring-1" cx="100" cy="476" rx="36" ry="6"/>
-            </g>
-
-            <!-- Figura humana -->
-            <g class="body-figure" filter="url(#neonGlow)">
-              <g class="figure-fill" fill="url(#holoFill)" stroke="url(#holoStroke)" stroke-width="1.6" stroke-linejoin="round">
-                <ellipse cx="100" cy="46" rx="24" ry="28"/>
-                <path d="M88,68 L112,68 L110,86 L90,86 Z"/>
-                <path d="M100,86 C122,86 138,96 138,118 C137,150 132,176 128,200 C126,214 126,230 132,250 C120,258 108,260 100,260 C92,260 80,258 68,250 C74,230 74,214 72,200 C68,176 63,150 62,118 C62,96 78,86 100,86 Z"/>
-                <path d="M134,104 C146,108 152,130 152,160 C152,186 150,206 146,230 C145,238 138,238 136,230 C132,206 128,182 126,150 C125,128 126,110 134,104 Z"/>
-                <path d="M66,104 C54,108 48,130 48,160 C48,186 50,206 54,230 C55,238 62,238 64,230 C68,206 72,182 74,150 C75,128 74,110 66,104 Z"/>
-                <path d="M101,258 L126,262 C128,304 126,362 121,420 C120,444 118,460 113,462 C108,463 105,458 104,448 C102,402 101,332 101,258 Z"/>
-                <path d="M99,258 L74,262 C72,304 74,362 79,420 C80,444 82,460 87,462 C92,463 95,458 96,448 C98,402 99,332 99,258 Z"/>
-              </g>
-              <!-- Órgãos que acendem ao serem selecionados -->
-              <g class="organ-layer" fill="url(#organGrad)">
-                ${organMarkup}
-              </g>
-              <!-- Linhas de malha (sensação 3D / wireframe anatômico) -->
-              <g class="figure-mesh" fill="none" stroke="#67e8f9" stroke-width="0.8" opacity="0.45">
-                <line x1="100" y1="92" x2="100" y2="256"/>
-                <path d="M70,120 Q100,134 130,120"/>
-                <path d="M68,150 Q100,166 132,150"/>
-                <path d="M70,182 Q100,196 130,182"/>
-                <path d="M74,214 Q100,226 126,214"/>
-                <line x1="62" y1="112" x2="138" y2="112"/>
-              </g>
-            </g>
-
-            <!-- Linha de varredura (scanner holográfico), recortada ao corpo -->
-            <g clip-path="url(#bodyClip)">
-              <rect class="scan-bar" x="36" y="0" width="128" height="46" fill="url(#scanGrad)"/>
-            </g>
-
-            <!-- Hotspots clicáveis -->
-            ${hotspotMarkup}
-          </svg>
-          <span class="holo-hint" id="holoHint">🖱️ Arraste para girar • toque nos pontos</span>
+          <div class="body-3d" id="bodyFigure">
+            <img class="body-img" src="assets/images/body_map.png"
+                 alt="Modelo anatômico do corpo humano com os órgãos destacados">
+            <div class="body-scan"></div>
+            <div class="organ-hotspots">${hotspotMarkup}</div>
+          </div>
+          <span class="holo-hint" id="holoHint">🖱️ Arraste para girar • toque nos órgãos</span>
         </div>
 
         <div class="bodymap-info">
@@ -990,7 +907,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div id="bodyMapInfoPanel">
             <div class="bodymap-placeholder-text">
-              <p>Toque nos <strong>pontos luminosos</strong> do holograma para ver como o Mounjaro atua em cada órgão. Arraste o corpo para girá-lo em 3D.</p>
+              <p>Toque nos <strong>órgãos destacados</strong> para ver como o Mounjaro atua em cada sistema. Arraste o corpo para girá-lo em 3D.</p>
             </div>
           </div>
         </div>
@@ -998,21 +915,23 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     const stage = container.querySelector('#bodyMapStage');
-    const svg = container.querySelector('.body-svg');
+    const figure = container.querySelector('#bodyFigure');
+    const bodyImg = container.querySelector('.body-img');
     const hint = container.querySelector('#holoHint');
-    const hotspots = container.querySelectorAll('.holo-hotspot');
-    const organs = container.querySelectorAll('.organ-glow');
+    const hotspots = container.querySelectorAll('.organ-hotspot');
     const infoPanel = container.querySelector('#bodyMapInfoPanel');
     const countEl = container.querySelector('#exploreCount');
     const fillEl = container.querySelector('#exploreFill');
     const explored = new Set();
+
+    // Se a imagem não existir ainda, evita o ícone de imagem quebrada.
+    bodyImg.addEventListener('error', () => { stage.classList.add('img-missing'); });
 
     function activate(id) {
       const sys = systems.find(s => s.id === id);
       if (!sys) return;
 
       hotspots.forEach(h => h.classList.toggle('active', h.dataset.spot === id));
-      organs.forEach(o => o.classList.toggle('on', o.dataset.organ === id));
 
       // Painel com card animado.
       infoPanel.innerHTML = `<div class="organ-card" role="status">
@@ -1035,12 +954,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hotspots.forEach(spot => {
       spot.addEventListener('click', () => activate(spot.dataset.spot));
-      spot.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(spot.dataset.spot); }
-      });
     });
 
-    // Arrastar para girar o holograma em 3D (pointer events).
+    // Arrastar para girar o modelo em 3D (pointer events).
     let dragging = false, moved = false, startX = 0, rot = 0, resumeTimer = null;
     function onDown(e) {
       dragging = true; moved = false; startX = e.clientX;
@@ -1051,10 +967,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const dx = e.clientX - startX;
       if (Math.abs(dx) < 4 && !moved) return;
       moved = true;
-      svg.classList.add('manual');
+      figure.classList.add('manual');
       if (hint) hint.classList.add('hidden');
-      rot = Math.max(-78, Math.min(78, dx * 0.55));
-      svg.style.transform = `rotateY(${rot}deg)`;
+      rot = Math.max(-55, Math.min(55, dx * 0.4));
+      figure.style.transform = `rotateY(${rot}deg)`;
     }
     function onUp() {
       if (!dragging) return;
@@ -1062,8 +978,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (moved) {
         // Volta a girar sozinho após alguns segundos parado.
         resumeTimer = setTimeout(() => {
-          svg.style.transform = '';
-          svg.classList.remove('manual');
+          figure.style.transform = '';
+          figure.classList.remove('manual');
         }, 4000);
       }
     }
