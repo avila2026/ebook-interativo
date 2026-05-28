@@ -175,18 +175,54 @@ class VoiceAgent {
   }
 
   createUI() {
+    // Dock fixo que agrupa o botão de voz e o controle de recolher.
+    this.dock = document.createElement('div');
+    this.dock.className = 'voice-agent-dock';
+
+    // Controle de recolher/expandir (handle). Quando recolhido, vira o atalho
+    // para reabrir o botão; quando expandido, vira o "×" para esconder.
+    this.collapseBtn = document.createElement('button');
+    this.collapseBtn.type = 'button';
+    this.collapseBtn.className = 'btn-voice-collapse';
+
     this.btn = document.createElement('button');
     this.btn.id = 'btnVoiceAgent';
     this.btn.className = 'btn-voice-agent';
     this.btn.innerHTML = '<span class="icon">🎙️</span><span class="label">Falar com o Ebook</span>';
-    
-    // Adiciona o CSS dinamicamente ou confia no components.css
-    document.body.appendChild(this.btn);
+
+    this.dock.appendChild(this.btn);
+    this.dock.appendChild(this.collapseBtn);
+    document.body.appendChild(this.dock);
+
+    // Estado inicial: recolhido por padrão no mobile (sai da frente do conteúdo).
+    const saved = localStorage.getItem('mounjaro_voice_collapsed');
+    const startCollapsed = saved === null
+      ? window.matchMedia('(max-width: 768px)').matches
+      : saved === '1';
+    this._setCollapsed(startCollapsed);
+
+    this.collapseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Não recolhe enquanto estiver em uso, para não esconder o controle ativo.
+      if (this.isActive && !this.dock.classList.contains('collapsed')) return;
+      this._setCollapsed(!this.dock.classList.contains('collapsed'));
+    });
 
     this.audioEl = document.createElement('audio');
     this.audioEl.autoplay = true;
 
     this.btn.addEventListener('click', () => this.toggle());
+  }
+
+  _setCollapsed(on) {
+    if (!this.dock) return;
+    this.dock.classList.toggle('collapsed', on);
+    localStorage.setItem('mounjaro_voice_collapsed', on ? '1' : '0');
+    this.collapseBtn.textContent = on ? '🎙️' : '×';
+    this.collapseBtn.setAttribute(
+      'aria-label',
+      on ? 'Abrir botão de voz' : 'Recolher botão de voz'
+    );
   }
 
   async toggle() {

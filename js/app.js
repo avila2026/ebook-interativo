@@ -179,12 +179,29 @@ document.addEventListener('DOMContentLoaded', () => {
         .filter(s => s.text.length > 8);
       this.currentIdx = 0;
       this._updateProgress();
-      this._bar.style.display = this.segments.length ? 'flex' : 'none';
+      const visible = this.segments.length > 0;
+      this._bar.style.display = visible ? 'flex' : 'none';
+      if (visible) {
+        document.body.classList.add('narrator-open');
+        // Mede a altura real da barra (no mobile ela quebra em 2 linhas) para que
+        // os botões flutuantes (voz/tema) subam exatamente o necessário.
+        requestAnimationFrame(() => {
+          document.body.style.setProperty('--narrator-h', `${this._bar.offsetHeight}px`);
+        });
+      } else {
+        this._clearOffset();
+      }
+    },
+
+    _clearOffset() {
+      document.body.classList.remove('narrator-open');
+      document.body.style.setProperty('--narrator-h', '0px');
     },
 
     hide() {
       this.stop();
       if (this._bar) this._bar.style.display = 'none';
+      this._clearOffset();
     },
 
     _togglePlay() {

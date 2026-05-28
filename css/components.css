@@ -1349,6 +1349,10 @@
 
 /* Extra bottom padding on article so last content isn't hidden */
 .article-container { padding-bottom: 72px; }
+/* Quando o narrador está aberto, reserva a altura real da barra (some no mobile) */
+body.narrator-open .article-container {
+  padding-bottom: calc(32px + var(--narrator-h, 0px));
+}
 
 .narrator-info {
   display: flex;
@@ -1587,11 +1591,53 @@
 /* ==========================================
    8. AGENTE DE VOZ (WebRTC)
    ========================================== */
-.btn-voice-agent {
+/* Dock fixo do agente de voz: agrupa a pílula e o controle de recolher.
+   Fica acima do botão de tema e sobe quando o narrador está aberto. */
+.voice-agent-dock {
   position: fixed;
-  bottom: 2rem;
+  bottom: calc(2rem + 62px + var(--narrator-h, 0px));
   right: 2rem;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: bottom 0.3s ease;
+}
+
+/* Controle de recolher/expandir. Recolhido vira atalho 🎙️; expandido vira ×. */
+.btn-voice-collapse {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.2s ease;
+}
+.btn-voice-collapse:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Estado recolhido: esconde a pílula, deixa só o handle 🎙️ no canto */
+.voice-agent-dock.collapsed .btn-voice-agent { display: none; }
+.voice-agent-dock.collapsed .btn-voice-collapse {
+  width: 48px;
+  height: 48px;
+  font-size: 1.4rem;
+  background: var(--bg-secondary);
+  color: var(--text-main);
+}
+
+.btn-voice-agent {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1652,10 +1698,7 @@
 }
 
 @media (max-width: 768px) {
-  .btn-voice-agent {
-    bottom: 5rem; /* Acima do botão de voltar ao topo em mobile */
-    right: 1.5rem;
-    padding: 10px 16px;
-  }
+  /* Mantém o dock alinhado verticalmente sobre o botão de tema (ambos right: 2rem) */
+  .btn-voice-agent { padding: 10px 16px; font-size: 0.9rem; }
 }
 
