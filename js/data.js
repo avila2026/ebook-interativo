@@ -218,6 +218,42 @@ const EBOOK_DATA = {
       `
     },
     {
+      id: "sinais-alerta",
+      type: "content",
+      title: "Sinais de Alerta",
+      subtitle: "Quando Procurar Atendimento Rápido",
+      summary: "Reconheça os sinais que exigem contato imediato com seu médico ou um pronto-socorro.",
+      content: `
+        <p class="lead">Saber reconhecer um sinal de alerta pode fazer diferença. Os pontos abaixo são baseados nas informações de segurança da bula. <strong>Eles não substituem orientação médica</strong> — na dúvida, procure atendimento.</p>
+
+        <div class="alert alert-danger">
+          <strong>🚨 Procure atendimento de urgência se tiver:</strong>
+          <ul style="margin-top: 0.75rem;">
+            <li><strong>Dor abdominal forte ou persistente</strong>, especialmente se irradiar para as costas — pode indicar problema no pâncreas (pancreatite).</li>
+            <li><strong>Vômitos ou diarreia persistentes</strong> com sinais de desidratação (boca muito seca, tontura, urina escura, pouca urina) — risco de lesão nos rins.</li>
+            <li><strong>Reação alérgica:</strong> inchaço no rosto, lábios ou garganta, dificuldade para respirar ou engolir, manchas na pele.</li>
+            <li><strong>Sintomas de hipoglicemia</strong> (tremor, suor frio, confusão, desmaio) — risco maior para quem usa insulina ou sulfonilureia.</li>
+          </ul>
+        </div>
+
+        <h3>Converse com seu médico em breve se notar</h3>
+        <ul>
+          <li><strong>Alteração na visão</strong> — pessoas com diabetes e retinopatia precisam de acompanhamento oftalmológico.</li>
+          <li><strong>Dor no lado direito da barriga, febre ou icterícia (pele/olhos amarelados)</strong> — possível problema na vesícula.</li>
+          <li><strong>Enjoos que não melhoram</strong> após as primeiras semanas ou após ajuste de dose.</li>
+        </ul>
+
+        <div class="alert alert-warning">
+          <strong>🏥 Antes de cirurgia, endoscopia ou sedação:</strong> avise toda a equipe médica que você usa tirzepatida. O esvaziamento gástrico mais lento aumenta o risco de aspiração durante a anestesia.
+        </div>
+
+        <div class="card-highlight">
+          <h4>💉 Nunca compartilhe a caneta</h4>
+          <p>Mesmo trocando a agulha, a caneta é de uso individual. Compartilhar pode transmitir infecções.</p>
+        </div>
+      `
+    },
+    {
       id: "capitulo-6",
       type: "content",
       title: "Capítulo 6 — Quem não pode usar?",
@@ -240,6 +276,38 @@ const EBOOK_DATA = {
           <li>Quem tem problemas graves no estômago (quando ele já é muito lento).</li>
           <li>Quem tem problemas sérios nos rins.</li>
         </ul>
+      `
+    },
+    {
+      id: "interacoes",
+      type: "content",
+      title: "Interações e Situações Especiais",
+      subtitle: "Remédios, Anticoncepcional, Cirurgia e Gravidez",
+      summary: "Entenda como a tirzepatida pode interagir com outros medicamentos e situações da vida.",
+      content: `
+        <p class="lead">A tirzepatida pode interagir com outros tratamentos e exige cuidados em situações específicas. Informe sempre seu médico sobre <strong>tudo</strong> o que você usa, incluindo vitaminas e fitoterápicos.</p>
+
+        <h3>💊 Outros medicamentos para diabetes</h3>
+        <p>Quando combinada com <strong>insulina</strong> ou <strong>sulfonilureias</strong> (secretagogos), aumenta o risco de hipoglicemia (açúcar baixo demais). O médico pode precisar ajustar a dose desses remédios.</p>
+
+        <h3>⏳ Absorção de remédios orais</h3>
+        <p>Como o estômago esvazia mais devagar, a absorção de alguns medicamentos tomados pela boca pode mudar. Comente com o médico se você usa remédios de horário rígido.</p>
+
+        <div class="card-highlight">
+          <h4>💊 Anticoncepcionais orais</h4>
+          <p>A pílula pode ter a absorção reduzida, principalmente no início e nos ajustes de dose. Converse com seu médico sobre usar também um <strong>método de barreira</strong> (como preservativo) por algumas semanas.</p>
+        </div>
+
+        <h3>🤰 Gravidez e amamentação</h3>
+        <p>A tirzepatida não é indicada na gravidez nem na amamentação. Se você planeja engravidar, fale com o médico — em geral recomenda-se suspender o tratamento com antecedência.</p>
+
+        <div class="alert alert-warning">
+          <strong>🏥 Cirurgia e anestesia:</strong> informe a equipe médica que você usa o medicamento antes de qualquer procedimento com sedação, pelo risco aumentado de aspiração.
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Resumo:</strong> nenhuma dessas situações significa que você "não pode" usar — significa que cada caso precisa de avaliação e ajuste individual feito pelo seu médico.
+        </div>
       `
     },
     {
@@ -434,6 +502,44 @@ const EBOOK_DATA = {
 
         <h3>3. Inteligência Artificial</h3>
         <p>Daqui a alguns anos, os médicos poderão usar computadores inteligentes e testes de sangue para saber exatamente qual remédio vai funcionar melhor no seu corpo, antes mesmo de você começar a tomar, evitando que você sinta qualquer enjoo.</p>
+      `
+    },
+    {
+      id: "perguntas-medico",
+      type: "content",
+      title: "Perguntas para Levar ao Médico",
+      subtitle: "Como se Preparar para a Consulta",
+      summary: "Um roteiro prático para aproveitar melhor a consulta e tomar decisões informadas.",
+      content: `
+        <p class="lead">A melhor decisão sobre o tratamento é tomada junto com seu médico. Chegar preparado para a consulta ajuda você a tirar todas as dúvidas e a receber a orientação mais segura.</p>
+
+        <h3>📋 O que levar anotado</h3>
+        <ul>
+          <li>Seu <strong>histórico de peso</strong> e as tentativas anteriores de emagrecer.</li>
+          <li>Lista de <strong>todos os medicamentos</strong>, vitaminas e suplementos que você usa.</li>
+          <li>Doenças que você tem ou já teve: diabetes, pré-diabetes, hipertensão, colesterol alto, apneia do sono, gordura no fígado.</li>
+          <li>Histórico de <strong>pancreatite, pedra na vesícula, doença renal ou problema na retina</strong>.</li>
+          <li>Histórico familiar de câncer de tireoide (CMT) ou síndrome NEM 2.</li>
+          <li>Se está grávida, amamentando ou planejando engravidar.</li>
+        </ul>
+
+        <div class="card-highlight">
+          <h4>❓ Perguntas que você pode fazer</h4>
+          <ul style="margin-top: 0.5rem;">
+            <li>Este tratamento é indicado para o meu caso específico?</li>
+            <li>Quais exames preciso fazer antes e durante o uso?</li>
+            <li>Quais efeitos colaterais são esperados e o que faço se aparecerem?</li>
+            <li>Como a dose vai ser ajustada ao longo do tempo?</li>
+            <li>Preciso mudar algum remédio que já tomo?</li>
+            <li>O que acontece se eu precisar interromper o tratamento?</li>
+            <li>Como fica a alimentação, a hidratação e a atividade física?</li>
+            <li>Com que frequência vou precisar de retornos?</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Dica:</strong> leve também o <em>checklist de triagem</em> e a calculadora de IMC do Lab Interativo deste guia. Eles ajudam a organizar a conversa — mas a decisão final é sempre do médico.
+        </div>
       `
     },
     {
