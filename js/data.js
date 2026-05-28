@@ -218,6 +218,42 @@ const EBOOK_DATA = {
       `
     },
     {
+      id: "sinais-alerta",
+      type: "content",
+      title: "Sinais de Alerta",
+      subtitle: "Quando Procurar Atendimento Rápido",
+      summary: "Reconheça os sinais que exigem contato imediato com seu médico ou um pronto-socorro.",
+      content: `
+        <p class="lead">Saber reconhecer um sinal de alerta pode fazer diferença. Os pontos abaixo são baseados nas informações de segurança da bula. <strong>Eles não substituem orientação médica</strong> — na dúvida, procure atendimento.</p>
+
+        <div class="alert alert-danger">
+          <strong>🚨 Procure atendimento de urgência se tiver:</strong>
+          <ul style="margin-top: 0.75rem;">
+            <li><strong>Dor abdominal forte ou persistente</strong>, especialmente se irradiar para as costas — pode indicar problema no pâncreas (pancreatite).</li>
+            <li><strong>Vômitos ou diarreia persistentes</strong> com sinais de desidratação (boca muito seca, tontura, urina escura, pouca urina) — risco de lesão nos rins.</li>
+            <li><strong>Reação alérgica:</strong> inchaço no rosto, lábios ou garganta, dificuldade para respirar ou engolir, manchas na pele.</li>
+            <li><strong>Sintomas de hipoglicemia</strong> (tremor, suor frio, confusão, desmaio) — risco maior para quem usa insulina ou sulfonilureia.</li>
+          </ul>
+        </div>
+
+        <h3>Converse com seu médico em breve se notar</h3>
+        <ul>
+          <li><strong>Alteração na visão</strong> — pessoas com diabetes e retinopatia precisam de acompanhamento oftalmológico.</li>
+          <li><strong>Dor no lado direito da barriga, febre ou icterícia (pele/olhos amarelados)</strong> — possível problema na vesícula.</li>
+          <li><strong>Enjoos que não melhoram</strong> após as primeiras semanas ou após ajuste de dose.</li>
+        </ul>
+
+        <div class="alert alert-warning">
+          <strong>🏥 Antes de cirurgia, endoscopia ou sedação:</strong> avise toda a equipe médica que você usa tirzepatida. O esvaziamento gástrico mais lento aumenta o risco de aspiração durante a anestesia.
+        </div>
+
+        <div class="card-highlight">
+          <h4>💉 Nunca compartilhe a caneta</h4>
+          <p>Mesmo trocando a agulha, a caneta é de uso individual. Compartilhar pode transmitir infecções.</p>
+        </div>
+      `
+    },
+    {
       id: "capitulo-6",
       type: "content",
       title: "Capítulo 6 — Quem não pode usar?",
@@ -240,6 +276,38 @@ const EBOOK_DATA = {
           <li>Quem tem problemas graves no estômago (quando ele já é muito lento).</li>
           <li>Quem tem problemas sérios nos rins.</li>
         </ul>
+      `
+    },
+    {
+      id: "interacoes",
+      type: "content",
+      title: "Interações e Situações Especiais",
+      subtitle: "Remédios, Anticoncepcional, Cirurgia e Gravidez",
+      summary: "Entenda como a tirzepatida pode interagir com outros medicamentos e situações da vida.",
+      content: `
+        <p class="lead">A tirzepatida pode interagir com outros tratamentos e exige cuidados em situações específicas. Informe sempre seu médico sobre <strong>tudo</strong> o que você usa, incluindo vitaminas e fitoterápicos.</p>
+
+        <h3>💊 Outros medicamentos para diabetes</h3>
+        <p>Quando combinada com <strong>insulina</strong> ou <strong>sulfonilureias</strong> (secretagogos), aumenta o risco de hipoglicemia (açúcar baixo demais). O médico pode precisar ajustar a dose desses remédios.</p>
+
+        <h3>⏳ Absorção de remédios orais</h3>
+        <p>Como o estômago esvazia mais devagar, a absorção de alguns medicamentos tomados pela boca pode mudar. Comente com o médico se você usa remédios de horário rígido.</p>
+
+        <div class="card-highlight">
+          <h4>💊 Anticoncepcionais orais</h4>
+          <p>A pílula pode ter a absorção reduzida, principalmente no início e nos ajustes de dose. Converse com seu médico sobre usar também um <strong>método de barreira</strong> (como preservativo) por algumas semanas.</p>
+        </div>
+
+        <h3>🤰 Gravidez e amamentação</h3>
+        <p>A tirzepatida não é indicada na gravidez nem na amamentação. Se você planeja engravidar, fale com o médico — em geral recomenda-se suspender o tratamento com antecedência.</p>
+
+        <div class="alert alert-warning">
+          <strong>🏥 Cirurgia e anestesia:</strong> informe a equipe médica que você usa o medicamento antes de qualquer procedimento com sedação, pelo risco aumentado de aspiração.
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Resumo:</strong> nenhuma dessas situações significa que você "não pode" usar — significa que cada caso precisa de avaliação e ajuste individual feito pelo seu médico.
+        </div>
       `
     },
     {
@@ -437,6 +505,109 @@ const EBOOK_DATA = {
       `
     },
     {
+      id: "nutricao",
+      type: "content",
+      title: "Alimentação, Proteína e Músculos",
+      subtitle: "Comer Bem Durante o Tratamento",
+      summary: "Como se alimentar para perder gordura sem perder massa muscular, com hidratação e fibras.",
+      content: `
+        <p class="lead">Durante o tratamento o apetite diminui — por isso, cada refeição precisa ser mais <strong>nutritiva</strong>. Comer pouco e mal aumenta o risco de perder massa muscular, ficar fraco e ter deficiências. A orientação individual deve vir de um nutricionista.</p>
+
+        <h3>🥩 Proteína em primeiro lugar</h3>
+        <p>A proteína protege a massa magra enquanto você emagrece. Boas fontes vão muito além da carne:</p>
+        <ul>
+          <li><strong>Origem animal:</strong> ovos, frango, peixe, carne magra, iogurte, queijos.</li>
+          <li><strong>Vegetarianas/veganas:</strong> feijão, lentilha, grão-de-bico, tofu, soja, ervilha, quinoa.</li>
+          <li><strong>Intolerantes à lactose:</strong> bebidas vegetais enriquecidas, tofu, leguminosas.</li>
+        </ul>
+        <p>Distribua a proteína ao longo do dia, não só no almoço.</p>
+
+        <h3>💧 Hidratação</h3>
+        <p>Com menos fome, é comum também beber menos água. A desidratação piora enjoos e sobrecarrega os rins. Tenha sempre água por perto e beba ao longo do dia, mesmo sem sede.</p>
+
+        <h3>🌾 Fibras e intestino</h3>
+        <p>A digestão mais lenta pode causar prisão de ventre. Ajudam a prevenir: verduras, legumes, frutas com casca, aveia e grãos integrais — sempre acompanhados de água.</p>
+
+        <div class="card-highlight">
+          <h4>🏋️ Treino de força</h4>
+          <p>Exercícios de força (musculação, faixas elásticas, peso do corpo) são o principal estímulo para preservar músculo durante o emagrecimento. Combine com atividade aeróbica que você goste. Adapte tudo à sua condição física — de preferência com orientação de um profissional.</p>
+        </div>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ Sinal de alerta nutricional:</strong> fraqueza importante, queda de cabelo, unhas frágeis ou tontura podem indicar ingestão insuficiente. Converse com seu médico ou nutricionista.
+        </div>
+      `
+    },
+    {
+      id: "manutencao",
+      type: "content",
+      title: "Manutenção, Platô e Reganho",
+      subtitle: "Depois que o Peso Desce",
+      summary: "Entenda por que a obesidade é crônica, o que é o platô e como manter os resultados.",
+      content: `
+        <p class="lead">Emagrecer é só parte da jornada. A obesidade é uma <strong>condição crônica</strong> — manter o resultado exige estratégia contínua, não força de vontade isolada.</p>
+
+        <h3>📉 O que é o platô?</h3>
+        <p>Depois de um tempo, a perda de peso desacelera ou estaciona. Isso é <strong>normal e esperado</strong>: o corpo se adapta gastando menos energia. O platô não significa que o tratamento "parou de funcionar". Ajustes são avaliados pelo médico.</p>
+
+        <h3>🔄 Por que o peso pode voltar?</h3>
+        <p>Estudos mostram que, ao interromper o medicamento, parte do peso costuma retornar. Isso acontece porque o tratamento controla mecanismos biológicos do apetite — ao pará-lo, esses mecanismos voltam. Não é "falta de disciplina"; é fisiologia.</p>
+
+        <div class="card-highlight">
+          <h4>🧩 Pilares da manutenção</h4>
+          <ul style="margin-top: 0.5rem;">
+            <li>Acompanhamento médico contínuo (não suspender por conta própria).</li>
+            <li>Alimentação rica em proteína e fibras.</li>
+            <li>Atividade física regular, com treino de força.</li>
+            <li>Sono de qualidade e cuidado com a saúde mental.</li>
+            <li>Apoio de equipe: médico, nutricionista e educador físico.</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Expectativa realista:</strong> não existe "alta definitiva" garantida. O objetivo é uma estratégia de longo prazo, definida com seu médico, para manter os ganhos de saúde.
+        </div>
+      `
+    },
+    {
+      id: "perguntas-medico",
+      type: "content",
+      title: "Perguntas para Levar ao Médico",
+      subtitle: "Como se Preparar para a Consulta",
+      summary: "Um roteiro prático para aproveitar melhor a consulta e tomar decisões informadas.",
+      content: `
+        <p class="lead">A melhor decisão sobre o tratamento é tomada junto com seu médico. Chegar preparado para a consulta ajuda você a tirar todas as dúvidas e a receber a orientação mais segura.</p>
+
+        <h3>📋 O que levar anotado</h3>
+        <ul>
+          <li>Seu <strong>histórico de peso</strong> e as tentativas anteriores de emagrecer.</li>
+          <li>Lista de <strong>todos os medicamentos</strong>, vitaminas e suplementos que você usa.</li>
+          <li>Doenças que você tem ou já teve: diabetes, pré-diabetes, hipertensão, colesterol alto, apneia do sono, gordura no fígado.</li>
+          <li>Histórico de <strong>pancreatite, pedra na vesícula, doença renal ou problema na retina</strong>.</li>
+          <li>Histórico familiar de câncer de tireoide (CMT) ou síndrome NEM 2.</li>
+          <li>Se está grávida, amamentando ou planejando engravidar.</li>
+        </ul>
+
+        <div class="card-highlight">
+          <h4>❓ Perguntas que você pode fazer</h4>
+          <ul style="margin-top: 0.5rem;">
+            <li>Este tratamento é indicado para o meu caso específico?</li>
+            <li>Quais exames preciso fazer antes e durante o uso?</li>
+            <li>Quais efeitos colaterais são esperados e o que faço se aparecerem?</li>
+            <li>Como a dose vai ser ajustada ao longo do tempo?</li>
+            <li>Preciso mudar algum remédio que já tomo?</li>
+            <li>O que acontece se eu precisar interromper o tratamento?</li>
+            <li>Como fica a alimentação, a hidratação e a atividade física?</li>
+            <li>Com que frequência vou precisar de retornos?</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Dica:</strong> leve também o <em>checklist de triagem</em> e a calculadora de IMC do Lab Interativo deste guia. Eles ajudam a organizar a conversa — mas a decisão final é sempre do médico.
+        </div>
+      `
+    },
+    {
       id: "conclusao",
       type: "content",
       title: "Conclusão",
@@ -453,7 +624,7 @@ const EBOOK_DATA = {
           <h5>🌟 Os 3 Passos para o Sucesso:</h5>
           <ol class="text-left" style="display: inline-block; max-width: 500px; margin: 15px auto;">
             <li><strong>Médico é Fundamental:</strong> Nunca tome por conta própria. Siga as orientações do seu doutor.</li>
-            <li><strong>Mude sua Rotina:</strong> Coma bem (bastante carne, ovo) e faça força (musculação) para proteger seu corpo.</li>
+            <li><strong>Mude sua Rotina:</strong> Priorize proteínas (de origem animal ou vegetal), hidrate-se e faça treino de força para proteger sua massa muscular.</li>
             <li><strong>Fuja do Falso:</strong> Compre apenas em farmácias sérias e desconfie de remédios de internet.</li>
           </ol>
         </div>
@@ -461,6 +632,36 @@ const EBOOK_DATA = {
         <p class="text-center" style="margin-top: 30px;">
           <em>Parabéns por ler até aqui! Use nossos <strong>Recursos Interativos</strong> no menu para testar o que aprendeu e montar sua lista de dúvidas para levar na sua próxima consulta médica.</em>
         </p>
+      `
+    },
+    {
+      id: "fontes",
+      type: "content",
+      title: "Fontes e Revisão Editorial",
+      subtitle: "Transparência e Responsabilidade",
+      summary: "As referências que embasam este guia e como ele deve ser usado.",
+      content: `
+        <p class="lead">Este material foi elaborado com base em fontes oficiais e na literatura científica. Ele tem caráter <strong>exclusivamente educativo</strong> e não substitui a bula, o profissional de saúde nem a consulta médica.</p>
+
+        <h3>📚 Principais referências</h3>
+        <ul>
+          <li><strong>Bula do Mounjaro® (tirzepatida)</strong> — Eli Lilly, aprovada pela ANVISA. Fonte primária para indicações, contraindicações, advertências e reações adversas.</li>
+          <li><strong>ANVISA</strong> — registro e atualizações de indicação no Brasil (diabetes tipo 2 e controle crônico de peso).</li>
+          <li><strong>FDA — Prescribing Information (Mounjaro / Zepbound)</strong> — informações regulatórias dos EUA.</li>
+          <li><strong>Programa de estudos SURPASS</strong> — ensaios clínicos de tirzepatida no diabetes tipo 2 (publicados no <em>The New England Journal of Medicine</em> e <em>The Lancet</em>).</li>
+          <li><strong>Programa de estudos SURMOUNT</strong> — ensaios clínicos de tirzepatida no controle de peso (publicados no <em>The New England Journal of Medicine</em>).</li>
+          <li><strong>PubChem (CID 166567236)</strong> — dados de identidade química da tirzepatida.</li>
+        </ul>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ Aviso médico-legal:</strong> os percentuais de perda de peso citados referem-se a médias observadas em ensaios clínicos, sob acompanhamento profissional, e <strong>não representam promessa de resultado individual</strong>. Mounjaro® é marca registrada da Eli Lilly. O uso é exclusivamente sob prescrição.
+        </div>
+
+        <div class="alert alert-info">
+          <strong>🩺 Revisão editorial:</strong> recomenda-se que o conteúdo médico seja revisado por profissional habilitado (médico/endocrinologista e farmacêutico) antes da publicação, com data de última revisão visível ao leitor.
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 1.5rem;">As referências acima são indicadas para consulta direta às fontes originais. Sempre confirme informações de dose, uso e segurança na bula vigente e com seu médico.</p>
       `
     }
   ],

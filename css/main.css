@@ -509,6 +509,12 @@ article strong {
   color: #fca5a5;
 }
 
+.alert-info {
+  background-color: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  color: #67e8f9;
+}
+
 /* Timeline Básica (Capítulo 2) */
 .timeline-simple {
   border-left: 2px solid var(--bg-tertiary);
