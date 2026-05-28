@@ -621,6 +621,20 @@ async function signOut() {
   if (supabase) {
     await supabase.auth.signOut();
   }
+  // Segurança em dispositivos compartilhados: remove a chave da OpenAI ao sair.
+  try { localStorage.removeItem('mounjaro_openai_apikey'); } catch {}
+}
+
+// Apaga deste navegador os dados pessoais/sensíveis guardados localmente
+// (diário de peso, sintomas, progresso e a chave da OpenAI). Útil em dispositivos
+// compartilhados. Não afeta os dados já sincronizados na conta do usuário.
+function clearLocalData() {
+  const keys = [
+    SYNC_KEYS.completed, SYNC_KEYS.weights, SYNC_KEYS.symptoms,
+    'mounjaro_openai_apikey'
+  ];
+  keys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
+  emit('ebook:localdatacleared', {});
 }
 
 function traduzErro(msg) {
@@ -715,6 +729,7 @@ window.Integrations = {
   get user() { return currentUser; },
   get hasAccess() { return hasAccess; },
   signOut,
+  clearLocalData,
   captureLead,
   trackVideo,
   startCheckout,

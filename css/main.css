@@ -257,6 +257,24 @@ aside.sidebar {
   color: var(--text-muted);
 }
 
+.btn-clear-data {
+  margin-top: 0.75rem;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-clear-data:hover {
+  border-color: #f87171;
+  color: #f87171;
+}
+
 /* Área de Leitura Principal */
 main.content-area {
   display: flex;
