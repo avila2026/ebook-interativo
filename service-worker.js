@@ -1,7 +1,7 @@
 // service-worker.js — Mounjaro sem Mitos (PWA)
 // Estratégia: precache do app shell + cache-first para estáticos com fallback de rede.
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `mounjaro-sem-mitos-${CACHE_VERSION}`;
 
 // Recursos essenciais para funcionamento offline (app shell).
@@ -29,7 +29,8 @@ const APP_SHELL = [
   './assets/icons/apple-touch-icon.png',
   './assets/images/mounjaro_box.jpg',
   './assets/images/mounjaro_device.jpg',
-  './assets/images/mounjaro_hand.jpg'
+  './assets/images/mounjaro_hand.jpg',
+  './assets/images/body_map.svg'
 ];
 
 // Instalação: faz o precache do app shell.
