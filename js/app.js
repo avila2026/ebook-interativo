@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
         title: '🪱 Ação no Intestino',
         body: `<p>O local original de onde os hormônios naturais (Incretinas) são liberados.</p>
           <ul>
-            <li><strong>Mimetismo Perfeito:</strong> a tirzepatida simula a ação dos hormônios que o intestino liberaria após uma refeição volumosa.</li>
+            <li><strong>Mimetismo Fisiológico:</strong> a tirzepatida simula a ação dos hormônios que o intestino liberaria após uma refeição volumosa.</li>
             <li><strong>Saúde Intestinal:</strong> pode influenciar indiretamente na microbiota pela alteração da dieta.</li>
           </ul>`
       },
@@ -1688,7 +1688,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div class="kwikpen-body">
               <div class="kwikpen-display">
-                ${simState.primedClicks ? '╎' : '·'}
+                —
               </div>
             </div>
             <div class="kwikpen-dial ${simState.isTurning ? 'dial-turning' : ''}"></div>
