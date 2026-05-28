@@ -1453,6 +1453,11 @@
   transform: scale(1.02);
 }
 
+/* Estado sem capa: gradiente sutil sobre o fundo preto do wrapper. */
+.video-thumbnail--default {
+  background-image: linear-gradient(135deg, #1f2937 0%, #0b1220 100%);
+}
+
 .video-overlay {
   position: absolute;
   top: 0;

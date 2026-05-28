@@ -563,6 +563,8 @@ function injectLeadForm() {
     <p class="lead-title">📬 Receba novidades</p>
     <form id="leadForm">
       <input type="email" id="leadEmail" placeholder="seu@email.com" autocomplete="email" required>
+      <!-- Honeypot anti-spam: invisível para humanos, bots tendem a preencher. -->
+      <input type="text" id="leadCompany" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
       <button type="submit">Quero receber</button>
       <p class="lead-msg" id="leadMsg" hidden></p>
     </form>`;
@@ -570,9 +572,24 @@ function injectLeadForm() {
 
   const form = wrap.querySelector('#leadForm');
   const msg = wrap.querySelector('#leadMsg');
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    // Honeypot preenchido => provável bot. Finge sucesso e não grava nada.
+    if (wrap.querySelector('#leadCompany').value) {
+      msg.hidden = false;
+      msg.textContent = 'Inscrição confirmada! 🎉';
+      msg.style.color = 'var(--accent, #10b981)';
+      form.reset();
+      return;
+    }
     const email = wrap.querySelector('#leadEmail').value.trim();
+    if (!EMAIL_RE.test(email)) {
+      msg.hidden = false;
+      msg.textContent = 'Informe um e-mail válido.';
+      msg.style.color = '#f87171';
+      return;
+    }
     const res = await captureLead(email, null, 'sidebar');
     msg.hidden = false;
     msg.textContent = res.ok ? 'Inscrição confirmada! 🎉' : (res.error || 'Não foi possível inscrever agora.');
@@ -619,9 +636,9 @@ async function onAuthChange(user) {
     offlineForced = false;
   } else {
     hasAccess = false;
-    if (SB.enabled && !offlineForced) {
-      gatewayUI.show();
-    }
+    // Não bloqueamos a leitura: o conteúdo abre direto. O login fica disponível
+    // sob demanda pelo botão "Entrar" no cabeçalho (ou pelo paywall de capítulos pagos).
+    gatewayUI.hide();
   }
   // Reavalia o paywall do capítulo atual.
   enforcePaywall(window.__ebookApp?.currentChapter?.());
@@ -669,7 +686,6 @@ async function bootstrap() {
     await onAuthChange(session.user);
   } else {
     await onAuthChange(null);
-    gatewayUI.showLoginCard();
   }
 
   supabase.auth.onAuthStateChange((_event, session) => {

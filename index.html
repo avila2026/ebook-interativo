@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Mounjaro sem Mitos — Ebook Web Interativo</title>
   <meta name="description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2. Desmistifique o Mounjaro.">
+  <link rel="canonical" href="https://ebook-interativo-fawn.vercel.app/">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
@@ -18,17 +19,19 @@
 
   <!-- Open Graph / Compartilhamento Social -->
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ebook-interativo-fawn.vercel.app/">
   <meta property="og:title" content="Mounjaro sem Mitos — Ebook Web Interativo">
   <meta property="og:description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.">
-  <meta property="og:image" content="assets/images/mounjaro_box.jpg">
+  <meta property="og:image" content="https://ebook-interativo-fawn.vercel.app/assets/images/mounjaro_box.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://ebook-interativo-fawn.vercel.app/assets/images/mounjaro_box.jpg">
   <meta name="twitter:title" content="Mounjaro sem Mitos — Ebook Web Interativo">
   <meta name="twitter:description" content="O guia completo e interativo sobre a tirzepatida, emagrecimento saudável e controle do diabetes tipo 2.">
 
   <!-- Segurança: Content Security Policy.
        Domínios externos liberados: esm.sh (SDK Supabase), *.supabase.co (API/Auth/Realtime),
        js.stripe.com / *.stripe.com (checkout). Tudo só é acionado quando js/config.js estiver preenchido. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https: blob: https://api.openai.com; script-src 'self' https://esm.sh https://js.stripe.com; manifest-src 'self'; worker-src 'self'; frame-src https://js.stripe.com https://hooks.stripe.com https://*.stripe.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh https://api.stripe.com https://api.openai.com wss://api.openai.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https: blob: https://api.openai.com; script-src 'self' https://esm.sh https://js.stripe.com; manifest-src 'self'; worker-src 'self'; frame-src https://js.stripe.com https://hooks.stripe.com https://*.stripe.com https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh https://api.stripe.com https://api.openai.com wss://api.openai.com;">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
@@ -321,13 +324,13 @@
     </main>
 
     <!-- Botão de Alternar Tema (Light/Dark Mode) -->
-    <button type="button" class="theme-toggle" id="btnThemeToggle" title="Alternar Tema">
+    <button type="button" class="theme-toggle" id="btnThemeToggle" title="Alternar Tema" aria-label="Alternar tema claro e escuro">
       <span class="icon-theme">🌓</span>
     </button>
   </div>
 
-  <!-- Chart.js para Gráficos -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Chart.js para Gráficos (hospedado localmente — funciona offline) -->
+  <script src="js/vendor/chart.umd.min.js" defer></script>
 
   <!-- Banco de Dados e Lógica de Aplicação -->
   <script src="js/config.js"></script>
