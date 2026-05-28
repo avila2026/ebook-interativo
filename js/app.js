@@ -1105,7 +1105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (selected.length === 0) {
         resultBox.className = "checklist-result-box safe";
         resultBox.innerHTML = `
-          <strong>✓ Triagem Concluída:</strong> Nenhum fator de risco severo direto foi selecionado. Você parece apto a discutir a prescrição com seu endocrinologista. Lembre-se que exames de sangue detalhados continuam indispensáveis!
+          <strong>✓ Triagem Concluída:</strong> Nenhum fator foi informado — mas isso <strong>não determina aptidão ao tratamento</strong>. A decisão depende exclusivamente de avaliação médica individualizada. Leve este checklist para discutir com seu médico.
         `;
       } else {
         resultBox.className = "checklist-result-box warning";
@@ -1231,9 +1231,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pct >= 80) {
       certificateHtml = `
         <div class="quiz-certificate fade-in">
-          <h4>🏆 Certificado de Excelência Metabólica 🏆</h4>
-          <p>Concedido ao leitor por demonstrar alto nível de conhecimento sobre o tratamento.</p>
-          <button class="btn-utility" id="btnPrintCertificate" style="margin-top: 1rem;">🖨️ Imprimir Certificado</button>
+          <h4>📋 Resumo de Aprendizado</h4>
+          <p>Você demonstrou boa compreensão educativa sobre a tirzepatida. Isso pode ajudar a ter conversas mais informadas com seu médico — mas <strong>não substitui avaliação clínica</strong>.</p>
         </div>
       `;
     }
@@ -1258,13 +1257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
     `;
-
-    const btnPrint = document.getElementById('btnPrintCertificate');
-    if (btnPrint) {
-      btnPrint.addEventListener('click', () => {
-        window.print();
-      });
-    }
 
     document.getElementById('btnQuizRestart').addEventListener('click', () => {
       renderQuizComponent(container);
@@ -1696,7 +1688,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div class="kwikpen-body">
               <div class="kwikpen-display">
-                ${simState.doseSelected ? '1' : (simState.primedClicks ? '╎' : '0')}
+                ${simState.primedClicks ? '╎' : '·'}
               </div>
             </div>
             <div class="kwikpen-dial ${simState.isTurning ? 'dial-turning' : ''}"></div>
@@ -1921,29 +1913,17 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
 
         case 4:
-          title.textContent = "Etapa 4: Seleção da Dose Clínica";
-          desc.textContent = "Com a caneta purgada, gire o botão de dose no sentido horário até travar completamente. A janela de dosagem mudará para exibir o número '1', indicando que uma dose inteira de tirzepatida foi carregada.";
-          
+          title.textContent = "Etapa 4: Preparação da Dose";
+          desc.textContent = "⚠️ A dose de tirzepatida é definida exclusivamente pelo seu médico e ajustada gradualmente ao longo do tratamento. Nunca altere a dose por conta própria. Para dúvidas sobre como preparar a caneta, consulte a bula ou o farmacêutico.";
+
           box.innerHTML = `
-            <button class="quiz-option-btn" id="btnSelectDose" style="justify-content: center; ${simState.doseSelected ? 'background: var(--primary-glow); border-color: var(--primary);' : ''}">⚙️ Girar Botão até o Limite (Exibir '1')</button>
+            <div style="background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.4); border-radius: 10px; padding: 1rem; font-size: 0.88rem; color: #fde68a; line-height: 1.6; text-align: left;">
+              <strong>Lembre-se:</strong> a dose inicial e os ajustes fazem parte do protocolo médico individual. Este simulador demonstra o <em>mecanismo</em> da caneta — não o protocolo de dosagem.
+            </div>
           `;
 
-          const btnSelectDose = document.getElementById('btnSelectDose');
-          btnSelectDose.addEventListener('click', () => {
-            simState.isTurning = true;
-            const visual = container.querySelector('.sim-visual-panel');
-            visual.innerHTML = getVisualRepresentation();
-            
-            setTimeout(() => {
-              simState.isTurning = false;
-              simState.doseSelected = true;
-              btnSelectDose.style.background = 'var(--primary-glow)';
-              btnSelectDose.style.borderColor = 'var(--primary)';
-              btnSelectDose.setAttribute('disabled', 'true');
-              btnNext.removeAttribute('disabled');
-              visual.innerHTML = getVisualRepresentation();
-            }, 500);
-          });
+          simState.doseSelected = true;
+          btnNext.removeAttribute('disabled');
           break;
 
         case 5:
