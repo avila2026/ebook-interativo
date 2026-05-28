@@ -813,7 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // imagem anatômica. Ajuste x/y se trocar a imagem de fundo.
     const systems = [
       {
-        id: 'brain', emoji: '🧠', label: 'Cérebro', x: 50, y: 7,
+        id: 'brain', emoji: '🧠', label: 'Cérebro', x: 50, y: 8,
         title: '🧠 Sistema Nervoso (Cérebro)',
         body: `<p>A tirzepatida age no <strong>hipotálamo</strong>, o centro que regula fome e gasto energético.</p>
           <ul>
@@ -822,7 +822,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'heart', emoji: '🫀', label: 'Coração', x: 51, y: 32,
+        id: 'heart', emoji: '🫀', label: 'Coração', x: 50, y: 36,
         title: '🫀 Sistema Cardiovascular',
         body: `<p>Ao reduzir peso e inflamação, alivia a sobrecarga sobre o coração e os vasos.</p>
           <ul>
@@ -831,7 +831,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'liver', emoji: '🥩', label: 'Fígado', x: 42, y: 43,
+        id: 'liver', emoji: '🥩', label: 'Fígado', x: 44, y: 45,
         title: '🥩 Ação no Fígado',
         body: `<p>Atua indiretamente na redução da gordura hepática e no controle metabólico.</p>
           <ul>
@@ -840,7 +840,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'stomach', emoji: '🍕', label: 'Estômago', x: 57, y: 45,
+        id: 'stomach', emoji: '🍕', label: 'Estômago', x: 62, y: 48,
         title: '🍕 Sistema Digestivo (Estômago)',
         body: `<p>Por mimetizar o GLP-1, o medicamento retarda o esvaziamento gástrico.</p>
           <ul>
@@ -849,7 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'pancreas', emoji: '🧪', label: 'Pâncreas', x: 52, y: 49,
+        id: 'pancreas', emoji: '🧪', label: 'Pâncreas', x: 55, y: 50,
         title: '🧪 Pâncreas e Insulina',
         body: `<p>Estimula a secreção hormonal de forma <strong>glicose-dependente</strong> (só quando você come).</p>
           <ul>
@@ -858,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'intestine', emoji: '🪱', label: 'Intestino', x: 49, y: 59,
+        id: 'intestine', emoji: '🪱', label: 'Intestino', x: 50, y: 58,
         title: '🪱 Ação no Intestino',
         body: `<p>O local original de onde os hormônios naturais (Incretinas) são liberados.</p>
           <ul>
@@ -867,7 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </ul>`
       },
       {
-        id: 'glycemia', emoji: '🩸', label: 'Glicemia', x: 50, y: 67,
+        id: 'glycemia', emoji: '🩸', label: 'Glicemia', x: 50, y: 66,
         title: '🩸 Controle Glicêmico Sistêmico',
         body: `<p>O efeito combinado mantém a <strong>glicose estável</strong> ao longo do dia.</p>
           <ul>
@@ -891,7 +891,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="bodymap-visual" id="bodyMapStage">
           <div class="holo-grid"></div>
           <div class="body-3d" id="bodyFigure">
-            <img class="body-img" src="assets/images/body_map.png"
+            <img class="body-img" src="assets/images/body_map.svg"
                  alt="Modelo anatômico do corpo humano com os órgãos destacados">
             <div class="body-scan"></div>
             <div class="organ-hotspots">${hotspotMarkup}</div>

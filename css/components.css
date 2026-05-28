@@ -96,7 +96,7 @@
 /* Aviso quando a imagem ainda não foi adicionada */
 .bodymap-visual.img-missing .body-img { display: none; }
 .bodymap-visual.img-missing .body-3d::after {
-  content: "Adicione assets/images/body_map.png";
+  content: "Imagem do mapa corporal indisponível";
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 700" role="img"
+     aria-label="Modelo anatômico do corpo humano com os órgãos destacados">
+  <defs>
+    <linearGradient id="bm-body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#22d3ee" stop-opacity="0.30"/>
+      <stop offset="55%"  stop-color="#10b981" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#0ea5b7" stop-opacity="0.07"/>
+    </linearGradient>
+    <linearGradient id="bm-stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <radialGradient id="bm-heart" cx="50%" cy="40%" r="60%">
+      <stop offset="0%"  stop-color="#fda4af"/>
+      <stop offset="55%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </radialGradient>
+    <radialGradient id="bm-liver" cx="50%" cy="40%" r="60%">
+      <stop offset="0%"  stop-color="#86efac"/>
+      <stop offset="60%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </radialGradient>
+    <radialGradient id="bm-stomach" cx="50%" cy="40%" r="60%">
+      <stop offset="0%"  stop-color="#fde68a"/>
+      <stop offset="60%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </radialGradient>
+    <radialGradient id="bm-organteal" cx="50%" cy="40%" r="60%">
+      <stop offset="0%"  stop-color="#a5f3fc"/>
+      <stop offset="60%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </radialGradient>
+    <filter id="bm-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="bm-soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+  </defs>
+
+  <!-- Silhueta humana (holográfica) -->
+  <g filter="url(#bm-glow)" fill="url(#bm-body)" stroke="url(#bm-stroke)"
+     stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Cabeça e pescoço -->
+    <ellipse cx="200" cy="62" rx="42" ry="50"/>
+    <path d="M183,104 L217,104 L214,140 L186,140 Z"/>
+    <!-- Tronco -->
+    <path d="M200,132
+             C238,132 270,142 286,168
+             C300,192 300,250 292,300
+             C286,338 280,372 272,404
+             C262,436 250,452 200,452
+             C150,452 138,436 128,404
+             C120,372 114,338 108,300
+             C100,250 100,192 114,168
+             C130,142 162,132 200,132 Z"/>
+    <!-- Braço esquerdo (do espectador) -->
+    <path d="M118,170 C92,182 76,214 70,262 C64,312 62,372 64,430
+             C65,452 78,452 80,432 C86,374 92,318 102,272
+             C110,232 120,200 130,182 Z"/>
+    <!-- Braço direito -->
+    <path d="M282,170 C308,182 324,214 330,262 C336,312 338,372 336,430
+             C335,452 322,452 320,432 C314,374 308,318 298,272
+             C290,232 280,200 270,182 Z"/>
+    <!-- Quadril/pelve -->
+    <path d="M132,404 C150,448 250,448 268,404
+             C272,452 268,470 260,486 L140,486 C132,470 128,452 132,404 Z"/>
+    <!-- Perna esquerda -->
+    <path d="M198,470 L150,480 C146,540 150,612 158,664
+             C160,686 178,686 180,666 C188,612 192,540 196,478 Z"/>
+    <!-- Perna direita -->
+    <path d="M202,470 L250,480 C254,540 250,612 242,664
+             C240,686 222,686 220,666 C212,612 208,540 204,478 Z"/>
+  </g>
+
+  <!-- Malha sutil (sensação de profundidade) -->
+  <g fill="none" stroke="#67e8f9" stroke-width="1" opacity="0.30" filter="url(#bm-soft)">
+    <line x1="200" y1="150" x2="200" y2="450"/>
+    <path d="M130,200 Q200,222 270,200"/>
+    <path d="M122,260 Q200,286 278,260"/>
+    <path d="M128,330 Q200,356 272,330"/>
+    <path d="M140,396 Q200,418 260,396"/>
+  </g>
+
+  <!-- Cérebro -->
+  <g filter="url(#bm-glow)">
+    <path d="M176,52 C172,38 188,30 200,34 C212,30 228,38 224,52
+             C232,58 230,74 218,78 C214,88 186,88 182,78
+             C170,74 168,58 176,52 Z"
+          fill="url(#bm-organteal)" stroke="#a5f3fc" stroke-width="1.2" opacity="0.92"/>
+    <path d="M200,36 L200,80 M186,44 Q200,52 214,44 M184,62 Q200,70 216,62"
+          fill="none" stroke="#0e7490" stroke-width="1.1" opacity="0.7"/>
+  </g>
+
+  <!-- Pulmões -->
+  <g filter="url(#bm-soft)" fill="url(#bm-organteal)" opacity="0.45">
+    <path d="M186,176 C186,212 178,250 162,266 C150,250 148,212 152,184
+             C160,176 178,172 186,176 Z"/>
+    <path d="M214,176 C214,212 222,250 238,266 C250,250 252,212 248,184
+             C240,176 222,172 214,176 Z"/>
+  </g>
+
+  <!-- Coração -->
+  <g filter="url(#bm-glow)">
+    <path d="M200,228
+             C190,214 168,214 166,234
+             C164,252 186,266 200,278
+             C214,266 236,252 234,234
+             C232,214 210,214 200,228 Z"
+          fill="url(#bm-heart)" stroke="#fecaca" stroke-width="1.2"/>
+  </g>
+
+  <!-- Fígado -->
+  <g filter="url(#bm-glow)">
+    <path d="M150,300 C190,290 232,294 244,304 C242,322 220,332 188,334
+             C168,336 152,326 150,300 Z"
+          fill="url(#bm-liver)" stroke="#bbf7d0" stroke-width="1.2"/>
+  </g>
+
+  <!-- Estômago -->
+  <g filter="url(#bm-glow)">
+    <path d="M238,316 C258,312 268,326 262,344 C256,360 240,360 230,348
+             C236,344 234,330 238,316 Z"
+          fill="url(#bm-stomach)" stroke="#fef08a" stroke-width="1.2"/>
+  </g>
+
+  <!-- Pâncreas -->
+  <g filter="url(#bm-soft)">
+    <path d="M196,348 C214,344 236,346 252,350 C238,358 214,360 196,356 Z"
+          fill="#f59e0b" stroke="#fcd34d" stroke-width="1" opacity="0.9"/>
+  </g>
+
+  <!-- Intestinos -->
+  <g filter="url(#bm-soft)" fill="none" stroke="url(#bm-organteal)" stroke-width="9"
+     stroke-linecap="round" opacity="0.85">
+    <path d="M158,372 H242 V392 H162 V412 H240 V432 H166"/>
+    <path d="M180,388 q22,-2 40,0 M176,408 q24,-2 48,0"/>
+  </g>
+
+  <!-- Marcador de glicemia (corrente sanguínea) -->
+  <g filter="url(#bm-soft)" fill="none" stroke="#f87171" stroke-width="2.4" opacity="0.7">
+    <path d="M168,452 C188,470 212,470 232,452"/>
+    <circle cx="200" cy="466" r="3" fill="#ef4444" stroke="none"/>
+  </g>
+</svg>
