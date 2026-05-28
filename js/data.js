@@ -505,6 +505,71 @@ const EBOOK_DATA = {
       `
     },
     {
+      id: "nutricao",
+      type: "content",
+      title: "Alimentação, Proteína e Músculos",
+      subtitle: "Comer Bem Durante o Tratamento",
+      summary: "Como se alimentar para perder gordura sem perder massa muscular, com hidratação e fibras.",
+      content: `
+        <p class="lead">Durante o tratamento o apetite diminui — por isso, cada refeição precisa ser mais <strong>nutritiva</strong>. Comer pouco e mal aumenta o risco de perder massa muscular, ficar fraco e ter deficiências. A orientação individual deve vir de um nutricionista.</p>
+
+        <h3>🥩 Proteína em primeiro lugar</h3>
+        <p>A proteína protege a massa magra enquanto você emagrece. Boas fontes vão muito além da carne:</p>
+        <ul>
+          <li><strong>Origem animal:</strong> ovos, frango, peixe, carne magra, iogurte, queijos.</li>
+          <li><strong>Vegetarianas/veganas:</strong> feijão, lentilha, grão-de-bico, tofu, soja, ervilha, quinoa.</li>
+          <li><strong>Intolerantes à lactose:</strong> bebidas vegetais enriquecidas, tofu, leguminosas.</li>
+        </ul>
+        <p>Distribua a proteína ao longo do dia, não só no almoço.</p>
+
+        <h3>💧 Hidratação</h3>
+        <p>Com menos fome, é comum também beber menos água. A desidratação piora enjoos e sobrecarrega os rins. Tenha sempre água por perto e beba ao longo do dia, mesmo sem sede.</p>
+
+        <h3>🌾 Fibras e intestino</h3>
+        <p>A digestão mais lenta pode causar prisão de ventre. Ajudam a prevenir: verduras, legumes, frutas com casca, aveia e grãos integrais — sempre acompanhados de água.</p>
+
+        <div class="card-highlight">
+          <h4>🏋️ Treino de força</h4>
+          <p>Exercícios de força (musculação, faixas elásticas, peso do corpo) são o principal estímulo para preservar músculo durante o emagrecimento. Combine com atividade aeróbica que você goste. Adapte tudo à sua condição física — de preferência com orientação de um profissional.</p>
+        </div>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ Sinal de alerta nutricional:</strong> fraqueza importante, queda de cabelo, unhas frágeis ou tontura podem indicar ingestão insuficiente. Converse com seu médico ou nutricionista.
+        </div>
+      `
+    },
+    {
+      id: "manutencao",
+      type: "content",
+      title: "Manutenção, Platô e Reganho",
+      subtitle: "Depois que o Peso Desce",
+      summary: "Entenda por que a obesidade é crônica, o que é o platô e como manter os resultados.",
+      content: `
+        <p class="lead">Emagrecer é só parte da jornada. A obesidade é uma <strong>condição crônica</strong> — manter o resultado exige estratégia contínua, não força de vontade isolada.</p>
+
+        <h3>📉 O que é o platô?</h3>
+        <p>Depois de um tempo, a perda de peso desacelera ou estaciona. Isso é <strong>normal e esperado</strong>: o corpo se adapta gastando menos energia. O platô não significa que o tratamento "parou de funcionar". Ajustes são avaliados pelo médico.</p>
+
+        <h3>🔄 Por que o peso pode voltar?</h3>
+        <p>Estudos mostram que, ao interromper o medicamento, parte do peso costuma retornar. Isso acontece porque o tratamento controla mecanismos biológicos do apetite — ao pará-lo, esses mecanismos voltam. Não é "falta de disciplina"; é fisiologia.</p>
+
+        <div class="card-highlight">
+          <h4>🧩 Pilares da manutenção</h4>
+          <ul style="margin-top: 0.5rem;">
+            <li>Acompanhamento médico contínuo (não suspender por conta própria).</li>
+            <li>Alimentação rica em proteína e fibras.</li>
+            <li>Atividade física regular, com treino de força.</li>
+            <li>Sono de qualidade e cuidado com a saúde mental.</li>
+            <li>Apoio de equipe: médico, nutricionista e educador físico.</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Expectativa realista:</strong> não existe "alta definitiva" garantida. O objetivo é uma estratégia de longo prazo, definida com seu médico, para manter os ganhos de saúde.
+        </div>
+      `
+    },
+    {
       id: "perguntas-medico",
       type: "content",
       title: "Perguntas para Levar ao Médico",
@@ -559,7 +624,7 @@ const EBOOK_DATA = {
           <h5>🌟 Os 3 Passos para o Sucesso:</h5>
           <ol class="text-left" style="display: inline-block; max-width: 500px; margin: 15px auto;">
             <li><strong>Médico é Fundamental:</strong> Nunca tome por conta própria. Siga as orientações do seu doutor.</li>
-            <li><strong>Mude sua Rotina:</strong> Coma bem (bastante carne, ovo) e faça força (musculação) para proteger seu corpo.</li>
+            <li><strong>Mude sua Rotina:</strong> Priorize proteínas (de origem animal ou vegetal), hidrate-se e faça treino de força para proteger sua massa muscular.</li>
             <li><strong>Fuja do Falso:</strong> Compre apenas em farmácias sérias e desconfie de remédios de internet.</li>
           </ol>
         </div>
@@ -567,6 +632,36 @@ const EBOOK_DATA = {
         <p class="text-center" style="margin-top: 30px;">
           <em>Parabéns por ler até aqui! Use nossos <strong>Recursos Interativos</strong> no menu para testar o que aprendeu e montar sua lista de dúvidas para levar na sua próxima consulta médica.</em>
         </p>
+      `
+    },
+    {
+      id: "fontes",
+      type: "content",
+      title: "Fontes e Revisão Editorial",
+      subtitle: "Transparência e Responsabilidade",
+      summary: "As referências que embasam este guia e como ele deve ser usado.",
+      content: `
+        <p class="lead">Este material foi elaborado com base em fontes oficiais e na literatura científica. Ele tem caráter <strong>exclusivamente educativo</strong> e não substitui a bula, o profissional de saúde nem a consulta médica.</p>
+
+        <h3>📚 Principais referências</h3>
+        <ul>
+          <li><strong>Bula do Mounjaro® (tirzepatida)</strong> — Eli Lilly, aprovada pela ANVISA. Fonte primária para indicações, contraindicações, advertências e reações adversas.</li>
+          <li><strong>ANVISA</strong> — registro e atualizações de indicação no Brasil (diabetes tipo 2 e controle crônico de peso).</li>
+          <li><strong>FDA — Prescribing Information (Mounjaro / Zepbound)</strong> — informações regulatórias dos EUA.</li>
+          <li><strong>Programa de estudos SURPASS</strong> — ensaios clínicos de tirzepatida no diabetes tipo 2 (publicados no <em>The New England Journal of Medicine</em> e <em>The Lancet</em>).</li>
+          <li><strong>Programa de estudos SURMOUNT</strong> — ensaios clínicos de tirzepatida no controle de peso (publicados no <em>The New England Journal of Medicine</em>).</li>
+          <li><strong>PubChem (CID 166567236)</strong> — dados de identidade química da tirzepatida.</li>
+        </ul>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ Aviso médico-legal:</strong> os percentuais de perda de peso citados referem-se a médias observadas em ensaios clínicos, sob acompanhamento profissional, e <strong>não representam promessa de resultado individual</strong>. Mounjaro® é marca registrada da Eli Lilly. O uso é exclusivamente sob prescrição.
+        </div>
+
+        <div class="alert alert-info">
+          <strong>🩺 Revisão editorial:</strong> recomenda-se que o conteúdo médico seja revisado por profissional habilitado (médico/endocrinologista e farmacêutico) antes da publicação, com data de última revisão visível ao leitor.
+        </div>
+
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 1.5rem;">As referências acima são indicadas para consulta direta às fontes originais. Sempre confirme informações de dose, uso e segurança na bula vigente e com seu médico.</p>
       `
     }
   ],
