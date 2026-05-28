@@ -865,19 +865,6 @@ header.content-header {
   color: var(--text-inverse);
 }
 
-/* Efeito de Desenho para a Silhueta SVG do Corpo */
-.body-svg path.body-outline {
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  animation: draw-outline 3s ease-out forwards;
-}
-
-@keyframes draw-outline {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
 /* Animação para a gotícula de purga (Simulador) */
 @keyframes float-bubble {
   0% { transform: translateY(0) scale(1); opacity: 0.9; filter: drop-shadow(0 0 4px var(--primary-glow)); }

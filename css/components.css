@@ -52,22 +52,62 @@
   pointer-events: none;
 }
 
-/* Silhueta Humana SVG holográfica */
-.body-svg {
-  height: 100%;
-  width: auto;
+/* Figura anatômica (imagem) com giro 3D */
+.body-3d {
   position: relative;
   z-index: 2;
-  overflow: visible;
-  filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.35));
+  height: 100%;
+  display: inline-flex;
+  filter: drop-shadow(0 0 22px rgba(34, 211, 238, 0.35));
   transform-style: preserve-3d;
   animation: holoTurn 9s ease-in-out infinite;
 }
 
 /* Estado de rotação manual (arrastar): desliga o giro automático */
-.body-svg.manual {
+.body-3d.manual {
   animation: none;
   transition: transform 0.08s linear;
+}
+
+.body-img {
+  height: 100%;
+  width: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Linha de varredura (scanner) sobre a imagem */
+.body-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14%;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(165, 243, 252, 0) 0%,
+    rgba(103, 232, 249, 0.45) 50%,
+    rgba(165, 243, 252, 0) 100%);
+  mix-blend-mode: screen;
+  animation: holoScan 3.8s cubic-bezier(.4, 0, .6, 1) infinite;
+}
+
+/* Aviso quando a imagem ainda não foi adicionada */
+.bodymap-visual.img-missing .body-img { display: none; }
+.bodymap-visual.img-missing .body-3d::after {
+  content: "Adicione assets/images/body_map.png";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 240px;
+  height: 100%;
+  padding: 1rem;
+  text-align: center;
+  color: #67e8f9;
+  font-size: 0.85rem;
+  border: 1px dashed rgba(34, 211, 238, 0.4);
+  border-radius: 12px;
 }
 
 /* Dica de interação */
@@ -89,101 +129,84 @@
 }
 .holo-hint.hidden { opacity: 0; }
 
-/* Flutuação 3D + leve respiração do corpo */
-.body-figure {
-  transform-origin: 100px 245px;
-  animation: holoFloat 5.5s ease-in-out infinite, holoFlicker 4s steps(60) infinite;
+/* Camada de hotspots sobreposta à imagem (cobre exatamente a figura) */
+.organ-hotspots {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
 }
 
-.figure-mesh { animation: meshPulse 4s ease-in-out infinite; }
-
-/* Órgãos que acendem ao selecionar um sistema */
-.organ-glow {
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: opacity 0.3s ease;
+/* Hotspots interativos sobre os órgãos */
+.organ-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
 }
-.organ-glow.on {
-  opacity: 0.95;
-  animation: organPulse 1.6s ease-in-out infinite;
-}
-@keyframes organPulse {
-  0%, 100% { opacity: 0.55; transform: scale(0.9); }
-  50%      { opacity: 1;    transform: scale(1.15); }
-}
-
-/* Base de projeção (anéis luminosos no chão) */
-.base-ring {
-  fill: none;
-  stroke: #22d3ee;
-  stroke-width: 1.4;
-  transform-origin: 100px 476px;
-}
-.base-ring-1 { animation: ringPulse 3s ease-in-out infinite; }
-.base-ring-2 { animation: ringPulse 3s ease-in-out infinite 0.4s; opacity: 0.7; }
-.base-ring-3 { animation: ringPulse 3s ease-in-out infinite 0.8s; opacity: 0.45; }
-
-/* Linha de varredura do scanner */
-.scan-bar { animation: holoScan 3.6s cubic-bezier(.4,0,.6,1) infinite; }
-
-/* Hotspots interativos (dentro do SVG) */
-.holo-hotspot { cursor: pointer; outline: none; }
-.holo-hotspot .hs-ring {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 1.6;
-  transform-box: fill-box;
-  transform-origin: center;
+.hs-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.6px solid var(--accent);
   animation: hsPulse 2s ease-out infinite;
 }
-.holo-hotspot .hs-dot {
-  fill: var(--primary);
-  stroke: #fff;
-  stroke-width: 2;
+.hs-core {
+  position: absolute;
+  inset: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  line-height: 1;
+  background: rgba(5, 19, 28, 0.78);
+  border: 2px solid #fff;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
   transition: var(--transition-normal);
 }
-.holo-hotspot .hs-emoji {
-  font-size: 12px;
+.hs-tag {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #e0fbff;
+  background: rgba(5, 19, 28, 0.85);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  padding: 2px 8px;
+  border-radius: 999px;
+  opacity: 0;
   pointer-events: none;
-  user-select: none;
+  transition: opacity 0.2s;
 }
-.holo-hotspot:hover .hs-dot,
-.holo-hotspot:focus-visible .hs-dot { fill: var(--accent); }
-.holo-hotspot:focus-visible .hs-ring { stroke: #fff; }
-.holo-hotspot.active .hs-dot {
-  fill: var(--accent);
-  filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.9));
+.organ-hotspot:hover .hs-tag,
+.organ-hotspot:focus-visible .hs-tag,
+.organ-hotspot.active .hs-tag { opacity: 1; }
+.organ-hotspot:hover .hs-core,
+.organ-hotspot:focus-visible .hs-core { border-color: var(--accent); }
+.organ-hotspot.active .hs-core {
+  background: var(--accent);
+  border-color: #fff;
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.95);
 }
-.holo-hotspot.active .hs-ring { stroke-width: 2.4; }
+.organ-hotspot.active .hs-pulse { border-width: 2.4px; }
 
-@keyframes holoFloat {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-12px); }
-}
 @keyframes holoTurn {
   0%, 100% { transform: rotateY(-7deg); }
   50%      { transform: rotateY(7deg); }
 }
-@keyframes holoFlicker {
-  0%, 96%, 100% { opacity: 1; }
-  97%  { opacity: 0.82; }
-  98%  { opacity: 0.95; }
-  99%  { opacity: 0.85; }
-}
-@keyframes meshPulse {
-  0%, 100% { opacity: 0.30; }
-  50%      { opacity: 0.65; }
-}
 @keyframes holoScan {
-  0%   { transform: translateY(-20px); opacity: 0; }
+  0%   { top: -14%; opacity: 0; }
   10%  { opacity: 1; }
   90%  { opacity: 1; }
-  100% { transform: translateY(470px); opacity: 0; }
-}
-@keyframes ringPulse {
-  0%, 100% { transform: scale(0.92); opacity: 0.25; }
-  50%      { transform: scale(1.08); opacity: 0.85; }
+  100% { top: 100%; opacity: 0; }
 }
 @keyframes hsPulse {
   0%   { transform: scale(0.9); opacity: 0.9; }
@@ -191,8 +214,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .body-svg, .body-figure, .figure-mesh, .base-ring,
-  .scan-bar, .holo-hotspot .hs-ring, .organ-glow.on { animation: none !important; }
+  .body-3d, .body-scan, .hs-pulse { animation: none !important; }
 }
 
 /* Info Panel do Mapa Corporal */
