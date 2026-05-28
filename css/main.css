@@ -257,6 +257,13 @@ aside.sidebar {
   color: var(--text-muted);
 }
 
+.footer-link {
+  color: var(--text-muted);
+  text-decoration: underline;
+  transition: var(--transition-fast);
+}
+.footer-link:hover { color: var(--primary-light); }
+
 .btn-clear-data {
   margin-top: 0.75rem;
   width: 100%;

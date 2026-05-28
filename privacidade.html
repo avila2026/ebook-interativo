@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Política de Privacidade — Mounjaro sem Mitos</title>
+  <meta name="description" content="Como tratamos seus dados pessoais e de saúde no ebook Mounjaro sem Mitos, conforme a LGPD.">
+  <meta name="robots" content="noindex">
+
+  <meta name="theme-color" content="#10b981">
+  <meta name="color-scheme" content="dark">
+
+  <!-- CSP: página estática, sem dependências externas além das fontes -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'self';">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary:   #0a0f14;
+      --bg-secondary: #12181f;
+      --bg-tertiary:  #1b242e;
+      --primary:      #10b981;
+      --primary-light:#34d399;
+      --accent:       #06b6d4;
+      --text-main:    #f3f4f6;
+      --text-muted:   #9ca3af;
+      --border-color: rgba(255,255,255,.08);
+      --font-title:   'Outfit','Inter',system-ui,sans-serif;
+      --font-body:    'Inter',system-ui,sans-serif;
+      --glass-bg:     rgba(18,24,31,.85);
+      --shadow-lg:    0 10px 30px -10px rgba(0,0,0,.6);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:16px; scroll-behavior:smooth; }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: 2rem 1.25rem 4rem;
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(16,185,129,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16,185,129,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .wrap {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+    }
+    .brand { text-align: center; margin-bottom: 2rem; }
+    .brand-icon {
+      font-size: 2.25rem; display:block; margin-bottom:.35rem;
+      filter: drop-shadow(0 0 12px rgba(16,185,129,.5));
+    }
+    .brand-name {
+      font-family: var(--font-title); font-size: 1.35rem; font-weight: 700;
+    }
+    .brand-name span { color: var(--primary); }
+
+    h1 {
+      font-family: var(--font-title); font-size: 1.9rem; font-weight: 800;
+      margin-bottom: .35rem; letter-spacing: -.02em;
+    }
+    .updated { color: var(--text-muted); font-size: .85rem; margin-bottom: 2rem; }
+
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem 1.6rem;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    h2 {
+      font-family: var(--font-title); font-size: 1.2rem; font-weight: 700;
+      color: var(--primary-light);
+      margin: 2rem 0 .6rem;
+    }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 1rem; margin: 1.1rem 0 .4rem; color: #fff; }
+    p, li { color: #d8dde3; font-size: .95rem; }
+    p { margin-bottom: .7rem; }
+    ul { margin: 0 0 .8rem 1.25rem; }
+    li { margin-bottom: .35rem; }
+    strong { color: #fff; }
+    a { color: var(--primary-light); }
+
+    .callout {
+      border-radius: 10px; padding: .9rem 1.1rem; margin: 1rem 0;
+      font-size: .9rem;
+    }
+    .callout-warn {
+      background: rgba(245,158,11,.10);
+      border: 1px solid rgba(245,158,11,.35);
+      color: #fde68a;
+    }
+    .callout-info {
+      background: rgba(6,182,212,.10);
+      border: 1px solid rgba(6,182,212,.30);
+      color: #a5f3fc;
+    }
+    .placeholder {
+      background: var(--bg-tertiary);
+      border: 1px dashed rgba(255,255,255,.25);
+      border-radius: 4px;
+      padding: 0 .35rem; color: #fbbf24; font-weight: 600;
+    }
+
+    .toc {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;
+    }
+    .toc strong { display:block; margin-bottom:.4rem; font-family: var(--font-title); }
+    .toc ol { margin: 0 0 0 1.2rem; }
+    .toc a { font-size: .9rem; }
+
+    .back {
+      display:inline-block; margin-top: 2rem; color: var(--text-muted);
+      text-decoration: none; font-size: .9rem;
+    }
+    .back:hover { color: var(--primary-light); }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5rem; }
+      .card { padding: 1.2rem 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">🧪</span>
+      <div class="brand-name">Mounjaro <span>sem Mitos</span></div>
+    </div>
+
+    <h1>Política de Privacidade</h1>
+    <p class="updated">Última atualização: 28 de maio de 2026</p>
+
+    <div class="card">
+      <div class="callout callout-warn">
+        <strong>⚠️ Modelo a revisar.</strong> Este documento é um ponto de partida e
+        <strong>não substitui aconselhamento jurídico</strong>. Antes de publicar, preencha
+        os campos destacados e peça revisão de um(a) advogado(a), especialmente por tratar de
+        <strong>dados sensíveis de saúde</strong>.
+      </div>
+
+      <div class="toc">
+        <strong>Conteúdo</strong>
+        <ol>
+          <li><a href="#controlador">Quem é o responsável</a></li>
+          <li><a href="#dados">Quais dados coletamos</a></li>
+          <li><a href="#sensiveis">Dados de saúde (sensíveis)</a></li>
+          <li><a href="#finalidades">Para que usamos</a></li>
+          <li><a href="#bases">Bases legais</a></li>
+          <li><a href="#compartilhamento">Com quem compartilhamos</a></li>
+          <li><a href="#armazenamento">Onde ficam e por quanto tempo</a></li>
+          <li><a href="#direitos">Seus direitos (LGPD)</a></li>
+          <li><a href="#seguranca">Segurança</a></li>
+          <li><a href="#menores">Menores de idade</a></li>
+          <li><a href="#alteracoes">Alterações</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ol>
+      </div>
+
+      <p>Esta política explica como o ebook interativo <strong>Mounjaro sem Mitos</strong>
+      ("aplicativo", "nós") trata os seus dados pessoais, em conformidade com a
+      <strong>Lei Geral de Proteção de Dados — LGPD (Lei nº 13.709/2018)</strong>.</p>
+
+      <h2 id="controlador">1. Quem é o responsável (Controlador)</h2>
+      <p>O controlador dos dados é
+      <span class="placeholder">[inserir nome/razão social do responsável]</span>,
+      contato pelo e-mail
+      <span class="placeholder">[inserir e-mail de contato]</span>.
+      É esse responsável quem decide como e por que seus dados são tratados.</p>
+
+      <h2 id="dados">2. Quais dados coletamos</h2>
+      <ul>
+        <li><strong>Conta (opcional):</strong> e-mail e senha, quando você cria login para
+          sincronizar seu progresso. A autenticação é feita pela plataforma Supabase; nós não
+          temos acesso à sua senha em texto.</li>
+        <li><strong>Progresso de leitura:</strong> quais capítulos você concluiu.</li>
+        <li><strong>Diário de peso e sintomas (opcional):</strong> valores que você mesmo
+          registra nas ferramentas do app. <em>São dados de saúde</em> — veja a seção 3.</li>
+        <li><strong>Newsletter (opcional):</strong> e-mail informado no formulário "Receba
+          novidades".</li>
+        <li><strong>Pagamento (se você comprar):</strong> processado pela Stripe. Não
+          recebemos nem armazenamos dados do seu cartão.</li>
+        <li><strong>Assistente de voz (opcional):</strong> se você ativar a conversa por voz,
+          o áudio do seu microfone é enviado à OpenAI para gerar a resposta. A chave de API
+          que você fornece fica salva <strong>apenas no seu navegador</strong>.</li>
+        <li><strong>Dados técnicos:</strong> preferências (tema, fonte) e os itens acima ficam
+          em <code>localStorage</code> no seu navegador. <strong>Não usamos cookies de
+          rastreamento publicitário.</strong></li>
+      </ul>
+
+      <h2 id="sensiveis">3. Dados de saúde (sensíveis)</h2>
+      <div class="callout callout-info">
+        Peso, sintomas e informações relacionadas ao tratamento são
+        <strong>dados pessoais sensíveis</strong> (art. 11 da LGPD) e recebem proteção
+        reforçada. Você só os fornece se quiser usar as ferramentas de acompanhamento, e o
+        tratamento ocorre <strong>com o seu consentimento</strong>, podendo ser revogado a
+        qualquer momento (veja a seção 8).
+      </div>
+      <p>Por padrão, esses registros ficam <strong>somente no seu dispositivo</strong>. Se
+      você criar uma conta e fizer login, eles passam a ser sincronizados na sua conta para
+      você acessá-los em outros aparelhos.</p>
+
+      <h2 id="finalidades">4. Para que usamos</h2>
+      <ul>
+        <li>Permitir a leitura, salvar seu progresso e suas anotações.</li>
+        <li>Sincronizar seus dados entre dispositivos (se você tiver conta).</li>
+        <li>Enviar novidades, se você se inscrever na newsletter.</li>
+        <li>Processar a compra de acesso, se houver.</li>
+        <li>Operar o assistente de voz, se você o ativar.</li>
+      </ul>
+
+      <h2 id="bases">5. Bases legais</h2>
+      <ul>
+        <li><strong>Consentimento</strong> (art. 7, I e art. 11, I): newsletter, diário de
+          saúde e assistente de voz.</li>
+        <li><strong>Execução de contrato</strong> (art. 7, V): conta e compra de acesso.</li>
+        <li><strong>Legítimo interesse</strong> (art. 7, IX): segurança e funcionamento
+          básico do aplicativo, sem prejuízo aos seus direitos.</li>
+      </ul>
+
+      <h2 id="compartilhamento">6. Com quem compartilhamos</h2>
+      <p>Não vendemos seus dados. Compartilhamos apenas com prestadores necessários para o
+      funcionamento, que atuam como operadores:</p>
+      <ul>
+        <li><strong>Supabase</strong> — banco de dados e autenticação.</li>
+        <li><strong>Stripe</strong> — processamento de pagamento (se habilitado).</li>
+        <li><strong>OpenAI</strong> — apenas se você usar o assistente de voz.</li>
+        <li><strong>Vercel</strong> — hospedagem do site.</li>
+      </ul>
+      <p>Alguns desses serviços podem processar dados <strong>fora do Brasil</strong>. Ao
+      usar o aplicativo, você está ciente dessa transferência internacional, feita com
+      salvaguardas contratuais desses provedores.</p>
+
+      <h2 id="armazenamento">7. Onde ficam e por quanto tempo</h2>
+      <ul>
+        <li><strong>No seu navegador:</strong> até você limpar (botão "🔒 Limpar meus dados
+          deste dispositivo" no menu, ou ao limpar os dados do navegador).</li>
+        <li><strong>Na sua conta (nuvem):</strong> enquanto a conta existir. Ao solicitar a
+          exclusão, removemos os dados associados.</li>
+        <li><strong>Newsletter:</strong> até você pedir o descadastramento.</li>
+      </ul>
+
+      <h2 id="direitos">8. Seus direitos (LGPD, art. 18)</h2>
+      <p>Você pode, a qualquer momento: confirmar a existência de tratamento; acessar,
+      corrigir ou atualizar seus dados; solicitar anonimização ou
+      <strong>exclusão</strong>; pedir a <strong>portabilidade</strong>; e
+      <strong>revogar o consentimento</strong>.</p>
+      <ul>
+        <li><strong>No próprio app:</strong> use "🔒 Limpar meus dados deste dispositivo"
+          para apagar o que está salvo neste navegador (progresso, diário e chave de voz).</li>
+        <li><strong>Dados na conta/nuvem:</strong> solicite acesso ou exclusão pelo e-mail de
+          contato (seção 12). Responderemos no prazo legal.</li>
+      </ul>
+
+      <h2 id="seguranca">9. Segurança</h2>
+      <p>Usamos conexão criptografada (HTTPS) e regras de acesso por linha
+      (<em>Row Level Security</em>) no banco de dados, de modo que cada usuário só acessa os
+      próprios registros. Nenhum sistema é 100% imune; ao usar dispositivos compartilhados,
+      faça logout e utilize a opção de limpar seus dados locais.</p>
+
+      <h2 id="menores">10. Menores de idade</h2>
+      <p>Este conteúdo é educativo sobre um medicamento de uso adulto e <strong>sob
+      prescrição</strong>. Não é destinado a menores de 18 anos e não coletamos dados
+      intencionalmente de crianças e adolescentes.</p>
+
+      <h2 id="alteracoes">11. Alterações desta política</h2>
+      <p>Podemos atualizar este documento. Quando isso ocorrer, alteraremos a data de "última
+      atualização" no topo. Mudanças relevantes poderão ser comunicadas no próprio app.</p>
+
+      <h2 id="contato">12. Contato e Encarregado (DPO)</h2>
+      <p>Para exercer seus direitos ou tirar dúvidas sobre privacidade, fale com o encarregado
+      pelo e-mail <span class="placeholder">[inserir e-mail de contato]</span>. Você também
+      pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+      <div class="callout callout-warn">
+        <strong>Lembrete de saúde:</strong> este material é educativo e não substitui a
+        avaliação de um profissional de saúde. Não tome decisões sobre medicamentos com base
+        apenas neste conteúdo.
+      </div>
+    </div>
+
+    <a class="back" href="index.html"><span aria-hidden="true">←</span> Voltar ao ebook</a>
+  </div>
+</body>
+</html>
