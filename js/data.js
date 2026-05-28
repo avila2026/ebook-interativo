@@ -34,22 +34,22 @@ const EBOOK_DATA = {
           <p class="image-caption">Mounjaro sem Mitos: Porque você merece uma vida com mais energia e saúde.</p>
         </div>
 
-        <p class="lead">Você já sentiu que, por mais que tente, o seu próprio corpo parece jogar contra você na hora de emagrecer? Você não está sozinho. A boa notícia é que a ciência finalmente entendeu isso, e estamos vivendo <strong>a maior revolução da saúde</strong> das últimas décadas.</p>
+        <p class="lead">Você já sentiu que, por mais que tente, o seu próprio corpo parece jogar contra você na hora de emagrecer? Você não está sozinho. A boa notícia é que a ciência avançou muito nessa área, e estamos vivendo <strong>um avanço significativo no tratamento</strong> da obesidade e do diabetes tipo 2.</p>
         
         <p>Nos últimos tempos, você provavelmente tem visto na TV e nas redes sociais histórias de pessoas que transformaram seus corpos e recuperaram a alegria de viver. Grande parte dessa revolução tem um nome: <strong>Mounjaro</strong> (feito com uma substância chamada tirzepatida).</p>
         
         <div class="card-highlight">
           <h4>💡 O Fim do Efeito Sanfona?</h4>
-          <p>Diferente de tudo o que já existiu, o Mounjaro não é só uma "ajudinha" para perder peso. Ele age exatamente onde o problema começa: reeducando os sinais do seu estômago e cérebro. Ele imita hormônios naturais que dizem ao corpo: "Ei, já temos energia suficiente, não precisamos de mais fome agora!". O resultado? O açúcar no sangue despenca e você recupera o controle sobre o que come.</p>
+          <p>O Mounjaro não é um simples supressor de apetite. Ele age como agonista dos receptores GIP e GLP-1 — hormônios que o próprio corpo produz após as refeições para sinalizar saciedade e regular a produção de insulina. Com isso, pode contribuir para a redução da glicemia e ajudar no controle do apetite quando usado com acompanhamento médico adequado.</p>
         </div>
 
         <h3>Por Que Ele é Tão Falado?</h3>
-        <p>Os resultados são surpreendentes. Em testes pelo mundo, muitas pessoas conseguiram perder cerca de <strong>20% do seu peso</strong>. Pense nisso não apenas em quilos perdidos, mas em ganho de vida: é poder brincar com os filhos sem perder o fôlego, ver os exames voltarem ao normal e amarrar o sapato sem dificuldade. Antes, só cirurgias muito invasivas conseguiam fazer isso.</p>
+        <p>Nos ensaios clínicos SURPASS e SURMOUNT, muitos participantes atingiram perda média de cerca de <strong>20% do peso corporal</strong>. Pense nisso em termos de saúde: melhora nos exames, menos pressão nas articulações, mais disposição para as atividades do dia a dia. Resultados assim, antes observados principalmente em cirurgias bariátricas, agora são documentados também com tratamento farmacológico — sempre com acompanhamento profissional.</p>
 
         <h3>O Que Você Vai Descobrir Aqui</h3>
         <p>A internet está cheia de promessas mágicas e informações falsas. Nosso objetivo neste Ebook é segurar a sua mão e explicar <strong>tudo de um jeito muito simples e honesto</strong>. Sem palavras difíceis e sem enrolação.</p>
 
-        <p>Você vai entender como esse tratamento funciona, o que esperar de verdade, os cuidados que deve ter e como transformar o Mounjaro no seu maior aliado para reconquistar a sua saúde e autoestima.</p>
+        <p>Você vai entender como esse tratamento funciona, o que esperar de verdade, os cuidados que deve ter e como usar esse conhecimento para ter conversas mais informadas com seu médico.</p>
 
         <div class="alert alert-warning">
           <strong>⚠️ Importante:</strong> O Mounjaro é um tratamento médico sério. Não é estética ou vaidade, é saúde. Este guia é para informar e preparar você, mas lembre-se: nunca inicie o uso sem o acompanhamento de um bom médico!
@@ -127,12 +127,12 @@ const EBOOK_DATA = {
           </div>
           <div class="timeline-item">
             <span class="year">Hoje (Mounjaro)</span>
-            <p><strong>Ação Dupla:</strong> O Mounjaro imita DOIS mensageiros ao mesmo tempo, trazendo resultados tão fortes que se comparam aos de uma cirurgia.</p>
+            <p><strong>Ação Dupla:</strong> O Mounjaro atua como agonista de dois receptores hormonais (GIP e GLP-1) simultaneamente — uma abordagem que, nos ensaios clínicos, foi associada a resultados expressivos de controle glicêmico e perda de peso.</p>
           </div>
         </div>
 
         <h3>No Brasil</h3>
-        <p>A agência de saúde do Brasil (ANVISA) aprovou o Mounjaro em 2023, trazendo uma nova e poderosa opção de tratamento para os brasileiros.</p>
+        <p>A ANVISA aprovou o Mounjaro em 2023 inicialmente para o controle do diabetes tipo 2. Em 2025, a indicação foi ampliada para o controle crônico de peso em adultos com IMC ≥ 30 kg/m², ou IMC ≥ 27 kg/m² na presença de pelo menos uma comorbidade relacionada ao peso (como hipertensão, dislipidemia ou apneia do sono). O uso continua sendo exclusivamente sob prescrição e acompanhamento médico.</p>
       `
     },
     {
@@ -166,7 +166,7 @@ const EBOOK_DATA = {
       subtitle: "Além do Emagrecimento",
       summary: "Veja como o Mounjaro ajuda não só no peso, mas também no coração e na glicose.",
       content: `
-        <p>Usar o Mounjaro do jeito certo não é só para ficar magro. Ele conserta várias partes do corpo que não estavam funcionando bem.</p>
+        <p>Além do controle do diabetes tipo 2, os estudos clínicos mostram que a tirzepatida pode melhorar múltiplos marcadores metabólicos — não se resumindo apenas à perda de peso.</p>
 
         <div class="benefit-grid">
           <div class="benefit-card">
@@ -174,8 +174,8 @@ const EBOOK_DATA = {
             <p>Ajuda muito quem tem diabetes, baixando o açúcar no sangue para níveis normais, igual de uma pessoa sem a doença.</p>
           </div>
           <div class="benefit-card">
-            <h5>📉 Perda de Peso Forte</h5>
-            <p>Ajuda a perder em média 20% do peso, eliminando aquela gordura perigosa que fica presa nos órgãos da barriga.</p>
+            <h5>📉 Perda de Peso Significativa</h5>
+            <p>Nos ensaios SURMOUNT, participantes atingiram perda média de ~20% do peso corporal, com redução de gordura visceral — sempre em conjunto com mudanças no estilo de vida.</p>
           </div>
           <div class="benefit-card">
             <h5>❤️ Protege o Coração</h5>
