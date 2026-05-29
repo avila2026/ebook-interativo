@@ -489,12 +489,264 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.Integrations?.clearLocalData) {
           window.Integrations.clearLocalData();
         } else {
-          ['mounjaro_completed', 'mounjaro_weights', 'mounjaro_symptoms', 'mounjaro_openai_apikey']
+          ['mounjaro_completed', 'mounjaro_weights', 'mounjaro_symptoms', 'mounjaro_openai_apikey', 'mounjaro_user_name']
             .forEach(k => { try { localStorage.removeItem(k); } catch {} });
         }
         location.reload();
       });
     }
+  }
+
+  // ==========================================
+  // EXPORTAÇÃO / COMPARTILHAMENTO EM PDF
+  // ==========================================
+  let _jspdfPromise = null;
+  function loadJsPDF() {
+    if (window.jspdf?.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+    if (_jspdfPromise) return _jspdfPromise;
+    _jspdfPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'js/vendor/jspdf.umd.min.js';
+      s.onload = () => window.jspdf?.jsPDF ? resolve(window.jspdf.jsPDF) : reject(new Error('jsPDF indisponível'));
+      s.onerror = () => reject(new Error('Falha ao carregar o gerador de PDF'));
+      document.head.appendChild(s);
+    });
+    return _jspdfPromise;
+  }
+
+  // Constrói o documento PDF (textual) a partir do capítulo.
+  async function buildChapterPdfDoc(chapter) {
+    const JsPDF = await loadJsPDF();
+    const doc = new JsPDF({ unit: 'pt', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 48;
+    const maxW = pageW - margin * 2;
+    let y = margin;
+
+    const footer = () => {
+      const p = doc.internal.getCurrentPageInfo().pageNumber;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(150);
+      doc.text('Conteúdo educativo — não substitui avaliação médica. Mounjaro sem Mitos.', margin, pageH - 22);
+      doc.text(String(p), pageW - margin, pageH - 22, { align: 'right' });
+      doc.setTextColor(20);
+    };
+    const ensureSpace = (h) => {
+      if (y + h > pageH - margin) { footer(); doc.addPage(); y = margin; }
+    };
+
+    // Cabeçalho da marca
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 150, 80);
+    doc.text('MOUNJARO SEM MITOS', margin, y);
+    y += 8;
+    doc.setDrawColor(0, 150, 80);
+    doc.line(margin, y, pageW - margin, y);
+    y += 22;
+
+    // Título e subtítulo
+    doc.setTextColor(20);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.splitTextToSize(chapter.title || 'Capítulo', maxW).forEach(line => {
+      ensureSpace(24); doc.text(line, margin, y); y += 24;
+    });
+    if (chapter.subtitle) {
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(11);
+      doc.setTextColor(110);
+      doc.splitTextToSize(chapter.subtitle, maxW).forEach(line => {
+        ensureSpace(16); doc.text(line, margin, y); y += 16;
+      });
+      doc.setTextColor(20);
+    }
+    y += 10;
+
+    // Extrai blocos de texto do HTML do capítulo
+    const tmp = document.createElement('div');
+    tmp.innerHTML = chapter.content || '';
+    const blocks = tmp.querySelectorAll('h1, h2, h3, h4, h5, p, li');
+    blocks.forEach(el => {
+      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (!text) return;
+      const tag = el.tagName.toLowerCase();
+      const isHeading = /^h[1-5]$/.test(tag);
+      const isItem = tag === 'li';
+      doc.setFont('helvetica', isHeading ? 'bold' : 'normal');
+      doc.setFontSize(isHeading ? 13 : 10.5);
+      const prefix = isItem ? '•  ' : '';
+      const lineH = isHeading ? 18 : 15;
+      if (isHeading) y += 6;
+      doc.splitTextToSize(prefix + text, maxW).forEach(line => {
+        ensureSpace(lineH); doc.text(line, margin, y); y += lineH;
+      });
+      if (!isHeading) y += 4;
+    });
+
+    footer();
+    return doc;
+  }
+
+  function pdfFileName(chapter) {
+    const slug = (chapter.id || 'capitulo').replace(/[^a-z0-9-]/gi, '');
+    return `mounjaro-${slug}.pdf`;
+  }
+
+  async function downloadChapterPDF(chapterId) {
+    const chapter = EBOOK_DATA.chapters.find(c => c.id === chapterId);
+    if (!chapter) return;
+    try {
+      const doc = await buildChapterPdfDoc(chapter);
+      doc.save(pdfFileName(chapter));
+    } catch (e) {
+      console.warn('[pdf]', e);
+      alert('Não foi possível gerar o PDF agora. Tente novamente com conexão.');
+    }
+  }
+
+  async function shareChapterPDF(chapterId) {
+    const chapter = EBOOK_DATA.chapters.find(c => c.id === chapterId);
+    if (!chapter) return;
+    const title = `${chapter.title} — Mounjaro sem Mitos`;
+    const text = 'Trecho educativo do guia Mounjaro sem Mitos.';
+    try {
+      const doc = await buildChapterPdfDoc(chapter);
+      const blob = doc.output('blob');
+      const file = new File([blob], pdfFileName(chapter), { type: 'application/pdf' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title, text });
+        return;
+      }
+      if (navigator.share) {
+        await navigator.share({ title, text, url: window.location.href });
+        return;
+      }
+      // Sem Web Share: baixa o arquivo para o usuário compartilhar manualmente.
+      doc.save(pdfFileName(chapter));
+      alert('Seu navegador não permite compartilhar direto. O PDF foi baixado para você enviar manualmente.');
+    } catch (e) {
+      if (e && e.name === 'AbortError') return; // usuário cancelou
+      console.warn('[share-pdf]', e);
+      alert('Não foi possível compartilhar agora. Tente baixar o PDF.');
+    }
+  }
+
+  // Barra de ações (Baixar/Compartilhar PDF) injetada no topo do capítulo.
+  function injectChapterActions(chapterId) {
+    const bar = document.createElement('div');
+    bar.className = 'chapter-actions';
+    bar.innerHTML = `
+      <button type="button" class="chapter-action-btn" id="btnChapterPdf">📄 Baixar PDF</button>
+      <button type="button" class="chapter-action-btn" id="btnChapterShare">🔗 Compartilhar</button>
+    `;
+    ebookArticle.prepend(bar);
+    bar.querySelector('#btnChapterPdf').addEventListener('click', () => downloadChapterPDF(chapterId));
+    bar.querySelector('#btnChapterShare').addEventListener('click', () => shareChapterPDF(chapterId));
+  }
+
+  // ==========================================
+  // PAINEL DO LEITOR (DASHBOARD)
+  // ==========================================
+  function getUserName() {
+    const saved = (localStorage.getItem('mounjaro_user_name') || '').trim();
+    if (saved) return saved;
+    const email = window.Integrations?.user?.email;
+    if (email) return email.split('@')[0];
+    return '';
+  }
+
+  function renderDashboard() {
+    headerTitle.textContent = 'Meu Painel';
+    headerSubtitle.textContent = 'Resumo da sua jornada de leitura';
+    narrator.hide();
+
+    const total = EBOOK_DATA.chapters.length;
+    const done = state.completedChapters.filter(id => id !== 'recursos-interativos' && id !== 'dashboard').length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    const name = getUserName();
+    const greeting = name ? `Olá, ${escapeHtml(name)}!` : 'Olá, leitor(a)!';
+    const today = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    // Próximo capítulo não lido (na ordem do sumário)
+    const nextUnread = EBOOK_DATA.chapters.find(c => !state.completedChapters.includes(c.id));
+
+    // Resumo do diário de peso (defensivo)
+    let weightLine = '';
+    try {
+      const logs = JSON.parse(localStorage.getItem('mounjaro_weights')) || [];
+      if (logs.length && typeof logs[0].val !== 'undefined') {
+        weightLine = `<p>⚖️ Último peso registrado: <strong>${escapeHtml(String(logs[0].val))} kg</strong> · ${logs.length} registro(s).</p>`;
+      }
+    } catch {}
+
+    const suggestions = [];
+    if (nextUnread) {
+      suggestions.push(`<button type="button" class="dash-suggestion" data-go="${nextUnread.id}">📖 Continuar de onde parei: <strong>${escapeHtml(nextUnread.title)}</strong></button>`);
+    } else {
+      suggestions.push(`<div class="dash-suggestion dash-suggestion--done">🎉 Você concluiu todos os capítulos! Que tal revisar o Lab Interativo?</div>`);
+    }
+    if (!weightLine) {
+      suggestions.push(`<button type="button" class="dash-suggestion" data-go="recursos-interativos">📓 Registre seu peso no Lab Interativo</button>`);
+    }
+    suggestions.push(`<button type="button" class="dash-suggestion" data-go="perguntas-medico">🩺 Prepare as perguntas para levar ao médico</button>`);
+
+    ebookArticle.innerHTML = `
+      <div class="dash fade-in">
+        <button type="button" class="dash-back" id="dashBack">← Voltar ao início do ebook</button>
+
+        <header class="dash-hero">
+          <h1>${greeting}</h1>
+          <p class="dash-date">📅 ${today}</p>
+        </header>
+
+        <section class="dash-card dash-progress">
+          <h3>Seu progresso de leitura</h3>
+          <div class="dash-bar"><i style="width:${pct}%"></i></div>
+          <p><strong>${done}</strong> de <strong>${total}</strong> capítulos lidos — <strong>${pct}%</strong></p>
+          ${weightLine}
+        </section>
+
+        <section class="dash-card">
+          <h3>Sugestões para você</h3>
+          <div class="dash-suggestions">${suggestions.join('')}</div>
+        </section>
+
+        <section class="dash-card dash-name">
+          <h3>Seu nome no painel</h3>
+          <form id="dashNameForm" class="dash-name-form">
+            <input type="text" id="dashNameInput" maxlength="40" placeholder="Como quer ser chamado(a)?" value="${escapeHtml(localStorage.getItem('mounjaro_user_name') || '')}">
+            <button type="submit">Salvar</button>
+          </form>
+        </section>
+
+        <section class="dash-card dash-help">
+          <h3>💬 Precisa de ajuda?</h3>
+          <p>Fale com a gente — tiramos suas dúvidas sobre o guia.</p>
+          <ul class="dash-help-list">
+            <li>✉️ <a href="mailto:Avilamix.ac@gmail.com">Avilamix.ac@gmail.com</a></li>
+            <li>📞 <a href="tel:+5568981041177">(68) 98104-1177</a></li>
+            <li>💚 <a href="https://wa.me/5568981041177" target="_blank" rel="noopener">Conversar no WhatsApp</a></li>
+          </ul>
+          <p class="dash-help-note">Atendimento sobre o conteúdo educativo. Para orientações de saúde, consulte seu médico.</p>
+        </section>
+      </div>
+    `;
+
+    document.getElementById('dashBack').addEventListener('click', () => loadChapter('introducao'));
+    ebookArticle.querySelectorAll('.dash-suggestion[data-go]').forEach(btn => {
+      btn.addEventListener('click', () => loadChapter(btn.getAttribute('data-go')));
+    });
+    const nameForm = document.getElementById('dashNameForm');
+    nameForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = document.getElementById('dashNameInput').value.trim();
+      if (v) localStorage.setItem('mounjaro_user_name', v);
+      else localStorage.removeItem('mounjaro_user_name');
+      renderDashboard();
+    });
   }
 
   // Carrega e renderiza o conteúdo de um capítulo
@@ -515,6 +767,14 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.remove('active');
       }
     });
+
+    // Caso seja o Painel do Leitor (Dashboard)
+    if (chapterId === 'dashboard') {
+      renderDashboard();
+      updateNavigationButtons();
+      document.dispatchEvent(new CustomEvent('ebook:chapterloaded', { detail: { chapterId } }));
+      return;
+    }
 
     // Caso seja a seção de Ferramentas / Laboratório Interativo
     if (chapterId === 'recursos-interativos') {
@@ -546,11 +806,14 @@ document.addEventListener('DOMContentLoaded', () => {
     html += chapter.content;
 
     ebookArticle.innerHTML = html;
-    
+
+    // Barra de ações do capítulo (Baixar/Compartilhar PDF) — em todas as páginas de leitura.
+    injectChapterActions(chapterId);
+
     if (chapter.video) {
       bindVideoEvents();
     }
-    
+
     // Injeta imagem real baseada nos Placeholders
     resolveImagePlaceholders();
 
@@ -714,6 +977,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateNavigationButtons() {
+    // O Painel não faz parte da sequência de leitura: esconde a navegação inferior.
+    if (state.currentChapter === 'dashboard') {
+      btnPrev.style.visibility = 'hidden';
+      btnNext.style.visibility = 'hidden';
+      return;
+    }
+
     const list = [...EBOOK_DATA.chapters.map(c => c.id), 'recursos-interativos'];
     const idx = list.indexOf(state.currentChapter);
 
@@ -740,7 +1010,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Progresso de Leitura Gamificado
   function markAsCompleted(chapterId) {
-    if (chapterId !== 'recursos-interativos' && !state.completedChapters.includes(chapterId)) {
+    if (chapterId !== 'recursos-interativos' && chapterId !== 'dashboard' && !state.completedChapters.includes(chapterId)) {
       state.completedChapters.push(chapterId);
       localStorage.setItem('mounjaro_completed', JSON.stringify(state.completedChapters));
       
