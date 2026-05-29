@@ -15,7 +15,7 @@
 
 ## Sobre o Projeto
 
-**Mounjaro sem Mitos** é um guia interativo, educativo e **não-prescritivo** sobre a tirzepatida (Mounjaro), voltado a quem quer entender o tratamento com **mais segurança, menos medo e expectativas realistas**. Desenvolvido como Progressive Web App (PWA) instalável, funciona offline, traz um laboratório interativo (modelo anatômico, quizzes, diários) e integração opcional com Supabase + Stripe.
+**Mounjaro sem Mitos** é um guia interativo, educativo e **não prescritivo** sobre a tirzepatida (Mounjaro), voltado a quem quer entender o tratamento com **mais segurança, menos medo e expectativas realistas**. Desenvolvido como Progressive Web App (PWA) instalável, funciona offline, traz um laboratório interativo (modelo anatômico, quizzes, diários) e integração opcional com Supabase + Stripe.
 
 > Conteúdo educativo — não substitui avaliação médica, não orienta dose, compra ou uso.
 
@@ -27,7 +27,7 @@
 
 ### Conteúdo
 - **23 capítulos** cobrindo mecanismo de ação, indicações aprovadas/em estudo, benefícios, riscos, sinais de alerta, contraindicações, interações, comparação com outros fármacos, estudos clínicos (SURPASS/SURMOUNT/SUMMIT/SYNERGY-NASH), nutrição, linha do tempo do tratamento, manutenção/reganho, custo & acesso, mitos e perguntas para o médico
-- **Disclaimer educativo fixo** e linguagem não-prescritiva em todo o material
+- **Disclaimer educativo fixo** e linguagem não prescritiva em todo o material
 - **Glossário interativo** com termos médicos e científicos
 - **Narrador de capítulos** (Web Speech API) e **agente de voz** opcional (OpenAI Realtime, com chave do próprio usuário)
 - Progresso de leitura salvo automaticamente (localStorage + nuvem)
@@ -209,7 +209,7 @@ A página de login está em [`/login.html`](https://ebook-interativo-fawn.vercel
 - A chave da OpenAI (agente de voz) fica **apenas no navegador** do usuário e nunca é enviada ao servidor
 - **Privacidade/LGPD:** Política de Privacidade dedicada + opção de apagar os dados locais a qualquer momento
 
-> **Conteúdo médico:** material educativo, não-prescritivo. Antes de publicar, recomenda-se revisão por profissional de saúde habilitado e preenchimento dos dados do responsável na Política de Privacidade.
+> **Conteúdo médico:** material educativo, não prescritivo. Antes de publicar, recomenda-se revisão por profissional de saúde habilitado e preenchimento dos dados do responsável na Política de Privacidade.
 
 ---
 
