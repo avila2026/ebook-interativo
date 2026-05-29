@@ -205,6 +205,18 @@ aside.sidebar {
   border: 1px dashed rgba(0, 230, 118, 0.4);
 }
 
+.chapter-btn--dashboard {
+  margin: 0 0 1rem;
+  border: 1px solid rgba(0, 200, 255, 0.4);
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.10), rgba(0, 200, 255, 0.10));
+  color: var(--text-main);
+  font-weight: 600;
+}
+.chapter-btn--dashboard:hover {
+  border-color: var(--accent);
+  transform: translateX(3px);
+}
+
 .chapter-btn {
   background: none;
   border: 1px solid transparent;

@@ -631,7 +631,7 @@ async function signOut() {
 function clearLocalData() {
   const keys = [
     SYNC_KEYS.completed, SYNC_KEYS.weights, SYNC_KEYS.symptoms,
-    'mounjaro_openai_apikey'
+    'mounjaro_openai_apikey', 'mounjaro_user_name'
   ];
   keys.forEach(k => { try { localStorage.removeItem(k); } catch {} });
   emit('ebook:localdatacleared', {});
