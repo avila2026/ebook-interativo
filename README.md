@@ -4,10 +4,10 @@
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/▲%20Live%20Demo-ebook--interativo--fawn.vercel.app-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://ebook-interativo-fawn.vercel.app)
-[![PWA](https://img.shields.io/badge/PWA-Instalável-10b981?style=for-the-badge&logo=pwa&logoColor=white)](https://ebook-interativo-fawn.vercel.app)
+[![Live Demo](https://img.shields.io/badge/▲%20Live%20Demo-ebook--interativo--fawn.vercel.app-00E676?style=for-the-badge&logo=vercel&logoColor=white)](https://ebook-interativo-fawn.vercel.app)
+[![PWA](https://img.shields.io/badge/PWA-Instalável-00E676?style=for-the-badge&logo=pwa&logoColor=white)](https://ebook-interativo-fawn.vercel.app)
 [![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20DB-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
-[![Offline](https://img.shields.io/badge/Offline-Ready-06b6d4?style=for-the-badge)](https://ebook-interativo-fawn.vercel.app)
+[![Offline](https://img.shields.io/badge/Offline-Ready-00C8FF?style=for-the-badge)](https://ebook-interativo-fawn.vercel.app)
 
 </div>
 
@@ -15,9 +15,9 @@
 
 ## Sobre o Projeto
 
-**Mounjaro sem Mitos** é um guia interativo completo sobre a tirzepatida (Mounjaro), emagrecimento saudável e controle do diabetes tipo 2. Desenvolvido como Progressive Web App (PWA) instalável, funciona offline, possui laboratório interativo com holograma 3D e integração opcional com Supabase + Stripe.
+**Mounjaro sem Mitos** é um guia interativo, educativo e **não prescritivo** sobre a tirzepatida (Mounjaro), voltado a quem quer entender o tratamento com **mais segurança, menos medo e expectativas realistas**. Desenvolvido como Progressive Web App (PWA) instalável, funciona offline, traz um laboratório interativo (modelo anatômico, quizzes, diários) e integração opcional com Supabase + Stripe.
 
-> Desmistifique o Mounjaro com ciência, interatividade e design premium.
+> Conteúdo educativo — não substitui avaliação médica, não orienta dose, compra ou uso.
 
 ---
 
@@ -26,17 +26,26 @@
 ![Features](docs/features.svg)
 
 ### Conteúdo
-- **14 capítulos** cobrindo mecanismo de ação, benefícios, riscos, contraindicações, estudos clínicos e mais
+- **23 capítulos** cobrindo mecanismo de ação, indicações aprovadas/em estudo, benefícios, riscos, sinais de alerta, contraindicações, interações, comparação com outros fármacos, estudos clínicos (SURPASS/SURMOUNT/SUMMIT/SYNERGY-NASH), nutrição, linha do tempo do tratamento, manutenção/reganho, custo & acesso, mitos e perguntas para o médico
+- **Disclaimer educativo fixo** e linguagem não prescritiva em todo o material
 - **Glossário interativo** com termos médicos e científicos
+- **Narrador de capítulos** (Web Speech API) e **agente de voz** opcional (OpenAI Realtime, com chave do próprio usuário)
 - Progresso de leitura salvo automaticamente (localStorage + nuvem)
 - Navegação entre capítulos com barra de progresso global
 
 ### Laboratório Interativo
-- **Holograma 3D** do corpo humano com 5 sistemas do organismo (drag-to-rotate)
-- **Quizzes** de fixação com feedback imediato
-- **Simulador de doses** e calculadora personalizada
-- **Diário de peso e sintomas** com gráficos de evolução
+- **Modelo anatômico interativo** com **7 sistemas** do organismo (girar/arrastar + hotspots clicáveis)
+- **Quizzes** de fixação com feedback imediato e resumo de aprendizado
+- **Calculadora de IMC/TMB** e **checklist de triagem** (educativo, sem liberar uso)
+- **Comparador** de medicamentos e tabela de efeitos colaterais
+- **Simulador de aplicação** da caneta KwikPen (mecanismo, **sem seleção de dose**)
+- **Diário de peso e sintomas** com gráficos de evolução (Chart.js)
 - Medidor de exploração e sistema de conquistas
+
+### Painel, Exportação & Ajuda
+- **Painel do leitor** com saudação, data, progresso e sugestões
+- **Baixar / compartilhar PDF** de qualquer capítulo (jsPDF + Web Share API)
+- **Área de ajuda** com e-mail, telefone e WhatsApp
 
 ### PWA & Offline
 - Instalável no celular e desktop (Android, iOS, Windows, macOS)
@@ -51,6 +60,11 @@
 - Captura de leads (newsletter)
 - Row Level Security (RLS) — cada usuário acessa apenas seus próprios dados
 
+### Privacidade
+- **Política de Privacidade** (LGPD) em [`/privacidade.html`](https://ebook-interativo-fawn.vercel.app/privacidade.html)
+- Botão **"Limpar meus dados deste dispositivo"** (apaga progresso, diários, nome e chave de voz do navegador)
+- Aviso transparente de que a chave da OpenAI fica apenas no navegador
+
 ---
 
 ## Stack Tecnológico
@@ -60,9 +74,11 @@
 | Camada | Tecnologia | Detalhes |
 |--------|-----------|---------|
 | Frontend | HTML5 + CSS3 + JS | Vanilla, sem bundler, ES Modules |
-| Design | CSS Custom Properties | Tema dark neon holográfico |
+| Design | CSS Custom Properties | Tema dark neon (#00E676 / #00C8FF) |
 | Fontes | Outfit + Inter | Google Fonts |
-| PWA | Service Worker + Manifest | Cache v3, offline-first |
+| PWA | Service Worker + Manifest | Cache versionado, offline-first |
+| Gráficos / PDF | Chart.js + jsPDF | Hospedados localmente (`js/vendor/`) |
+| Voz | Web Speech API + OpenAI Realtime | Narrador + agente de voz (chave do usuário) |
 | Backend | Supabase | Auth, PostgreSQL, RLS |
 | Pagamentos | Stripe | Payment Link (sem backend) |
 | Deploy | Vercel | CDN global, deploy estático |
@@ -75,22 +91,29 @@
 ebook-interativo/
 ├── index.html              # Shell do app (PWA)
 ├── login.html              # Página de login/cadastro dedicada
+├── privacidade.html        # Política de Privacidade (LGPD)
 ├── manifest.json           # Configuração PWA
 ├── service-worker.js       # Cache offline (app shell)
 │
 ├── js/
-│   ├── config.js           # Configuração das integrações (Supabase/Stripe)
-│   ├── data.js             # Conteúdo do ebook (capítulos, glossário)
-│   ├── app.js              # Controlador da interface e laboratório
-│   └── integrations.js     # Auth, sync, leads e paywall (ES module)
+│   ├── config.js           # Configuração das integrações (Supabase/Stripe/OpenAI)
+│   ├── data.js             # Conteúdo do ebook (capítulos, quiz, glossário)
+│   ├── app.js              # Controlador da interface, laboratório, PDF e painel
+│   ├── integrations.js     # Auth, sync, leads e paywall (ES module)
+│   ├── voice-agent.js      # Agente de voz (OpenAI Realtime, opcional)
+│   └── vendor/
+│       ├── chart.umd.min.js  # Chart.js (gráficos dos diários)
+│       └── jspdf.umd.min.js  # jsPDF (exportar/compartilhar PDF)
 │
 ├── css/
 │   ├── main.css            # Sistema de design (variáveis, layout, tipografia)
-│   └── components.css      # Componentes (cards, modais, holograma, lab)
+│   ├── components.css      # Componentes (cards, mapa corporal, lab, painel, PDF)
+│   └── auth-gateway.css    # Gateway de autenticação integrado
 │
 ├── assets/
 │   ├── icons/              # Ícones PWA (192, 512, maskable, apple-touch)
-│   └── images/             # Imagens do ebook
+│   ├── images/             # Imagens do ebook + body_map.svg (modelo anatômico)
+│   └── videos/             # Vídeos próprios (opcional)
 │
 ├── supabase/
 │   ├── schema.sql          # Tabelas + RLS (profiles, user_state, leads, purchases)
@@ -101,7 +124,8 @@ ebook-interativo/
     ├── banner.svg          # Banner do README
     ├── features.svg        # Features do README
     ├── tech-stack.svg      # Tech stack do README
-    └── INTEGRACOES.md      # Guia de configuração Supabase + Stripe
+    ├── INTEGRACOES.md      # Guia de configuração Supabase + Stripe
+    └── estrutura_completa_ebook_mounjaro_sem_mitos.md
 ```
 
 ---
@@ -180,8 +204,12 @@ A página de login está em [`/login.html`](https://ebook-interativo-fawn.vercel
 
 - **Apenas chaves públicas** no frontend (`anonKey` / `publishableKey`) — nunca chaves secretas
 - **Row Level Security** ativo em todas as tabelas — usuário só acessa seus próprios dados
-- **CSP** restritiva no `index.html` e `login.html` — whitelist de domínios externos
+- **CSP** restritiva no `index.html`, `login.html` e `privacidade.html` — whitelist de domínios externos
 - Gravação em `purchases` feita exclusivamente pela Edge Function com `service_role` (nunca pelo browser)
+- A chave da OpenAI (agente de voz) fica **apenas no navegador** do usuário e nunca é enviada ao servidor
+- **Privacidade/LGPD:** Política de Privacidade dedicada + opção de apagar os dados locais a qualquer momento
+
+> **Conteúdo médico:** material educativo, não prescritivo. Antes de publicar, recomenda-se revisão por profissional de saúde habilitado e preenchimento dos dados do responsável na Política de Privacidade.
 
 ---
 

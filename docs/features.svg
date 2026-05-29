@@ -5,12 +5,12 @@
       <stop offset="100%" style="stop-color:#0a0f14"/>
     </linearGradient>
     <linearGradient id="cardGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.1"/>
-      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.03"/>
+      <stop offset="0%" style="stop-color:#00E676;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#00E676;stop-opacity:0.03"/>
     </linearGradient>
     <linearGradient id="cardCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.1"/>
-      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0.03"/>
+      <stop offset="0%" style="stop-color:#00C8FF;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#00C8FF;stop-opacity:0.03"/>
     </linearGradient>
     <linearGradient id="cardPurple" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.1"/>
@@ -21,14 +21,14 @@
       <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.03"/>
     </linearGradient>
     <linearGradient id="borderH" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0"/>
-      <stop offset="50%" style="stop-color:#10b981;stop-opacity:0.7"/>
-      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0"/>
+      <stop offset="0%" style="stop-color:#00E676;stop-opacity:0"/>
+      <stop offset="50%" style="stop-color:#00E676;stop-opacity:0.7"/>
+      <stop offset="100%" style="stop-color:#00E676;stop-opacity:0"/>
     </linearGradient>
     <linearGradient id="borderC" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0"/>
-      <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:0.7"/>
-      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:0"/>
+      <stop offset="0%" style="stop-color:#00C8FF;stop-opacity:0"/>
+      <stop offset="50%" style="stop-color:#00C8FF;stop-opacity:0.7"/>
+      <stop offset="100%" style="stop-color:#00C8FF;stop-opacity:0"/>
     </linearGradient>
     <linearGradient id="borderP" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0"/>
@@ -63,42 +63,42 @@
   </text>
 
   <!-- ── Card 1: PWA / Offline ── -->
-  <rect x="28" y="54" width="258" height="236" rx="14" fill="url(#cardGreen)" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.35"/>
+  <rect x="28" y="54" width="258" height="236" rx="14" fill="url(#cardGreen)" stroke="#00E676" stroke-width="0.8" stroke-opacity="0.35"/>
   <rect x="28" y="54" width="258" height="2" rx="1" fill="url(#borderH)"/>
   <!-- Icon bg -->
-  <circle cx="82" cy="107" r="28" fill="rgba(16,185,129,0.12)"/>
+  <circle cx="82" cy="107" r="28" fill="rgba(0, 230, 118,0.12)"/>
   <text x="82" y="116" font-size="28" text-anchor="middle">📱</text>
   <!-- Title -->
   <text x="157" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="15"
-        font-weight="700" fill="#34d399">PWA Instalável</text>
+        font-weight="700" fill="#69f0ae">PWA Instalável</text>
   <text x="157" y="118" font-family="'Segoe UI', Arial, sans-serif" font-size="11"
         fill="rgba(107,114,128,0.9)">Progressive Web App</text>
   <!-- Features -->
   <g font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="rgba(209,213,219,0.85)">
     <text x="48" y="162">▸ Instala direto do browser</text>
     <text x="48" y="184">▸ Funciona 100% offline</text>
-    <text x="48" y="206">▸ Cache inteligente v3</text>
+    <text x="48" y="206">▸ Cache versionado</text>
     <text x="48" y="228">▸ App shell + recursos</text>
     <text x="48" y="250">▸ iOS &amp; Android ready</text>
     <text x="48" y="272">▸ Ícones e manifest.json</text>
   </g>
 
   <!-- ── Card 2: Laboratório Interativo ── -->
-  <rect x="310" y="54" width="258" height="236" rx="14" fill="url(#cardCyan)" stroke="#06b6d4" stroke-width="0.8" stroke-opacity="0.35"/>
+  <rect x="310" y="54" width="258" height="236" rx="14" fill="url(#cardCyan)" stroke="#00C8FF" stroke-width="0.8" stroke-opacity="0.35"/>
   <rect x="310" y="54" width="258" height="2" rx="1" fill="url(#borderC)"/>
-  <circle cx="364" cy="107" r="28" fill="rgba(6,182,212,0.12)"/>
+  <circle cx="364" cy="107" r="28" fill="rgba(0, 200, 255,0.12)"/>
   <text x="364" y="116" font-size="28" text-anchor="middle">🔬</text>
   <text x="439" y="100" font-family="'Segoe UI', Arial, sans-serif" font-size="15"
-        font-weight="700" fill="#06b6d4">Lab Interativo</text>
+        font-weight="700" fill="#00C8FF">Lab Interativo</text>
   <text x="439" y="118" font-family="'Segoe UI', Arial, sans-serif" font-size="11"
         fill="rgba(107,114,128,0.9)">Ferramentas &amp; Quizzes</text>
   <g font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="rgba(209,213,219,0.85)">
-    <text x="330" y="162">▸ Holograma 3D interativo</text>
-    <text x="330" y="184">▸ 5 sistemas do organismo</text>
+    <text x="330" y="162">▸ Modelo anatômico interativo</text>
+    <text x="330" y="184">▸ 7 sistemas do organismo</text>
     <text x="330" y="206">▸ Quizzes e simuladores</text>
     <text x="330" y="228">▸ Diário de peso/sintomas</text>
-    <text x="330" y="250">▸ Calculadora de doses</text>
-    <text x="330" y="272">▸ Drag-to-rotate 3D</text>
+    <text x="330" y="250">▸ Calculadora de IMC/TMB</text>
+    <text x="330" y="272">▸ Girar e tocar nos órgãos</text>
   </g>
 
   <!-- ── Card 3: Supabase Auth + Sync ── -->
