@@ -523,6 +523,45 @@ const EBOOK_DATA = {
             <strong>✔️ Verdade:</strong> É só para pessoas com problemas sérios de peso ou saúde. Usar só por beleza traz efeitos colaterais fortes e desnecessários.
           </div>
         </div>
+
+        <h3>🎯 Expectativas realistas (mitos avançados)</h3>
+        <p>Alguns mitos são mais sutis e geram frustração ou risco. Vale conhecê-los:</p>
+
+        <div class="myth-truth-box">
+          <div class="myth">
+            <strong>❌ Mito:</strong> "Vou emagrecer igual àquele influenciador que mostrou o antes e depois."
+          </div>
+          <div class="truth">
+            <strong>✔️ Verdade:</strong> A resposta é individual e depende de genética, dose, alimentação, sono e atividade física. Médias de estudos não são promessa de resultado pessoal — e fotos na internet raramente contam a história completa.
+          </div>
+        </div>
+
+        <div class="myth-truth-box">
+          <div class="myth">
+            <strong>❌ Mito:</strong> "Se funcionou tão bem para o meu amigo, vai funcionar igual para mim."
+          </div>
+          <div class="truth">
+            <strong>✔️ Verdade:</strong> Cada corpo reage de um jeito. Dose, tolerância a efeitos colaterais e ritmo de perda variam muito de pessoa para pessoa.
+          </div>
+        </div>
+
+        <div class="myth-truth-box">
+          <div class="myth">
+            <strong>❌ Mito:</strong> "Posso ajustar a dose e usar por conta própria, sem médico."
+          </div>
+          <div class="truth">
+            <strong>✔️ Verdade:</strong> Não. Dose, ajustes e segurança dependem de avaliação médica. Usar sozinho aumenta o risco de efeitos adversos e de erro de aplicação.
+          </div>
+        </div>
+
+        <div class="myth-truth-box">
+          <div class="myth">
+            <strong>❌ Mito:</strong> "Tive enjoo nos primeiros dias, então o remédio não presta e devo parar."
+          </div>
+          <div class="truth">
+            <strong>✔️ Verdade:</strong> Efeitos digestivos leves são comuns no início e nos ajustes de dose, e tendem a melhorar. O que <em>não</em> é normal (dor forte, vômitos persistentes, desidratação) está no capítulo <em>Sinais de Alerta</em>. Quem decide parar ou ajustar é o médico.
+          </div>
+        </div>
       `
     },
     {
@@ -583,6 +622,51 @@ const EBOOK_DATA = {
       `
     },
     {
+      id: "linha-do-tempo",
+      type: "content",
+      title: "O Que Esperar no Tempo",
+      subtitle: "A Linha do Tempo do Tratamento",
+      summary: "Uma visão geral de como o tratamento costuma evoluir ao longo das semanas e meses.",
+      content: `
+        <p class="lead">Cada pessoa responde de um jeito, mas conhecer a evolução típica ajuda a ter <strong>expectativas realistas</strong> e a não desistir cedo demais. Os marcos abaixo são gerais e educativos — o ritmo, a dose e os ajustes são sempre definidos pelo seu médico.</p>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Importante:</strong> este capítulo descreve tendências observadas em estudos e na prática clínica. Ele <strong>não orienta dose</strong> nem substitui o acompanhamento profissional.
+        </div>
+
+        <div class="timeline-simple">
+          <div class="timeline-item">
+            <span class="year">Início (dose baixa)</span>
+            <p>O tratamento costuma começar com uma <strong>dose baixa</strong>, que é aumentada aos poucos. Isso reduz enjoos e ajuda o corpo a se acostumar. Quem define e ajusta é o médico.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="year">Primeira semana</span>
+            <p>Muitas pessoas já sentem <strong>menos fome</strong> e mais saciedade. Efeitos digestivos leves (enjoo, prisão de ventre) podem aparecer e costumam ser passageiros. Hidrate-se e priorize proteína.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="year">Primeiro mês</span>
+            <p>O apetite tende a ficar mais controlado. A perda de peso costuma ser gradual — não é instantânea. Constância importa mais que pressa.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="year">Ajustes de dose</span>
+            <p>A cada poucas semanas o médico pode aumentar a dose conforme a resposta e a tolerância. Cada aumento pode trazer de volta enjoos leves por alguns dias.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="year">Ao longo dos meses</span>
+            <p>É quando os resultados de peso e de exames costumam ficar mais visíveis, sempre acompanhados de alimentação e atividade física.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="year">Desaceleração / platô</span>
+            <p>Mais à frente, a perda de peso pode desacelerar — é <strong>normal e esperado</strong>. Veja o capítulo <em>Manutenção, Platô e Reganho</em> para entender o porquê.</p>
+          </div>
+        </div>
+
+        <div class="alert alert-warning">
+          <strong>⚠️ Atenção:</strong> ter enjoo no começo <strong>não</strong> significa que o remédio "não presta". Mas dor abdominal forte, vômitos persistentes ou sinais de desidratação pedem contato médico — reveja o capítulo <em>Sinais de Alerta</em>.
+        </div>
+      `
+    },
+    {
       id: "manutencao",
       type: "content",
       title: "Manutenção, Platô e Reganho",
@@ -610,6 +694,39 @@ const EBOOK_DATA = {
 
         <div class="alert alert-info">
           <strong>ℹ️ Expectativa realista:</strong> não existe "alta definitiva" garantida. O objetivo é uma estratégia de longo prazo, definida com seu médico, para manter os ganhos de saúde.
+        </div>
+      `
+    },
+    {
+      id: "custo-acesso",
+      type: "content",
+      title: "Custo, Continuidade e Acesso",
+      subtitle: "Planejando o Tratamento com os Pés no Chão",
+      summary: "O que considerar sobre custo, duração e onde adquirir com segurança — sem promessas.",
+      content: `
+        <p class="lead">Antes de começar, vale entender o lado prático: é um tratamento <strong>contínuo</strong> e tem custo. Planejar evita começar e parar no meio, o que atrapalha os resultados e pode favorecer o reganho.</p>
+
+        <h3>💰 Custo mensal</h3>
+        <p>O preço varia bastante conforme a dose, a região, a farmácia e promoções/descontos do fabricante. Por isso, <strong>não citamos um valor fixo aqui</strong> — ele muda com o tempo. Consulte farmácias e o seu plano/convênio para ter o número atualizado, e some o custo das agulhas e do acompanhamento médico.</p>
+
+        <h3>⏳ Por quanto tempo?</h3>
+        <p>Por ser usado no controle de uma <strong>condição crônica</strong>, costuma ser um tratamento de <strong>longo prazo</strong>, e não de poucas semanas. A duração é individual e definida com o médico — pense nele como parte de uma rotina de saúde, não como uma "dieta relâmpago".</p>
+
+        <div class="card-highlight">
+          <h4>🧮 Planejamento financeiro</h4>
+          <ul style="margin-top: 0.5rem;">
+            <li>Considere o custo <strong>mensal recorrente</strong>, não só a primeira caixa.</li>
+            <li>Inclua agulhas, consultas e exames de acompanhamento.</li>
+            <li>Converse com o médico sobre o que fazer se precisar pausar por questão financeira — parar por conta própria tem consequências (veja <em>Manutenção, Platô e Reganho</em>).</li>
+          </ul>
+        </div>
+
+        <div class="alert alert-danger">
+          <strong>🚫 Onde comprar com segurança:</strong> adquira <strong>somente em farmácias licenciadas</strong>, com receita. Desconfie de preços muito baixos, vendas por redes sociais e "versões manipuladas/importadas sem registro" — há risco de <strong>falsificação</strong> e de produto sem procedência. Na dúvida, confirme o registro na ANVISA.
+        </div>
+
+        <div class="alert alert-info">
+          <strong>ℹ️ Sem promessas:</strong> custo e disponibilidade mudam e fogem ao escopo deste guia. Esta seção é só para ajudar você a se planejar e conversar melhor com o médico e o farmacêutico.
         </div>
       `
     },

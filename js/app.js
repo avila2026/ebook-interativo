@@ -565,22 +565,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     y += 10;
 
-    // Extrai blocos de texto do HTML do capítulo
+    // Extrai blocos de texto do HTML do capítulo (em ordem de leitura).
     const tmp = document.createElement('div');
     tmp.innerHTML = chapter.content || '';
-    const blocks = tmp.querySelectorAll('h1, h2, h3, h4, h5, p, li');
-    blocks.forEach(el => {
-      const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
-      if (!text) return;
-      const tag = el.tagName.toLowerCase();
-      const isHeading = /^h[1-5]$/.test(tag);
-      const isItem = tag === 'li';
+    extractPdfBlocks(tmp).forEach(b => {
+      const isHeading = b.type === 'h';
+      const isItem = b.type === 'li';
       doc.setFont('helvetica', isHeading ? 'bold' : 'normal');
       doc.setFontSize(isHeading ? 13 : 10.5);
       const prefix = isItem ? '•  ' : '';
       const lineH = isHeading ? 18 : 15;
       if (isHeading) y += 6;
-      doc.splitTextToSize(prefix + text, maxW).forEach(line => {
+      doc.splitTextToSize(prefix + b.text, maxW).forEach(line => {
         ensureSpace(lineH); doc.text(line, margin, y); y += lineH;
       });
       if (!isHeading) y += 4;
@@ -588,6 +584,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     footer();
     return doc;
+  }
+
+  // Extrai blocos de texto na ordem de leitura, capturando também textos soltos
+  // dentro de <div> (alertas, caixas de mito/verdade, rótulos de linha do tempo)
+  // que não estão dentro de <p>/<li>/<h*>. Evita duplicação ao recursar.
+  function extractPdfBlocks(root) {
+    const BLOCK = new Set(['P','UL','OL','LI','DIV','H1','H2','H3','H4','H5','H6','TABLE','THEAD','TBODY','TR','TD','TH','BLOCKQUOTE','SECTION','HEADER','FOOTER','ARTICLE']);
+    const blocks = [];
+    const clean = (s) => (s || '').replace(/\s+/g, ' ').trim();
+    const ownInline = (el) => {
+      let s = '';
+      el.childNodes.forEach(n => {
+        if (n.nodeType === 3) s += n.textContent;
+        else if (n.nodeType === 1 && !BLOCK.has(n.tagName)) s += n.textContent;
+      });
+      return clean(s);
+    };
+    const walk = (el) => {
+      for (const child of el.children) {
+        const tag = child.tagName;
+        if (/^H[1-6]$/.test(tag)) { const t = clean(child.textContent); if (t) blocks.push({ type: 'h', text: t }); continue; }
+        if (tag === 'P') { const t = clean(child.textContent); if (t) blocks.push({ type: 'p', text: t }); continue; }
+        if (tag === 'LI') { const t = clean(child.textContent); if (t) blocks.push({ type: 'li', text: t }); continue; }
+        if (tag === 'UL' || tag === 'OL') { walk(child); continue; }
+        if (BLOCK.has(tag)) {
+          const own = ownInline(child);          // texto solto do container (ex.: lead de alerta, mito, rótulo)
+          if (own) blocks.push({ type: 'p', text: own });
+          walk(child);                           // recursa para p/li/h* aninhados
+          continue;
+        }
+      }
+    };
+    walk(root);
+    return blocks;
   }
 
   function pdfFileName(chapter) {
