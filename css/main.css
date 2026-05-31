@@ -217,6 +217,46 @@ aside.sidebar {
   transform: translateX(3px);
 }
 
+/* Ícone animado do botão "Meu Painel" */
+.dashboard-icon {
+  display: inline-block;
+  transform-origin: 50% 80%;
+  will-change: transform, filter;
+  animation: dashboard-icon-pulse 2.4s ease-in-out infinite;
+}
+
+@media (hover: hover) {
+  .chapter-btn--dashboard:hover .dashboard-icon {
+    animation: dashboard-icon-wobble 0.6s ease-in-out infinite;
+  }
+}
+
+@keyframes dashboard-icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+    filter: drop-shadow(0 0 4px rgba(0, 200, 255, 0.7));
+  }
+}
+
+@keyframes dashboard-icon-wobble {
+  0%, 100% {
+    transform: scale(1.12) rotate(-8deg);
+  }
+  50% {
+    transform: scale(1.12) rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-icon,
+  .chapter-btn--dashboard:hover .dashboard-icon {
+    animation: none;
+  }
+}
+
 .chapter-btn {
   background: none;
   border: 1px solid transparent;
