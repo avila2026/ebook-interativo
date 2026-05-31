@@ -221,11 +221,14 @@ aside.sidebar {
 .dashboard-icon {
   display: inline-block;
   transform-origin: 50% 80%;
+  will-change: transform, filter;
   animation: dashboard-icon-pulse 2.4s ease-in-out infinite;
 }
 
-.chapter-btn--dashboard:hover .dashboard-icon {
-  animation: dashboard-icon-wobble 0.6s ease-in-out infinite;
+@media (hover: hover) {
+  .chapter-btn--dashboard:hover .dashboard-icon {
+    animation: dashboard-icon-wobble 0.6s ease-in-out infinite;
+  }
 }
 
 @keyframes dashboard-icon-pulse {
