@@ -4,10 +4,10 @@
 
 <br/>
 
-[![Live Demo](https://img.shields.io/badge/▲%20Live%20Demo-ebook--interativo--fawn.vercel.app-00E676?style=for-the-badge&logo=vercel&logoColor=white)](https://ebook-interativo-fawn.vercel.app)
-[![PWA](https://img.shields.io/badge/PWA-Instalável-00E676?style=for-the-badge&logo=pwa&logoColor=white)](https://ebook-interativo-fawn.vercel.app)
+[![Live Demo](https://img.shields.io/badge/▲%20Live%20Demo-ebooksaude.shop-00E676?style=for-the-badge&logo=vercel&logoColor=white)](https://ebooksaude.shop)
+[![PWA](https://img.shields.io/badge/PWA-Instalável-00E676?style=for-the-badge&logo=pwa&logoColor=white)](https://ebooksaude.shop)
 [![Supabase](https://img.shields.io/badge/Supabase-Auth%20%2B%20DB-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
-[![Offline](https://img.shields.io/badge/Offline-Ready-00C8FF?style=for-the-badge)](https://ebook-interativo-fawn.vercel.app)
+[![Offline](https://img.shields.io/badge/Offline-Ready-00C8FF?style=for-the-badge)](https://ebooksaude.shop)
 
 </div>
 
@@ -61,7 +61,7 @@
 - Row Level Security (RLS) — cada usuário acessa apenas seus próprios dados
 
 ### Privacidade
-- **Política de Privacidade** (LGPD) em [`/privacidade.html`](https://ebook-interativo-fawn.vercel.app/privacidade.html)
+- **Política de Privacidade** (LGPD) em [`/privacidade.html`](https://ebooksaude.shop/privacidade.html)
 - Botão **"Limpar meus dados deste dispositivo"** (apaga progresso, diários, nome e chave de voz do navegador)
 - Aviso transparente de que a chave da OpenAI fica apenas no navegador
 
@@ -190,7 +190,7 @@ premiumChapters: ['capitulo-10', 'capitulo-11', 'capitulo-12']
 
 ## Login / Auth
 
-A página de login está em [`/login.html`](https://ebook-interativo-fawn.vercel.app/login.html):
+A página de login está em [`/login.html`](https://ebooksaude.shop/login.html):
 
 - **Entrar** — login com e-mail e senha
 - **Criar conta** — cadastro com confirmação de senha

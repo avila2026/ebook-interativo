@@ -453,7 +453,7 @@ const EBOOK_DATA = {
           <h5>🏆 O Programa SURPASS (Controle do Diabetes Tipo 2)</h5>
           <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico <strong>SURPASS-2</strong> comparou diretamente a Tirzepatida (15 mg) contra a Semaglutida 1 mg (Ozempic) em 1.879 pacientes:</p>
           <ul style="font-size: 0.9rem;">
-            <li><strong>Redução da Hemoglobina Glicada (HbA1c):</strong> Queda de <strong>2,30%</strong> com a Tirzepatida 15 mg comparado a 1,86% com a Semaglutida.</li>
+            <li><strong>Redução da Hemoglobina Glicada (HbA1c):</strong> Queda de <strong>2,30%</strong> com a Tirzepatida 15 mg comparada a 1,86% com a Semaglutida.</li>
             <li><strong>Perda de Peso Superior:</strong> Perda ponderal média de <strong>11,2 kg</strong> na Tirzepatida contra 5,7 kg na Semaglutida, comprovando superioridade estatística e clínica direta nas duas métricas.</li>
           </ul>
         </div>
