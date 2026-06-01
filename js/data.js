@@ -445,16 +445,16 @@ const EBOOK_DATA = {
           <h4>📊 Evidências Científicas Reais (Eli Lilly)</h4>
           <p>O desenvolvimento da Tirzepatida envolveu dois massivos programas internacionais de ensaios clínicos de Fase 3 (totalmente revisados e publicados em grandes periódicos médicos como o <em>The New England Journal of Medicine</em>):</p>
           <h5 style="margin-top: 0.75rem;">🏆 O Programa SURMOUNT (Tratamento de Obesidade)</h5>
-          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico **SURMOUNT-1** avaliou 2.539 adultos com obesidade ou sobrepeso (sem diabetes) durante 72 semanas:</p>
+          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico <strong>SURMOUNT-1</strong> avaliou 2.539 adultos com obesidade ou sobrepeso (sem diabetes) durante 72 semanas:</p>
           <ul style="font-size: 0.9rem; margin-bottom: 1rem;">
-            <li><strong>Perda de Peso Ponderal Média:</strong> Redução impressionante de **20,9% (cerca de 24 kg)** na dose máxima de 15 mg semanais.</li>
-            <li><strong>Taxa de Resposta:</strong> Incríveis **91% dos participantes** perderam 5% ou mais de seu peso corporal total, um patamar clínico sem precedentes históricos para tratamento farmacológico.</li>
+            <li><strong>Perda de Peso Ponderal Média:</strong> Redução impressionante de <strong>20,9% (cerca de 24 kg)</strong> na dose máxima de 15 mg semanais.</li>
+            <li><strong>Taxa de Resposta:</strong> Cerca de <strong>91% dos participantes</strong> perderam 5% ou mais de seu peso corporal total — um patamar clínico expressivo para tratamento farmacológico.</li>
           </ul>
           <h5>🏆 O Programa SURPASS (Controle do Diabetes Tipo 2)</h5>
-          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico **SURPASS-2** comparou diretamente a Tirzepatida (15 mg) contra a Semaglutida 1 mg (Ozempic) em 1.879 pacientes:</p>
+          <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">O ensaio clínico <strong>SURPASS-2</strong> comparou diretamente a Tirzepatida (15 mg) contra a Semaglutida 1 mg (Ozempic) em 1.879 pacientes:</p>
           <ul style="font-size: 0.9rem;">
-            <li><strong>Redução da Hemoglobina Glicada (HbA1c):</strong> Queda de **2,30%** com a Tirzepatida 15 mg comparado a 1,86% com a Semaglutida.</li>
-            <li><strong>Perda de Peso Superior:</strong> Perda ponderal média de **11,2 kg** na Tirzepatida contra 5,7 kg na Semaglutida, comprovando superioridade estatística e clínica direta nas duas métricas.</li>
+            <li><strong>Redução da Hemoglobina Glicada (HbA1c):</strong> Queda de <strong>2,30%</strong> com a Tirzepatida 15 mg comparado a 1,86% com a Semaglutida.</li>
+            <li><strong>Perda de Peso Superior:</strong> Perda ponderal média de <strong>11,2 kg</strong> na Tirzepatida contra 5,7 kg na Semaglutida, comprovando superioridade estatística e clínica direta nas duas métricas.</li>
           </ul>
         </div>
 
@@ -899,7 +899,7 @@ const EBOOK_DATA = {
       weightLoss: "Até 20% do peso (nos testes)",
       mainEfects: "Enjoo, vômito, intestino preso ou solto.",
       cost: "Alto",
-      status: "Novo no Brasil para tratar diabetes tipo 2"
+      status: "Aprovado no Brasil para diabetes tipo 2 e controle de peso"
     },
     {
       name: "Ozempic / Wegovy",
