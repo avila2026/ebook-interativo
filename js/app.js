@@ -1338,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td style="color: var(--text-muted);">${drug.class}</td>
         <td>${drug.frequency}</td>
         <td><span class="badge-efficacy">${drug.weightLoss}</span></td>
-        <td style="font-size: 0.8rem; max-width: 250px;">${drug.mainEfects}</td>
+        <td style="font-size: 0.8rem; max-width: 250px;">${drug.mainEffects}</td>
         <td><span class="badge-status">${drug.status}</span></td>
       </tr>
     `).join('');

@@ -897,7 +897,7 @@ const EBOOK_DATA = {
       class: "Imita 2 Hormônios",
       frequency: "1 vez por semana (Injeção)",
       weightLoss: "Até 20% do peso (nos testes)",
-      mainEfects: "Enjoo, vômito, intestino preso ou solto.",
+      mainEffects: "Enjoo, vômito, intestino preso ou solto.",
       cost: "Alto",
       status: "Aprovado no Brasil para diabetes tipo 2 e controle de peso"
     },
@@ -907,7 +907,7 @@ const EBOOK_DATA = {
       class: "Imita 1 Hormônio",
       frequency: "1 vez por semana (Injeção)",
       weightLoss: "Em média 15% do peso",
-      mainEfects: "Enjoo, intestino preso ou solto.",
+      mainEffects: "Enjoo, intestino preso ou solto.",
       cost: "Médio a Alto",
       status: "Muito usado e famoso no Brasil"
     },
@@ -917,7 +917,7 @@ const EBOOK_DATA = {
       class: "Imita 1 Hormônio (mais antigo)",
       frequency: "Todo dia (Injeção)",
       weightLoss: "Em média 8% do peso",
-      mainEfects: "Enjoo logo no começo.",
+      mainEffects: "Enjoo logo no começo.",
       cost: "Médio",
       status: "Comum e já antigo no mercado"
     },
@@ -927,7 +927,7 @@ const EBOOK_DATA = {
       class: "Ajuda a usar o açúcar",
       frequency: "Todo dia (Comprimido)",
       weightLoss: "Quase nada, foca na saúde do sangue",
-      mainEfects: "Dor na barriga, diarreia leve.",
+      mainEffects: "Dor na barriga, diarreia leve.",
       cost: "Muito Baixo / Grátis",
       status: "Básico para quem tem diabetes"
     }
