@@ -117,6 +117,7 @@ ebook-interativo/
 │
 ├── supabase/
 │   ├── schema.sql          # Tabelas + RLS (profiles, user_state, leads, purchases)
+│   ├── migrations/         # Migrações incrementais (ex.: colunas da Cakto)
 │   └── functions/
 │       ├── cakto-webhook/  # Edge Function: webhook da Cakto → libera acesso
 │       └── stripe-webhook/ # (legado, descontinuado — mantido como referência)
