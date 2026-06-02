@@ -94,10 +94,10 @@ function pickAmount(payload: Record<string, unknown>): number | null {
     (payload as any).data?.amount,
   ];
   for (const c of candidates) {
-    if (typeof c === 'number') return Math.round(c);
+    if (typeof c === 'number' && Number.isFinite(c)) return Math.round(c);
     if (typeof c === 'string' && c.trim() !== '') {
       const n = Number(c);
-      if (!Number.isNaN(n)) return Math.round(n);
+      if (Number.isFinite(n)) return Math.round(n);
     }
   }
   return null;
