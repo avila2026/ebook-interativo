@@ -1332,14 +1332,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let rows = EBOOK_DATA.comparison.map(drug => `
       <tr>
         <td class="comparator-drug-name">
-          ${drug.name}
-          <span class="comparator-drug-active">${drug.active}</span>
+          ${escapeHtml(drug.name)}
+          <span class="comparator-drug-active">${escapeHtml(drug.active)}</span>
         </td>
-        <td style="color: var(--text-muted);">${drug.class}</td>
-        <td>${drug.frequency}</td>
-        <td><span class="badge-efficacy">${drug.weightLoss}</span></td>
-        <td style="font-size: 0.8rem; max-width: 250px;">${drug.mainEffects}</td>
-        <td><span class="badge-status">${drug.status}</span></td>
+        <td style="color: var(--text-muted);">${escapeHtml(drug.class)}</td>
+        <td>${escapeHtml(drug.frequency)}</td>
+        <td><span class="badge-efficacy">${escapeHtml(drug.weightLoss)}</span></td>
+        <td style="font-size: 0.8rem; max-width: 250px;">${escapeHtml(drug.mainEffects)}</td>
+        <td><span class="badge-status">${escapeHtml(drug.status)}</span></td>
       </tr>
     `).join('');
 
@@ -1370,13 +1370,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="effect-card-3d">
         <div class="effect-card-inner">
           <div class="effect-card-front">
-            <h4>${item.symptom}</h4>
-            <span class="frequency-badge">${item.frequency}</span>
+            <h4>${escapeHtml(item.symptom)}</h4>
+            <span class="frequency-badge">${escapeHtml(item.frequency)}</span>
             <span class="flip-hint">Clique para virar ↺</span>
           </div>
           <div class="effect-card-back">
             <h5>💡 Como Manejar este Sintoma:</h5>
-            <p>${item.tip}</p>
+            <p>${escapeHtml(item.tip)}</p>
           </div>
         </div>
       </div>
@@ -1400,9 +1400,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. TRIAGEM DE CONTRAINDICAÇÕES (CHECKLIST)
   function renderScreeningChecklist(container) {
     let checkboxes = EBOOK_DATA.contraindications.map(item => `
-      <label class="checklist-item" for="chk-${item.id}">
-        <input type="checkbox" id="chk-${item.id}" data-id="${item.id}">
-        <span class="checklist-item-text">${item.text}</span>
+      <label class="checklist-item" for="chk-${escapeHtml(item.id)}">
+        <input type="checkbox" id="chk-${escapeHtml(item.id)}" data-id="${escapeHtml(item.id)}">
+        <span class="checklist-item-text">${escapeHtml(item.text)}</span>
       </label>
     `).join('');
 
@@ -1481,7 +1481,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let optionsHtml = currentQuestion.options.map((opt, i) => `
       <button class="quiz-option-btn" data-index="${i}">
         <span style="font-weight: 700; margin-right: 0.75rem; color: var(--accent);">${String.fromCharCode(65 + i)})</span>
-        ${opt}
+        ${escapeHtml(opt)}
       </button>
     `).join('');
 
@@ -1500,7 +1500,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div class="quiz-question-text">
-          ${currentQuestion.question}
+          ${escapeHtml(currentQuestion.question)}
         </div>
 
         <div class="quiz-options-container" id="quizOptionsBox">
@@ -1541,7 +1541,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mostra explicação
         explanationBox.className = "quiz-explanation-box";
         explanationBox.innerHTML = `
-          <strong>Explicação Científica:</strong> ${currentQuestion.explanation}
+          <strong>Explicação Científica:</strong> ${escapeHtml(currentQuestion.explanation)}
         `;
 
         // Habilita avançar
