@@ -15,7 +15,7 @@
 
 ## Sobre o Projeto
 
-**Mounjaro sem Mitos** é um guia interativo, educativo e **não prescritivo** sobre a tirzepatida (Mounjaro), voltado a quem quer entender o tratamento com **mais segurança, menos medo e expectativas realistas**. Desenvolvido como Progressive Web App (PWA) instalável, funciona offline, traz um laboratório interativo (modelo anatômico, quizzes, diários) e integração opcional com Supabase + Stripe.
+**Mounjaro sem Mitos** é um guia interativo, educativo e **não prescritivo** sobre a tirzepatida (Mounjaro), voltado a quem quer entender o tratamento com **mais segurança, menos medo e expectativas realistas**. Desenvolvido como Progressive Web App (PWA) instalável, funciona offline, traz um laboratório interativo (modelo anatômico, quizzes, diários) e integração opcional com Supabase + Cakto.
 
 > Conteúdo educativo — não substitui avaliação médica, não orienta dose, compra ou uso.
 
@@ -80,7 +80,7 @@
 | Gráficos / PDF | Chart.js + jsPDF | Hospedados localmente (`js/vendor/`) |
 | Voz | Web Speech API + OpenAI Realtime | Narrador + agente de voz (chave do usuário) |
 | Backend | Supabase | Auth, PostgreSQL, RLS |
-| Pagamentos | Stripe | Payment Link (sem backend) |
+| Pagamentos | Cakto | Link de pagamento hospedado (sem backend) |
 | Deploy | Vercel | CDN global, deploy estático |
 
 ---
@@ -96,7 +96,7 @@ ebook-interativo/
 ├── service-worker.js       # Cache offline (app shell)
 │
 ├── js/
-│   ├── config.js           # Configuração das integrações (Supabase/Stripe/OpenAI)
+│   ├── config.js           # Configuração das integrações (Supabase/Cakto/OpenAI)
 │   ├── data.js             # Conteúdo do ebook (capítulos, quiz, glossário)
 │   ├── app.js              # Controlador da interface, laboratório, PDF e painel
 │   ├── integrations.js     # Auth, sync, leads e paywall (ES module)
@@ -118,13 +118,14 @@ ebook-interativo/
 ├── supabase/
 │   ├── schema.sql          # Tabelas + RLS (profiles, user_state, leads, purchases)
 │   └── functions/
-│       └── stripe-webhook/ # Edge Function: webhook do Stripe → libera acesso
+│       ├── cakto-webhook/  # Edge Function: webhook da Cakto → libera acesso
+│       └── stripe-webhook/ # (legado, descontinuado — mantido como referência)
 │
 └── docs/
     ├── banner.svg          # Banner do README
     ├── features.svg        # Features do README
     ├── tech-stack.svg      # Tech stack do README
-    ├── INTEGRACOES.md      # Guia de configuração Supabase + Stripe
+    ├── INTEGRACOES.md      # Guia de configuração Supabase + Cakto
     └── estrutura_completa_ebook_mounjaro_sem_mitos.md
 ```
 
@@ -146,7 +147,7 @@ npx serve .
 
 Acesse: `http://localhost:8080`
 
-> **Sem configuração adicional necessária.** O ebook funciona completamente sem Supabase ou Stripe — progresso e diários ficam no localStorage.
+> **Sem configuração adicional necessária.** O ebook funciona completamente sem Supabase ou Cakto — progresso e diários ficam no localStorage.
 
 ---
 
@@ -169,20 +170,20 @@ window.APP_CONFIG = {
 };
 ```
 
-### Stripe (Acesso Pago — opcional)
+### Cakto (Acesso Pago — opcional)
 
-1. Crie um **Payment Link** no Stripe Dashboard
+1. Crie um produto e um **link de pagamento** no painel da Cakto
 2. Em `js/config.js`, preencha:
 
 ```javascript
-stripe: {
-  paymentLink: 'https://buy.stripe.com/xxxxxxxx',
+cakto: {
+  paymentLink: 'https://pay.cakto.com.br/xxxxxxxx',
   priceLabel: 'R$ 49,90'
 },
 premiumChapters: ['capitulo-10', 'capitulo-11', 'capitulo-12']
 ```
 
-3. Configure o webhook do Stripe apontando para a Edge Function em `supabase/functions/stripe-webhook/`
+3. (Opcional) Configure o webhook (postback) da Cakto apontando para a Edge Function em `supabase/functions/cakto-webhook/` para liberar acesso automaticamente após a compra
 
 > Guia completo em [`docs/INTEGRACOES.md`](docs/INTEGRACOES.md)
 

@@ -1,4 +1,4 @@
-# Integrações — Supabase + Stripe
+# Integrações — Supabase + Cakto
 
 Guia para ativar **login/cadastro**, **sincronização de progresso**, **captura de leads**
 e **acesso pago** no ebook. Enquanto nada for configurado, o site funciona normalmente
@@ -15,7 +15,8 @@ e **acesso pago** no ebook. Enquanto nada for configurado, o site funciona norma
 | Progresso de vídeo | Supabase (`user_progress`) | ✅ pronto (helper) |
 | Captura de leads | Supabase (`leads`) | ✅ pronto |
 | Acesso pago (paywall) | Supabase (`purchases`) | ✅ pronto |
-| Checkout de pagamento | Stripe (Payment Link) | 🟡 placeholder |
+| Checkout de pagamento | Cakto (link de pagamento) | ✅ pronto |
+| Liberação automática | Edge Function `cakto-webhook` | ✅ pronto |
 
 Todas as chaves ficam em **`js/config.js`**. Não há nenhuma chave secreta no front —
 apenas a URL do projeto e a chave `anon` (pública e protegida por RLS).
@@ -54,41 +55,46 @@ dispositivos e o formulário de newsletter na barra lateral começa a gravar lea
    ```
 2. Quem não tem acesso vê um **paywall** sobre o capítulo, com botão de compra.
 3. O acesso é concedido gravando `purchases.lifetime_access = true` para o usuário.
-   - **Teste manual** (sem Stripe): no SQL Editor, rode o exemplo comentado no fim de
+   - **Teste manual** (sem Cakto): no SQL Editor, rode o exemplo comentado no fim de
      `schema.sql` com o `UUID` do usuário (veja em **Authentication → Users**).
-   - **Produção**: o webhook da Stripe grava isso automaticamente (passo 4).
+   - **Produção**: o webhook da Cakto grava isso automaticamente (passo 4).
 
 > Segurança: o navegador **só lê** a tabela `purchases`. A liberação é sempre feita
 > pelo webhook com a `service_role`, então ninguém libera acesso pelo cliente.
 
 ---
 
-## 4. Stripe (placeholder → produção)
+## 4. Cakto (checkout + liberação automática)
 
-### Agora (placeholder, sem backend)
-1. Crie um **Payment Link** em <https://dashboard.stripe.com/payment-links>.
+### Configurar o link de pagamento
+1. Crie um produto em <https://app.cakto.com.br> e gere um **link de pagamento**.
 2. Cole em `js/config.js`:
    ```js
-   stripe: {
-     paymentLink: 'https://buy.stripe.com/xxxxxxxx',
+   cakto: {
+     paymentLink: 'https://pay.cakto.com.br/xxxxxxxx',
      priceLabel: 'R$ 49,90'
    }
    ```
-3. O botão "Comprar acesso" passa a redirecionar para o checkout da Stripe.
-   O `user.id` é enviado como `client_reference_id`.
+3. O botão "Comprar acesso" passa a redirecionar para o checkout da Cakto.
+   O front anexa `?email=<email>` (pré-preenche o checkout) e `?ref=<user.id>`
+   (referência externa que o webhook usa para casar a compra com o usuário).
 
-### Para liberar acesso automático (webhook)
-1. Instale o CLI do Supabase e faça login.
-2. Configure os segredos e faça deploy:
+### Liberação automática de acesso (webhook)
+
+1. Rode no SQL Editor a migration `supabase/migrations/add_cakto_columns.sql`
+   para adicionar a coluna `cakto_transaction_id` em `purchases`.
+2. Configure o segredo do webhook e faça o deploy da Edge Function:
    ```bash
-   supabase secrets set STRIPE_SECRET_KEY=sk_live_...
-   supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
-   supabase functions deploy stripe-webhook --no-verify-jwt
+   supabase secrets set CAKTO_WEBHOOK_SECRET=um_token_aleatorio_forte
+   supabase functions deploy cakto-webhook --no-verify-jwt
    ```
-3. Em <https://dashboard.stripe.com/webhooks>, aponte para a URL da função e
-   ouça o evento **`checkout.session.completed`**.
+3. No painel da Cakto, cadastre um **postback / webhook** apontando para:
+   ```
+   https://<seu-projeto>.supabase.co/functions/v1/cakto-webhook?secret=um_token_aleatorio_forte
+   ```
+   ouvindo o evento de **compra aprovada** (`purchase.approved`).
 
-O código do webhook está em [`supabase/functions/stripe-webhook/index.ts`](../supabase/functions/stripe-webhook/index.ts).
+O código do webhook está em [`supabase/functions/cakto-webhook/index.ts`](../supabase/functions/cakto-webhook/index.ts).
 
 ---
 
@@ -122,7 +128,8 @@ O helper grava em `user_progress` (a cada 5s e ao terminar) e retoma de onde par
 ## 6. Content Security Policy
 
 A CSP em `index.html` já libera os domínios necessários: `esm.sh` (SDK),
-`*.supabase.co` (API/Auth/Realtime), `js.stripe.com` e `*.stripe.com` (checkout).
+`*.supabase.co` (API/Auth/Realtime) e `pay.cakto.com.br` (frame opcional do checkout).
+O redirecionamento de saída para a Cakto não exige liberação extra.
 Se trocar de CDN ou domínio, ajuste a meta tag `Content-Security-Policy`.
 
 ---
@@ -133,5 +140,6 @@ Se trocar de CDN ou domínio, ajuste a meta tag `Content-Security-Policy`.
 - [ ] `schema.sql` executado no SQL Editor
 - [ ] Provedor de e-mail habilitado no Auth
 - [ ] (Opcional) `premiumChapters` definidos
-- [ ] (Opcional) `stripe.paymentLink` preenchido
-- [ ] (Opcional) webhook `stripe-webhook` deployado
+- [ ] (Opcional) `cakto.paymentLink` preenchido
+- [ ] (Opcional) migration `add_cakto_columns.sql` executada
+- [ ] (Opcional) Edge Function `cakto-webhook` deployada e cadastrada na Cakto

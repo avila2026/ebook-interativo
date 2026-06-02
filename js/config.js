@@ -1,14 +1,14 @@
 // js/config.js
-// Configuração central das integrações (Supabase + Stripe).
+// Configuração central das integrações (Supabase + Cakto).
 //
 // COMO ATIVAR:
 // 1. Crie um projeto em https://supabase.com e cole a URL e a chave "anon public".
-// 2. (Opcional, para vender acesso) Crie um Payment Link no Stripe e cole abaixo.
+// 2. (Opcional, para vender acesso) Crie um produto na Cakto e cole o link de pagamento abaixo.
 // 3. Rode o SQL em supabase/schema.sql no editor SQL do Supabase.
 //
 // Enquanto os campos abaixo estiverem vazios, as integrações ficam DESLIGADAS
 // e o ebook funciona normalmente (progresso/diários no localStorage, tudo liberado).
-// Não coloque aqui NENHUMA chave secreta — apenas chaves públicas (anon / publishable).
+// Não coloque aqui NENHUMA chave secreta — apenas chaves públicas (anon).
 
 window.APP_CONFIG = {
   supabase: {
@@ -18,11 +18,10 @@ window.APP_CONFIG = {
     anonKey: 'sb_publishable_7uz5Sxp96YoGBRLXzqLFig_rbil0yeq'
   },
 
-  stripe: {
-    // Modo placeholder: ao preencher um Payment Link, o botão de compra passa a
-    // redirecionar para o checkout hospedado da Stripe. Sem backend necessário.
-    publishableKey: '',   // pk_live_... ou pk_test_... (opcional, p/ Stripe.js no futuro)
-    paymentLink: '',      // ex.: https://buy.stripe.com/xxxxxxxx
+  cakto: {
+    // Ao preencher um link de pagamento da Cakto, o botão de compra passa a
+    // redirecionar para o checkout hospedado da Cakto. Sem backend necessário.
+    paymentLink: '',       // ex.: https://pay.cakto.com.br/xxxxxxxx
     priceLabel: 'R$ 49,90' // texto exibido no paywall
   },
 
@@ -34,7 +33,7 @@ window.APP_CONFIG = {
   // Apenas informativo/documental.
   allowedOrigins: {
     supabase: 'https://*.supabase.co',
-    stripe: 'https://js.stripe.com',
+    cakto: 'https://pay.cakto.com.br',
     openai: 'https://api.openai.com'
   },
 
@@ -57,4 +56,4 @@ window.APP_CONFIG = {
 window.APP_CONFIG.supabase.enabled = Boolean(
   window.APP_CONFIG.supabase.url && window.APP_CONFIG.supabase.anonKey
 );
-window.APP_CONFIG.stripe.enabled = Boolean(window.APP_CONFIG.stripe.paymentLink);
+window.APP_CONFIG.cakto.enabled = Boolean(window.APP_CONFIG.cakto.paymentLink);

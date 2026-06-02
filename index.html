@@ -30,8 +30,8 @@
 
   <!-- Segurança: Content Security Policy.
        Domínios externos liberados: esm.sh (SDK Supabase), *.supabase.co (API/Auth/Realtime),
-       js.stripe.com / *.stripe.com (checkout). Tudo só é acionado quando js/config.js estiver preenchido. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https: blob: https://api.openai.com; script-src 'self' https://esm.sh https://js.stripe.com; manifest-src 'self'; worker-src 'self'; frame-src https://js.stripe.com https://hooks.stripe.com https://*.stripe.com https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh https://api.stripe.com https://api.openai.com wss://api.openai.com;">
+       pay.cakto.com.br (checkout opcional embed). Tudo só é acionado quando js/config.js estiver preenchido. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https: blob: https://api.openai.com; script-src 'self' https://esm.sh; manifest-src 'self'; worker-src 'self'; frame-src https://pay.cakto.com.br https://www.youtube-nocookie.com https://www.youtube.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://esm.sh https://api.openai.com wss://api.openai.com;">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50' y='64' font-size='50' text-anchor='middle'>🛡️💉</text></svg>">
@@ -394,7 +394,7 @@
   <script src="js/config.js"></script>
   <script src="js/data.js" defer></script>
   <script src="js/app.js" defer></script>
-  <!-- Camada de integração (Supabase + Stripe). Dormante até js/config.js ser preenchido. -->
+  <!-- Camada de integração (Supabase + Cakto). Dormante até js/config.js ser preenchido. -->
   <script src="js/integrations.js" type="module"></script>
   <script src="js/voice-agent.js"></script>
 </body>

@@ -1,5 +1,5 @@
 // js/integrations.js  (ES module)
-// Camada de integração Supabase + Stripe para o ebook "Mounjaro sem Mitos".
+// Camada de integração Supabase + Cakto para o ebook "Mounjaro sem Mitos".
 //
 // PRINCÍPIO: nada acontece enquanto APP_CONFIG não estiver preenchido.
 // Sem configuração => o site funciona exatamente como antes (localStorage, tudo liberado).
@@ -8,7 +8,7 @@
 //   - Autenticação (cadastro / login / logout) via Supabase Auth.
 //   - Sincronização do progresso e dos diários (peso/sintomas) entre dispositivos.
 //   - Captura de leads (newsletter).
-//   - Controle de acesso pago (paywall) com checkout placeholder da Stripe.
+//   - Controle de acesso pago (paywall) com checkout via link da Cakto.
 //   - Helper opcional de progresso de vídeo (trackVideo).
 
 const CFG = window.APP_CONFIG || {};
@@ -160,7 +160,7 @@ function removePaywall() {
 }
 
 function renderPaywall(article) {
-  const stripe = CFG.stripe || {};
+  const cakto = CFG.cakto || {};
   const overlay = document.createElement('div');
   overlay.className = 'paywall-overlay';
   overlay.innerHTML = `
@@ -169,16 +169,16 @@ function renderPaywall(article) {
       <h2>Conteúdo exclusivo</h2>
       <p>Este capítulo faz parte da versão completa do <strong>Mounjaro sem Mitos</strong>.
          Garanta acesso vitalício a todos os capítulos, ferramentas e atualizações.</p>
-      <div class="paywall-price">${stripe.priceLabel || ''}</div>
+      <div class="paywall-price">${cakto.priceLabel || ''}</div>
       <button type="button" class="btn-paywall-buy" id="btnPaywallBuy">
-        ${stripe.enabled ? 'Comprar acesso' : 'Em breve'}
+        ${cakto.enabled ? 'Comprar acesso' : 'Em breve'}
       </button>
       ${currentUser ? '' : '<p class="paywall-note">Já comprou? <a href="login.html?redirect=index.html" id="paywallLogin">Entre na sua conta</a>.</p>'}
     </div>`;
   article.appendChild(overlay);
 
   const buyBtn = overlay.querySelector('#btnPaywallBuy');
-  buyBtn.disabled = !stripe.enabled;
+  buyBtn.disabled = !cakto.enabled;
   buyBtn.addEventListener('click', startCheckout);
 
   const loginLink = overlay.querySelector('#paywallLogin');
@@ -190,19 +190,20 @@ function renderPaywall(article) {
 }
 
 // ---------------------------------------------------------------------------
-// Pagamentos (Stripe) — placeholder via Payment Link
+// Pagamentos (Cakto) — redirecionamento para link hospedado
 // ---------------------------------------------------------------------------
 function startCheckout() {
-  const stripe = CFG.stripe || {};
-  if (!stripe.enabled || !stripe.paymentLink) {
+  const cakto = CFG.cakto || {};
+  if (!cakto.enabled || !cakto.paymentLink) {
     alert('O checkout ainda não foi configurado.');
     return;
   }
-  // Modo placeholder: redireciona para o Payment Link hospedado pela Stripe.
-  // O e-mail (se logado) é pré-preenchido e usado pelo webhook para liberar acesso.
-  const url = new URL(stripe.paymentLink);
-  if (currentUser?.email) url.searchParams.set('prefilled_email', currentUser.email);
-  if (currentUser?.id) url.searchParams.set('client_reference_id', currentUser.id);
+  // Redireciona para o link de pagamento da Cakto.
+  // Email pré-preenchido e ?ref=<user.id> usados pelo webhook (cakto-webhook)
+  // para casar a compra com o usuário e liberar o acesso vitalício.
+  const url = new URL(cakto.paymentLink);
+  if (currentUser?.email) url.searchParams.set('email', currentUser.email);
+  if (currentUser?.id) url.searchParams.set('ref', currentUser.id);
   window.location.href = url.toString();
 }
 
