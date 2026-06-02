@@ -81,12 +81,12 @@ function pickTransactionId(payload: Record<string, unknown>): string | null {
   return null;
 }
 
-// Armazena o valor recebido tal como veio da Cakto, apenas arredondando para
-// inteiro. A Cakto envia o valor em centavos (padrão de gateways brasileiros),
-// o que casa com o schema da coluna `purchases.amount`. Se a documentação da
-// Cakto mudar (passar a enviar reais com casas decimais), ajustar AQUI de forma
-// explícita — nunca inferir a unidade pelo tamanho do número (risco grave de
-// inconsistência financeira).
+// A Cakto envia `data.amount` em REAIS COM CASAS DECIMAIS (ex.: 5.55 = R$ 5,55),
+// conforme o payload oficial do evento `purchase_approved`. Convertemos para
+// centavos (multiplicando por 100) para casar com o schema da coluna
+// `purchases.amount` (integer em centavos). Se a Cakto algum dia passar a enviar
+// centavos diretamente, ajustar AQUI de forma explícita — nunca inferir a
+// unidade pelo tamanho do número (risco grave de inconsistência financeira).
 function pickAmount(payload: Record<string, unknown>): number | null {
   const candidates = [
     payload.amount, payload.value,
@@ -94,10 +94,10 @@ function pickAmount(payload: Record<string, unknown>): number | null {
     (payload as any).data?.amount,
   ];
   for (const c of candidates) {
-    if (typeof c === 'number' && Number.isFinite(c)) return Math.round(c);
+    if (typeof c === 'number' && Number.isFinite(c)) return Math.round(c * 100);
     if (typeof c === 'string' && c.trim() !== '') {
       const n = Number(c);
-      if (Number.isFinite(n)) return Math.round(n);
+      if (Number.isFinite(n)) return Math.round(n * 100);
     }
   }
   return null;
