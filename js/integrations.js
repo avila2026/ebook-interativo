@@ -201,10 +201,15 @@ function startCheckout() {
   // Redireciona para o link de pagamento da Cakto.
   // Email pré-preenchido e ?ref=<user.id> usados pelo webhook (cakto-webhook)
   // para casar a compra com o usuário e liberar o acesso vitalício.
-  const url = new URL(cakto.paymentLink);
-  if (currentUser?.email) url.searchParams.set('email', currentUser.email);
-  if (currentUser?.id) url.searchParams.set('ref', currentUser.id);
-  window.location.href = url.toString();
+  try {
+    const url = new URL(cakto.paymentLink);
+    if (currentUser?.email) url.searchParams.set('email', currentUser.email);
+    if (currentUser?.id) url.searchParams.set('ref', currentUser.id);
+    window.location.href = url.toString();
+  } catch (err) {
+    console.error('Erro ao processar link de checkout:', err);
+    alert('Erro ao redirecionar para o checkout. Tente novamente em instantes.');
+  }
 }
 
 // ---------------------------------------------------------------------------
