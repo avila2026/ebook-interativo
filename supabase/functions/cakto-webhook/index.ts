@@ -81,6 +81,12 @@ function pickTransactionId(payload: Record<string, unknown>): string | null {
   return null;
 }
 
+// Armazena o valor recebido tal como veio da Cakto, apenas arredondando para
+// inteiro. A Cakto envia o valor em centavos (padrão de gateways brasileiros),
+// o que casa com o schema da coluna `purchases.amount`. Se a documentação da
+// Cakto mudar (passar a enviar reais com casas decimais), ajustar AQUI de forma
+// explícita — nunca inferir a unidade pelo tamanho do número (risco grave de
+// inconsistência financeira).
 function pickAmount(payload: Record<string, unknown>): number | null {
   const candidates = [
     payload.amount, payload.value,
@@ -88,10 +94,10 @@ function pickAmount(payload: Record<string, unknown>): number | null {
     (payload as any).data?.amount,
   ];
   for (const c of candidates) {
-    if (typeof c === 'number') return Math.round(c * (c < 1000 ? 100 : 1));
+    if (typeof c === 'number' && Number.isFinite(c)) return Math.round(c);
     if (typeof c === 'string' && c.trim() !== '') {
       const n = Number(c);
-      if (!Number.isNaN(n)) return Math.round(n * (n < 1000 ? 100 : 1));
+      if (Number.isFinite(n)) return Math.round(n);
     }
   }
   return null;
@@ -110,7 +116,11 @@ Deno.serve(async (req) => {
 
   let payload: Record<string, unknown>;
   try {
-    payload = await req.json();
+    const parsed = await req.json();
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return new Response('Invalid JSON body', { status: 400 });
+    }
+    payload = parsed as Record<string, unknown>;
   } catch {
     return new Response('Invalid JSON', { status: 400 });
   }
