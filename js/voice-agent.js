@@ -24,6 +24,9 @@ class VoiceAgent {
         <div class="api-key-modal-content">
           <h3>Configurar API Key da OpenAI</h3>
           <p>Para conversar com o Ebook e usar o Narrador com voz hiper-realista, insira sua chave de API da OpenAI (sk-...). Ela fica salva <strong>apenas neste navegador</strong> (localStorage) e é enviada somente à OpenAI para gerar a voz — não passa pelo nosso servidor nem pelo GitHub. Como fica no navegador, ela é visível para quem tiver acesso a este dispositivo: <strong>evite usar em computadores compartilhados</strong> e remova-a ao terminar.</p>
+          <div class="api-key-cost-warning">
+            <strong>💳 Atenção ao custo:</strong> a conversa por voz é cobrada <strong>por minuto</strong> diretamente na sua conta da OpenAI (ordem de grandeza: ~US$ 0,15–0,30/min). O <strong>Narrador</strong> de capítulos usa a voz do navegador e é <strong>gratuito</strong>. Consulte os valores atuais em <a href="https://platform.openai.com/pricing" target="_blank" rel="noopener">platform.openai.com/pricing</a>.
+          </div>
           <input type="password" id="modalApiKeyInput" placeholder="sk-proj-..." class="api-key-input" />
           <div class="api-key-modal-actions">
             <button id="btnCancelApiKey" class="btn-cancel">Cancelar</button>
@@ -118,6 +121,24 @@ class VoiceAgent {
         .btn-save:hover {
           transform: translateY(-1px);
           box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        .api-key-cost-warning {
+          font-size: 0.82rem;
+          line-height: 1.45;
+          text-align: left;
+          background: rgba(245, 158, 11, 0.08);
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          border-radius: 8px;
+          padding: 10px 12px;
+          margin: 0 0 16px;
+          color: var(--text-secondary, #b3b3b3);
+        }
+        .api-key-cost-warning a {
+          color: var(--primary-light, #10b981);
+          text-decoration: none;
+        }
+        .api-key-cost-warning a:hover {
+          text-decoration: underline;
         }
         .api-key-hint {
           font-size: 0.8rem !important;
