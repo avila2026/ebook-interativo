@@ -623,12 +623,19 @@ async function signIn(email, password) {
   if (error) return { ok: false, error: traduzErro(error.message) };
   return { ok: true };
 }
+// Redireciona para a página de login (gateway de autenticação).
+function redirectToLogin() {
+  window.location.replace('login.html?redirect=index.html');
+}
+
 async function signOut() {
   if (supabase) {
     await supabase.auth.signOut();
   }
   // Segurança em dispositivos compartilhados: remove a chave da OpenAI ao sair.
   try { localStorage.removeItem('mounjaro_openai_apikey'); } catch {}
+  // Login é obrigatório: após sair, retorna para a tela de login.
+  redirectToLogin();
 }
 
 // Apaga deste navegador os dados pessoais/sensíveis guardados localmente
@@ -711,7 +718,11 @@ async function bootstrap() {
   if (session?.user) {
     await onAuthChange(session.user);
   } else {
+    // Gateway: login obrigatório. Sem sessão válida (ex.: token expirado e sem
+    // refresh), volta para a página de login antes de exibir o conteúdo.
     await onAuthChange(null);
+    redirectToLogin();
+    return;
   }
 
   supabase.auth.onAuthStateChange((_event, session) => {

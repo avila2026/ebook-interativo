@@ -46,6 +46,11 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/auth-gateway.css">
+
+  <!-- Gateway de autenticação: login como primeira tela.
+       Carregado cedo (síncrono) para redirecionar antes de renderizar o ebook. -->
+  <script src="js/config.js"></script>
+  <script src="js/auth-gate.js"></script>
 </head>
 <body>
 
@@ -390,8 +395,7 @@
   <!-- Chart.js para Gráficos (hospedado localmente — funciona offline) -->
   <script src="js/vendor/chart.umd.min.js" defer></script>
 
-  <!-- Banco de Dados e Lógica de Aplicação -->
-  <script src="js/config.js"></script>
+  <!-- Banco de Dados e Lógica de Aplicação (config.js já foi carregado no <head>) -->
   <script src="js/data.js" defer></script>
   <script src="js/app.js" defer></script>
   <!-- Camada de integração (Supabase + Cakto). Dormante até js/config.js ser preenchido. -->

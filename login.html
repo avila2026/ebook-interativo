@@ -519,14 +519,9 @@
 
     </div><!-- /auth-card -->
 
-    <!-- Voltar ao ebook -->
+    <!-- Rodapé -->
     <div class="back-to-ebook">
-      <a href="index.html">
-        <span aria-hidden="true">←</span> Voltar ao ebook sem entrar
-      </a>
-      <div style="margin-top:.6rem;">
-        <a href="privacidade.html">Política de Privacidade</a>
-      </div>
+      <a href="privacidade.html">Política de Privacidade</a>
     </div>
 
   </div><!-- /page-wrapper -->
@@ -676,6 +671,8 @@
         showMsg(msgLogin, traduzErro(error.message), 'error');
         return;
       }
+      // Salva o último e-mail usado para pré-preencher no próximo acesso.
+      try { localStorage.setItem('mounjaro_last_email', email); } catch {}
       showToast('Login realizado com sucesso! Redirecionando…');
       setTimeout(redirectAfterLogin, 900);
     });
@@ -720,6 +717,7 @@
       }
 
       // Sessão imediata (email confirm desligado no Supabase)
+      try { localStorage.setItem('mounjaro_last_email', email); } catch {}
       showToast('Conta criada com sucesso! Redirecionando…');
       setTimeout(redirectAfterLogin, 900);
     });
@@ -754,6 +752,16 @@
 
     // ── Bootstrap ───────────────────────────────────────────────────────────────
     async function init() {
+      // Pré-preenche o e-mail do último acesso (lembrar login).
+      try {
+        const lastEmail = localStorage.getItem('mounjaro_last_email');
+        if (lastEmail) {
+          document.getElementById('loginEmail').value = lastEmail;
+          // Foca direto na senha quando o e-mail já está preenchido.
+          setTimeout(() => document.getElementById('loginPassword').focus(), 80);
+        }
+      } catch {}
+
       const ok = await initSupabase();
 
       if (!ok) {
